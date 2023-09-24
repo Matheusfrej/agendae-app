@@ -1,18 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
+import * as S from './styles'
 
 export default function HomeList() {
   return (
-    <View style={styles.container}>
-      <Text style={{fontSize: 30}}>HomeList</Text>
-    </View>
+    <S.Container>
+      <S.Title>HomeList</S.Title>
+    </S.Container>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
