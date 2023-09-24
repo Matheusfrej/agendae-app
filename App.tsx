@@ -1,10 +1,14 @@
 import { ActivityIndicator } from 'react-native'
-import { ThemeProvider } from 'styled-components';
-import { useFonts, Overpass_400Regular, Overpass_700Bold } from '@expo-google-fonts/overpass'
+import { ThemeProvider } from 'styled-components'
+import {
+  useFonts,
+  Overpass_400Regular,
+  Overpass_700Bold,
+} from '@expo-google-fonts/overpass'
 
-import theme from './src/theme';
+import theme from './src/theme'
 
-import { HomeList } from '@screens/HomeList';
+import { HomeList } from '@screens/HomeList'
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Overpass_400Regular, Overpass_700Bold })
@@ -13,5 +17,5 @@ export default function App() {
     <ThemeProvider theme={theme}>
       {fontsLoaded ? <HomeList /> : <ActivityIndicator />}
     </ThemeProvider>
-  );
+  )
 }

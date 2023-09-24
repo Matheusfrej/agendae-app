@@ -5,6 +5,5 @@ export function HomeList() {
     <S.Container>
       <S.Title>HomeList</S.Title>
     </S.Container>
-  );
+  )
 }
-
