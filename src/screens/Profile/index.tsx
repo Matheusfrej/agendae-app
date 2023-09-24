@@ -1,10 +1,10 @@
 import * as S from './styles'
 
-export function HomeList() {
+export function Profile() {
   return (
     <S.ScrollContainer>
       <S.Container>
-        <S.Title>HomeList</S.Title>
+        <S.Title>Profile</S.Title>
       </S.Container>
     </S.ScrollContainer>
   )
