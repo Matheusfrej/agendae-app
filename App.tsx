@@ -4,7 +4,7 @@ import { useFonts, Overpass_400Regular, Overpass_700Bold } from '@expo-google-fo
 
 import theme from './src/theme';
 
-import HomeList from '@screens/HomeList';
+import { HomeList } from '@screens/HomeList';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Overpass_400Regular, Overpass_700Bold })
