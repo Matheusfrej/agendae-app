@@ -14,11 +14,6 @@ export const Content = styled.View`
   gap: 30px;
 `
 
-export const NotificationContainer = styled.TouchableOpacity`
-  width: 100%;
-  align-items: flex-end;
-`
-
 export const Section = styled.TouchableOpacity`
   width: 90%;
   border-radius: 8px;
@@ -36,21 +31,25 @@ export const Texts = styled.View`
 export const Title = styled.Text`
   width: 100%;
 
-  font-size: 24px;
+  font-size: ${({ theme }) => theme.FONT_SIZE.XL};
   color: ${({ theme }) => theme.COLORS.BLACK};
+`
+
+export const SpinsContainer = styled.View`
+  gap: 12px;
 `
 
 export const Span = styled.Text`
   width: 100%;
 
-  font-size: 24px;
+  font-size: ${({ theme }) => theme.FONT_SIZE.XL};
   color: ${({ theme }) => theme.COLORS.PURPLE_500};
 `
 
 export const Subtitle = styled.Text`
   width: 80%;
 
-  font-size: 16px;
+  font-size: ${({ theme }) => theme.FONT_SIZE.MD};
   color: ${({ theme }) => theme.COLORS.GRAY_700};
 `
 

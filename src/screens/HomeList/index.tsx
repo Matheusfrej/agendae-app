@@ -1,35 +1,50 @@
 import { useState } from 'react'
 import * as S from './styles'
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
+import { Notifications } from '@components/Notifications'
+import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 
 export function HomeList() {
-  const [hasNotifications, setHasNotifications] = useState<boolean>(true)
   const [pastSpinsOpen, setPastSpinsOpen] = useState<boolean>(false)
   const [closestSpinsOpen, setClosestSpinsOpen] = useState<boolean>(false)
   const [allSpinsOpen, setAllSpinsOpen] = useState<boolean>(false)
   const theme = useTheme()
 
+  const pastSpins = [
+    {
+      title: 'Teste 1',
+      start_date: '27/09',
+      end_date: '28/09',
+    },
+    {
+      title: 'Teste 2',
+      start_date: '27/09',
+      creator: 'Bruna',
+      background_color: 'red',
+    },
+    {
+      title: 'Teste 3',
+      creator: 'Zé',
+      background_color: 'yellow',
+    },
+    {
+      title: 'Teste 4',
+      background_color: 'green',
+    },
+    {
+      title: 'Teste 5',
+      start_date: '27/09 18h',
+      end_date: '28/09 18h',
+      creator: 'Bruna',
+      background_color: 'purple',
+    },
+  ]
+
   return (
     <S.ScrollContainer>
       <S.Container>
-        <S.NotificationContainer
-          onPress={() => setHasNotifications(!hasNotifications)}
-        >
-          {hasNotifications ? (
-            <FontAwesome
-              name="envelope"
-              size={24}
-              color={theme.COLORS.PURPLE_500}
-            />
-          ) : (
-            <FontAwesome
-              name="envelope-o"
-              size={24}
-              color={theme.COLORS.GRAY_300}
-            />
-          )}
-        </S.NotificationContainer>
+        <Notifications />
 
         <S.Content>
           <S.Section onPress={() => setPastSpinsOpen(!pastSpinsOpen)}>
@@ -54,6 +69,25 @@ export function HomeList() {
               <S.Subtitle>rolês que já terminaram</S.Subtitle>
             </S.Texts>
           </S.Section>
+          {pastSpinsOpen && (
+            <S.SpinsContainer>
+              {pastSpins.map((spin, idx) => {
+                return (
+                  <SpinCard
+                    key={idx}
+                    title={spin.title}
+                    creator={spin.creator}
+                    start_date={spin.start_date}
+                    end_date={spin.end_date}
+                    background_color={
+                      spin.background_color as SpinCardContainerVariant
+                    }
+                  />
+                )
+              })}
+            </S.SpinsContainer>
+          )}
+
           <S.Section onPress={() => setClosestSpinsOpen(!closestSpinsOpen)}>
             {!closestSpinsOpen ? (
               <MaterialIcons
