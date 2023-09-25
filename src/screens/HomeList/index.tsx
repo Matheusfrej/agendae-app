@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
 import { Notifications } from '@components/Notifications'
 import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
+import { CreateSpin } from '@components/CreateSpin'
 
 export function HomeList() {
   const [pastSpinsOpen, setPastSpinsOpen] = useState<boolean>(false)
@@ -42,96 +43,137 @@ export function HomeList() {
   ]
 
   return (
-    <S.ScrollContainer>
-      <S.Container>
-        <Notifications />
+    <>
+      <S.ScrollContainer>
+        <S.Container>
+          <Notifications />
 
-        <S.Content>
-          <S.Section onPress={() => setPastSpinsOpen(!pastSpinsOpen)}>
-            {!pastSpinsOpen ? (
-              <MaterialIcons
-                name="arrow-right"
-                size={32}
-                color={theme.COLORS.PURPLE_500}
-              />
-            ) : (
-              <MaterialIcons
-                name="arrow-drop-down"
-                size={32}
-                color={theme.COLORS.PURPLE_500}
-              />
+          <S.Content>
+            <S.Section onPress={() => setPastSpinsOpen(!pastSpinsOpen)}>
+              {!pastSpinsOpen ? (
+                <MaterialIcons
+                  name="arrow-right"
+                  size={32}
+                  color={theme.COLORS.PURPLE_500}
+                />
+              ) : (
+                <MaterialIcons
+                  name="arrow-drop-down"
+                  size={32}
+                  color={theme.COLORS.PURPLE_500}
+                />
+              )}
+
+              <S.Texts>
+                <S.Title>
+                  <S.Span>Rolês</S.Span> anteriores
+                </S.Title>
+                <S.Subtitle>rolês que já terminaram</S.Subtitle>
+              </S.Texts>
+            </S.Section>
+            {pastSpinsOpen && (
+              <S.SpinsContainer>
+                {pastSpins.map((spin, idx) => {
+                  return (
+                    <SpinCard
+                      key={idx}
+                      title={spin.title}
+                      creator={spin.creator}
+                      start_date={spin.start_date}
+                      end_date={spin.end_date}
+                      background_color={
+                        spin.background_color as SpinCardContainerVariant
+                      }
+                    />
+                  )
+                })}
+              </S.SpinsContainer>
             )}
 
-            <S.Texts>
-              <S.Title>
-                <S.Span>Rolês</S.Span> anteriores
-              </S.Title>
-              <S.Subtitle>rolês que já terminaram</S.Subtitle>
-            </S.Texts>
-          </S.Section>
-          {pastSpinsOpen && (
-            <S.SpinsContainer>
-              {pastSpins.map((spin, idx) => {
-                return (
-                  <SpinCard
-                    key={idx}
-                    title={spin.title}
-                    creator={spin.creator}
-                    start_date={spin.start_date}
-                    end_date={spin.end_date}
-                    background_color={
-                      spin.background_color as SpinCardContainerVariant
-                    }
-                  />
-                )
-              })}
-            </S.SpinsContainer>
-          )}
-
-          <S.Section onPress={() => setClosestSpinsOpen(!closestSpinsOpen)}>
-            {!closestSpinsOpen ? (
-              <MaterialIcons
-                name="arrow-right"
-                size={32}
-                color={theme.COLORS.PURPLE_500}
-              />
-            ) : (
-              <MaterialIcons
-                name="arrow-drop-down"
-                size={32}
-                color={theme.COLORS.PURPLE_500}
-              />
+            <S.Section onPress={() => setClosestSpinsOpen(!closestSpinsOpen)}>
+              {!closestSpinsOpen ? (
+                <MaterialIcons
+                  name="arrow-right"
+                  size={32}
+                  color={theme.COLORS.PURPLE_500}
+                />
+              ) : (
+                <MaterialIcons
+                  name="arrow-drop-down"
+                  size={32}
+                  color={theme.COLORS.PURPLE_500}
+                />
+              )}
+              <S.Texts>
+                <S.Title>
+                  <S.Span>Rolês</S.Span> mais próximos
+                </S.Title>
+                <S.Subtitle>rolês marcados para os próximos 7 dias</S.Subtitle>
+              </S.Texts>
+            </S.Section>
+            {closestSpinsOpen && (
+              <S.SpinsContainer>
+                {pastSpins.map((spin, idx) => {
+                  return (
+                    <SpinCard
+                      key={idx}
+                      title={spin.title}
+                      creator={spin.creator}
+                      start_date={spin.start_date}
+                      end_date={spin.end_date}
+                      background_color={
+                        spin.background_color as SpinCardContainerVariant
+                      }
+                    />
+                  )
+                })}
+              </S.SpinsContainer>
             )}
-            <S.Texts>
-              <S.Title>
-                <S.Span>Rolês</S.Span> mais próximos
-              </S.Title>
-              <S.Subtitle>rolês marcados para os próximos 7 dias</S.Subtitle>
-            </S.Texts>
-          </S.Section>
-          <S.Section onPress={() => setAllSpinsOpen(!allSpinsOpen)}>
-            {!allSpinsOpen ? (
-              <MaterialIcons
-                name="arrow-right"
-                size={32}
-                color={theme.COLORS.PURPLE_500}
-              />
-            ) : (
-              <MaterialIcons
-                name="arrow-drop-down"
-                size={32}
-                color={theme.COLORS.PURPLE_500}
-              />
+            <S.Section onPress={() => setAllSpinsOpen(!allSpinsOpen)}>
+              {!allSpinsOpen ? (
+                <MaterialIcons
+                  name="arrow-right"
+                  size={32}
+                  color={theme.COLORS.PURPLE_500}
+                />
+              ) : (
+                <MaterialIcons
+                  name="arrow-drop-down"
+                  size={32}
+                  color={theme.COLORS.PURPLE_500}
+                />
+              )}
+              <S.Texts>
+                <S.Title>
+                  Todos os seus <S.Span>rolês</S.Span>
+                </S.Title>
+                <S.Subtitle>
+                  todos os seus rolês, ordenados pela data
+                </S.Subtitle>
+              </S.Texts>
+            </S.Section>
+            {allSpinsOpen && (
+              <S.SpinsContainer>
+                {pastSpins.map((spin, idx) => {
+                  return (
+                    <SpinCard
+                      key={idx}
+                      title={spin.title}
+                      creator={spin.creator}
+                      start_date={spin.start_date}
+                      end_date={spin.end_date}
+                      background_color={
+                        spin.background_color as SpinCardContainerVariant
+                      }
+                    />
+                  )
+                })}
+              </S.SpinsContainer>
             )}
-            <S.Texts>
-              <S.Title>
-                Todos os seus <S.Span>rolês</S.Span>
-              </S.Title>
-              <S.Subtitle>todos os seus rolês, ordenados pela data</S.Subtitle>
-            </S.Texts>
-          </S.Section>
-        </S.Content>
-      </S.Container>
-    </S.ScrollContainer>
+          </S.Content>
+        </S.Container>
+      </S.ScrollContainer>
+      <CreateSpin />
+    </>
   )
 }
