@@ -53,11 +53,3 @@ export const Subtitle = styled.Text`
   font-size: ${({ theme }) => theme.FONT_SIZE.MD};
   color: ${({ theme }) => theme.COLORS.GRAY_700};
 `
-
-export const ScrollContainer = styled.ScrollView.attrs(() => ({
-  contentContainerStyle: {
-    flexGrow: 1,
-  },
-}))`
-  background-color: ${({ theme }) => theme.COLORS.WHITE};
-`

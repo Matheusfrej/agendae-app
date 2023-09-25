@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components'
 import { Notifications } from '@components/Notifications'
 import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { CreateSpin } from '@components/CreateSpin'
+import { ScrollContainer } from '../../theme/global'
 
 export function HomeList() {
   const [pastSpinsOpen, setPastSpinsOpen] = useState<boolean>(false)
@@ -44,7 +45,7 @@ export function HomeList() {
 
   return (
     <>
-      <S.ScrollContainer>
+      <ScrollContainer>
         <S.Container>
           <Notifications />
 
@@ -172,7 +173,7 @@ export function HomeList() {
             )}
           </S.Content>
         </S.Container>
-      </S.ScrollContainer>
+      </ScrollContainer>
       <CreateSpin />
     </>
   )

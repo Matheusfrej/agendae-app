@@ -1,11 +1,12 @@
+import { ScrollContainer } from '../../theme/global'
 import * as S from './styles'
 
 export function HomeCalendar() {
   return (
-    <S.ScrollContainer>
+    <ScrollContainer>
       <S.Container>
         <S.Title>HomeCalendar</S.Title>
       </S.Container>
-    </S.ScrollContainer>
+    </ScrollContainer>
   )
 }

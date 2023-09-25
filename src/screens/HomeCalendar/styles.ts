@@ -13,9 +13,3 @@ export const Title = styled.Text`
   color: ${({ theme }) => theme.COLORS.PURPLE_500};
   font-weight: bold;
 `
-
-export const ScrollContainer = styled.ScrollView.attrs(() => ({
-  contentContainerStyle: {
-    flex: 1,
-  },
-}))``

@@ -1,8 +1,7 @@
 import styled from 'styled-components/native'
 
 export const CreateSpinContainer = styled.TouchableOpacity`
-  width: 60px;
-  height: 60px;
+  align-self: flex-end;
   align-items: center;
   justify-content: center;
   background-color: ${(props) => props.theme.COLORS.PURPLE_700};
