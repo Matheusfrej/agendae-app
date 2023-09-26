@@ -1,7 +1,7 @@
 export default {
   COLORS: {
     WHITE: '#FFFFFF',
-    BLACK: '#1D1D1D',
+    BLACK: '#000000',
 
     PURPLE_300: '#C147CC',
     PURPLE_500: '#952DA6',

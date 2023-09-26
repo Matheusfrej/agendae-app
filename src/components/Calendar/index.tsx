@@ -2,12 +2,15 @@ import * as S from './styles'
 import { useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 
+interface DaysType {
+  day: number
+  variant: 'inactive' | 'normal' | 'current'
+}
+
 export function Calendar() {
-  // getting new date, current year and month
-  const [, setDate] = useState(new Date())
   const [currYear, setCurrYear] = useState(new Date().getFullYear())
   const [currMonth, setCurrMonth] = useState(new Date().getMonth())
-  const [days, setDays] = useState<number[]>([])
+  const [days, setDays] = useState<DaysType[]>([])
   const [isCalendarRendered, setIsCalendarRendered] = useState(false)
 
   // storing full name of all months in array
@@ -27,7 +30,7 @@ export function Calendar() {
   ]
 
   const renderCalendar = (currYearOffset = 0, currMonthOffset = 0) => {
-    const newDays: number[] = []
+    const newDays: DaysType[] = []
     const firstDayofMonth = new Date(
       currYear + currYearOffset,
       currMonth + currMonthOffset,
@@ -48,28 +51,28 @@ export function Calendar() {
       currMonth + currMonthOffset,
       0,
     ).getDate() // getting last date of previous month
-    // let liTag = ''
 
     for (let i = firstDayofMonth; i > 0; i--) {
-      // creating li of previous month last days
-      // liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`
-      newDays.push(lastDateofLastMonth - i + 1)
+      newDays.push({ day: lastDateofLastMonth - i + 1, variant: 'inactive' })
     }
-
+    const currentDay = new Date().getDate()
+    const currentMonth = new Date().getMonth()
+    const currentYear = new Date().getFullYear()
     for (let i = 1; i <= lastDateofMonth; i++) {
-      // creating li of all days of current month
-      // adding active class to li if the current day, month, and year matched
-      // liTag += `<li class="${isToday}">${i}</li>`
-      newDays.push(i)
+      if (
+        i === currentDay &&
+        currentMonth === currMonth + currMonthOffset &&
+        currentYear === currYear + currYearOffset
+      ) {
+        newDays.push({ day: i, variant: 'current' })
+      } else {
+        newDays.push({ day: i, variant: 'normal' })
+      }
     }
 
     for (let i = lastDayofMonth; i < 6; i++) {
-      // creating li of next month first days
-      // liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`
-      newDays.push(i - lastDayofMonth + 1)
+      newDays.push({ day: i - lastDayofMonth + 1, variant: 'inactive' })
     }
-    // currentDate.innerText = `${months[currMonth]} ${currYear}` // passing current mon and yr as currentDate text
-    // daysTag.innerHTML = liTag
     setDays(newDays)
     setIsCalendarRendered(true)
   }
@@ -91,7 +94,6 @@ export function Calendar() {
         yearOffset = -1
       }
       // creating a new date of current year & month and pass it as date value
-      setDate(new Date(currYear, newCurrMonth, new Date().getDate()))
 
       setCurrYear(
         new Date(currYear, newCurrMonth, new Date().getDate()).getFullYear(),
@@ -100,7 +102,6 @@ export function Calendar() {
         new Date(currYear, newCurrMonth, new Date().getDate()).getMonth(),
       ) // updating current month with new date month
     } else {
-      setDate(new Date())
       setCurrMonth(newCurrMonth) // pass the current date as date value
     }
     renderCalendar(yearOffset, monthOffset)
@@ -143,8 +144,9 @@ export function Calendar() {
           {isCalendarRendered &&
             days.map((day, idx) => {
               return (
-                <S.Day key={`${day}+${idx}`}>
-                  <S.Text>{day}</S.Text>
+                <S.Day key={`${day.day}+${idx}`}>
+                  <S.Text variant={day.variant}>{day.day}</S.Text>
+                  <S.SpinsQuantity quantity={0}>4+</S.SpinsQuantity>
                   <S.Line />
                 </S.Day>
               )
