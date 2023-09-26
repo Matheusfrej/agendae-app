@@ -25,6 +25,11 @@ export const Actions = styled.View`
   gap: 20px;
 `
 
+export const IconContainer = styled.TouchableHighlight`
+  align-self: center;
+  border-radius: 1000px;
+`
+
 export const Line = styled.View`
   margin-top: 8px;
   border: 1px solid ${(props) => props.theme.COLORS.GRAY_300};
@@ -61,8 +66,9 @@ export const Days = styled.View`
   flex-direction: row;
 `
 
-export const Day = styled.View`
+export const Day = styled.TouchableHighlight`
   width: 14.285714%;
+  border-radius: 1000px;
 `
 
 interface TextProps {
@@ -105,9 +111,14 @@ export const SpinsQuantity = styled.Text<SpinsQuantityProps>`
   justify-content: center;
   border-radius: 1000px;
   font-size: 12px;
-  background-color: ${(props) =>
+  ${(props) =>
     props.quantity > 0
-      ? props.theme.COLORS.PURPLE_300
-      : props.theme.COLORS.WHITE};
-  color: ${(props) => props.theme.COLORS.WHITE};
+      ? css`
+          background-color: ${(props) => props.theme.COLORS.PURPLE_300};
+          color: ${(props) => props.theme.COLORS.WHITE};
+        `
+      : css`
+          background-color: transparent;
+          color: transparent;
+        `}
 `

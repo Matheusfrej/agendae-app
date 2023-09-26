@@ -1,6 +1,7 @@
 import * as S from './styles'
 import { useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
+import { useTheme } from 'styled-components'
 
 interface DaysType {
   day: number
@@ -12,6 +13,8 @@ export function Calendar() {
   const [currMonth, setCurrMonth] = useState(new Date().getMonth())
   const [days, setDays] = useState<DaysType[]>([])
   const [isCalendarRendered, setIsCalendarRendered] = useState(false)
+
+  const theme = useTheme()
 
   // storing full name of all months in array
   const months = [
@@ -55,14 +58,12 @@ export function Calendar() {
     for (let i = firstDayofMonth; i > 0; i--) {
       newDays.push({ day: lastDateofLastMonth - i + 1, variant: 'inactive' })
     }
-    const currentDay = new Date().getDate()
-    const currentMonth = new Date().getMonth()
-    const currentYear = new Date().getFullYear()
+    const currentDate = new Date()
     for (let i = 1; i <= lastDateofMonth; i++) {
       if (
-        i === currentDay &&
-        currentMonth === currMonth + currMonthOffset &&
-        currentYear === currYear + currYearOffset
+        i === currentDate.getDate() &&
+        currentDate.getMonth() === currMonth + currMonthOffset &&
+        currentDate.getFullYear() === currYear + currYearOffset
       ) {
         newDays.push({ day: i, variant: 'current' })
       } else {
@@ -107,6 +108,9 @@ export function Calendar() {
     renderCalendar(yearOffset, monthOffset)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const goToDate = () => {}
+
   return (
     <S.CalendarContainer>
       <S.CalendarHeader>
@@ -114,19 +118,24 @@ export function Calendar() {
           {months[currMonth]} de {currYear}
         </S.MonthYear>
         <S.Actions>
-          <MaterialIcons
-            name="keyboard-arrow-left"
-            size={32}
-            color="black"
+          <S.IconContainer
             onPress={() => changeMonth('prev')}
-          />
-
-          <MaterialIcons
-            name="keyboard-arrow-right"
-            size={32}
-            color="black"
+            activeOpacity={0.7}
+            underlayColor={theme.COLORS.GRAY_300}
+          >
+            <MaterialIcons name="keyboard-arrow-left" size={32} color="black" />
+          </S.IconContainer>
+          <S.IconContainer
             onPress={() => changeMonth('next')}
-          />
+            activeOpacity={0.7}
+            underlayColor={theme.COLORS.GRAY_300}
+          >
+            <MaterialIcons
+              name="keyboard-arrow-right"
+              size={32}
+              color="black"
+            />
+          </S.IconContainer>
         </S.Actions>
       </S.CalendarHeader>
       <S.CalendarContent>
@@ -144,10 +153,17 @@ export function Calendar() {
           {isCalendarRendered &&
             days.map((day, idx) => {
               return (
-                <S.Day key={`${day.day}+${idx}`}>
-                  <S.Text variant={day.variant}>{day.day}</S.Text>
-                  <S.SpinsQuantity quantity={0}>4+</S.SpinsQuantity>
-                  <S.Line />
+                <S.Day
+                  key={`${day.day}+${idx}`}
+                  onPress={() => goToDate()}
+                  activeOpacity={0.7}
+                  underlayColor={theme.COLORS.GRAY_300}
+                >
+                  <>
+                    <S.Text variant={day.variant}>{day.day}</S.Text>
+                    <S.SpinsQuantity quantity={0}>4+</S.SpinsQuantity>
+                    <S.Line />
+                  </>
                 </S.Day>
               )
             })}
