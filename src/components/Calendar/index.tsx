@@ -1,16 +1,15 @@
 import * as S from './styles'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
+import { View } from 'react-native'
 
 export function Calendar() {
-  const days = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 26, 27, 28, 29, 30,
-  ]
   // getting new date, current year and month
   const [, setDate] = useState(new Date())
   const [currYear, setCurrYear] = useState(new Date().getFullYear())
   const [currMonth, setCurrMonth] = useState(new Date().getMonth())
+  const [days, setDays] = useState<number[]>([])
+  const [isCalendarRendered, setIsCalendarRendered] = useState(false)
 
   // storing full name of all months in array
   const months = [
@@ -28,48 +27,69 @@ export function Calendar() {
     'Dezembro',
   ]
 
-  // const renderCalendar = () => {
-  //   const firstDayofMonth = new Date(currYear, currMonth, 1).getDay() // getting first day of month
-  //   const lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate() // getting last date of month
-  //   const lastDayofMonth = new Date(
-  //     currYear,
-  //     currMonth,
-  //     lastDateofMonth,
-  //   ).getDay() // getting last day of month
-  //   const lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate() // getting last date of previous month
-  //   let liTag = ''
+  const renderCalendar = (currYearOffset = 0, currMonthOffset = 0) => {
+    const newDays: number[] = []
+    const firstDayofMonth = new Date(
+      currYear + currYearOffset,
+      currMonth + currMonthOffset,
+      1,
+    ).getDay() // getting first day of month
+    const lastDateofMonth = new Date(
+      currYear + currYearOffset,
+      currMonth + 1 + currMonthOffset,
+      0,
+    ).getDate() // getting last date of month
+    const lastDayofMonth = new Date(
+      currYear + currYearOffset,
+      currMonth + currMonthOffset,
+      lastDateofMonth,
+    ).getDay() // getting last day of month
+    const lastDateofLastMonth = new Date(
+      currYear + currYearOffset,
+      currMonth + currMonthOffset,
+      0,
+    ).getDate() // getting last date of previous month
+    // let liTag = ''
 
-  //   for (let i = firstDayofMonth; i > 0; i--) {
-  //     // creating li of previous month last days
-  //     liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`
-  //   }
+    for (let i = firstDayofMonth; i > 0; i--) {
+      // creating li of previous month last days
+      // liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`
+      newDays.push(lastDateofLastMonth - i + 1)
+    }
 
-  //   for (let i = 1; i <= lastDateofMonth; i++) {
-  //     // creating li of all days of current month
-  //     // adding active class to li if the current day, month, and year matched
-  //     const isToday =
-  //       i === date.getDate() &&
-  //       currMonth === new Date().getMonth() &&
-  //       currYear === new Date().getFullYear()
-  //         ? 'active'
-  //         : ''
-  //     liTag += `<li class="${isToday}">${i}</li>`
-  //   }
+    for (let i = 1; i <= lastDateofMonth; i++) {
+      // creating li of all days of current month
+      // adding active class to li if the current day, month, and year matched
+      // liTag += `<li class="${isToday}">${i}</li>`
+      newDays.push(i)
+    }
 
-  //   for (let i = lastDayofMonth; i < 6; i++) {
-  //     // creating li of next month first days
-  //     liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`
-  //   }
-  //   currentDate.innerText = `${months[currMonth]} ${currYear}` // passing current mon and yr as currentDate text
-  //   daysTag.innerHTML = liTag
-  // }
-  // renderCalendar()
+    for (let i = lastDayofMonth; i < 6; i++) {
+      // creating li of next month first days
+      // liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`
+      newDays.push(i - lastDayofMonth + 1)
+    }
+    // currentDate.innerText = `${months[currMonth]} ${currYear}` // passing current mon and yr as currentDate text
+    // daysTag.innerHTML = liTag
+    setDays(newDays)
+    setIsCalendarRendered(true)
+  }
+
+  useEffect(() => {
+    if (!isCalendarRendered) renderCalendar()
+  }, [])
 
   function changeMonth(action: string) {
     const newCurrMonth = action === 'prev' ? currMonth - 1 : currMonth + 1
-
+    let yearOffset = 0
+    const monthOffset = action === 'prev' ? -1 : 1
     if (newCurrMonth < 0 || newCurrMonth > 11) {
       // if current month is less than 0 or greater than 11
+      if (newCurrMonth < 0) {
+        yearOffset = 1
+      } else {
+        yearOffset = -1
+      }
       // creating a new date of current year & month and pass it as date value
       setDate(new Date(currYear, newCurrMonth, new Date().getDate()))
 
@@ -83,7 +103,7 @@ export function Calendar() {
       setDate(new Date())
       setCurrMonth(newCurrMonth) // pass the current date as date value
     }
-    // renderCalendar() // calling renderCalendar function
+    renderCalendar(yearOffset, monthOffset)
   }
 
   return (
@@ -95,13 +115,14 @@ export function Calendar() {
         <S.Actions>
           <MaterialIcons
             name="keyboard-arrow-left"
-            size={24}
+            size={32}
             color="black"
             onPress={() => changeMonth('prev')}
           />
+
           <MaterialIcons
             name="keyboard-arrow-right"
-            size={24}
+            size={32}
             color="black"
             onPress={() => changeMonth('next')}
           />
@@ -117,10 +138,17 @@ export function Calendar() {
           <S.Weekday>Sex</S.Weekday>
           <S.Weekday>Sáb</S.Weekday>
         </S.Weeks>
+        <S.Line />
         <S.Days>
-          {days.map((day) => {
-            return <S.Day key={day}>{day}</S.Day>
-          })}
+          {isCalendarRendered &&
+            days.map((day, idx) => {
+              return (
+                <S.Day key={`${day}+${idx}`}>
+                  <S.Text>{day}</S.Text>
+                  <S.Line />
+                </S.Day>
+              )
+            })}
         </S.Days>
       </S.CalendarContent>
     </S.CalendarContainer>
