@@ -1,7 +1,6 @@
 import * as S from './styles'
 import { useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
-import { View } from 'react-native'
 
 export function Calendar() {
   // getting new date, current year and month
@@ -77,6 +76,7 @@ export function Calendar() {
 
   useEffect(() => {
     if (!isCalendarRendered) renderCalendar()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function changeMonth(action: string) {
