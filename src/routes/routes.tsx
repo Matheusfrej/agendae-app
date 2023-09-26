@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { HomeList } from '@screens/HomeList'
 import { HomeCalendar } from '@screens/HomeCalendar'
@@ -11,10 +12,88 @@ import {
   MaterialCommunityIcons,
 } from '@expo/vector-icons'
 import { Text } from 'react-native'
+import { SpinsOfDay } from '@screens/SpinsOfDay'
+import { CreateUpdateSpin } from '@screens/CreateUpdateSpin'
+import { Notifications } from '@screens/Notifications'
+import { Spin } from '@screens/Spin'
 
 const Tab = createBottomTabNavigator()
+const { Screen, Navigator } = createNativeStackNavigator()
 
-function Routes() {
+function HomeListStack() {
+  return (
+    <Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Screen name="HomeList" component={HomeList} />
+      <Screen
+        name="CreateUpdateSpin"
+        component={CreateUpdateSpin}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+      <Screen
+        name="Notifications"
+        component={Notifications}
+        options={{ animation: 'fade' }}
+      />
+
+      <Screen
+        name="Spin"
+        component={Spin}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+    </Navigator>
+  )
+}
+
+function HomeCalendarStack() {
+  return (
+    <Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Screen name="HomeCalendar" component={HomeCalendar} />
+      <Screen
+        name="SpinsOfDay"
+        component={SpinsOfDay}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+      <Screen
+        name="CreateUpdateSpin"
+        component={CreateUpdateSpin}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+      <Screen
+        name="Notifications"
+        component={Notifications}
+        options={{ animation: 'fade' }}
+      />
+
+      <Screen
+        name="Spin"
+        component={Spin}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+    </Navigator>
+  )
+}
+
+function ProfileStack() {
+  return (
+    <Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Screen name="Profile" component={Profile} />
+    </Navigator>
+  )
+}
+
+export function TabRoutes() {
   const theme = useTheme()
 
   return (
@@ -34,8 +113,8 @@ function Routes() {
       }}
     >
       <Tab.Screen
-        name="HomeList"
-        component={HomeList}
+        name="HomeListStack"
+        component={HomeListStack}
         options={{
           tabBarIcon: ({ focused }) => {
             if (focused) {
@@ -74,8 +153,8 @@ function Routes() {
         }}
       />
       <Tab.Screen
-        name="HomeCalendar"
-        component={HomeCalendar}
+        name="HomeCalendarStack"
+        component={HomeCalendarStack}
         options={{
           tabBarIcon: ({ focused }) => {
             if (focused) {
@@ -120,8 +199,8 @@ function Routes() {
         }}
       />
       <Tab.Screen
-        name="profile"
-        component={Profile}
+        name="ProfileStack"
+        component={ProfileStack}
         options={{
           tabBarIcon: ({ focused }) => {
             if (focused) {
@@ -166,5 +245,3 @@ function Routes() {
     </Tab.Navigator>
   )
 }
-
-export { Routes }

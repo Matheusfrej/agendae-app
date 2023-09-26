@@ -2,7 +2,7 @@ import { useState } from 'react'
 import * as S from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
-import { Notifications } from '@components/Notifications'
+import { NotificationsComponent } from '@components/NotificationsComponent'
 import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { CreateSpin } from '@components/CreateSpin'
 import { ScrollContainer } from '../../theme/global'
@@ -47,7 +47,7 @@ export function HomeList() {
     <>
       <ScrollContainer>
         <S.Container>
-          <Notifications />
+          <NotificationsComponent />
 
           <S.Content>
             <S.Section onPress={() => setPastSpinsOpen(!pastSpinsOpen)}>

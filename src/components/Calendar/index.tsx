@@ -2,6 +2,8 @@ import * as S from './styles'
 import { useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
+import { useNavigation } from '@react-navigation/native'
+import { Nav } from 'src/@types/navigation'
 
 interface DaysType {
   day: number
@@ -15,6 +17,7 @@ export function Calendar() {
   const [isCalendarRendered, setIsCalendarRendered] = useState(false)
 
   const theme = useTheme()
+  const navigation = useNavigation<Nav>()
 
   // storing full name of all months in array
   const months = [
@@ -108,8 +111,9 @@ export function Calendar() {
     renderCalendar(yearOffset, monthOffset)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const goToDate = () => {}
+  const goToDate = () => {
+    navigation.navigate('SpinsOfDay')
+  }
 
   return (
     <S.CalendarContainer>

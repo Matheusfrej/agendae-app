@@ -1,7 +1,7 @@
 import { CreateSpin } from '@components/CreateSpin'
 import { ScrollContainer } from '../../theme/global'
 import * as S from './styles'
-import { Notifications } from '@components/Notifications'
+import { NotificationsComponent } from '@components/NotificationsComponent'
 import { Calendar } from '@components/Calendar'
 
 export function HomeCalendar() {
@@ -9,7 +9,7 @@ export function HomeCalendar() {
     <>
       <ScrollContainer>
         <S.Container>
-          <Notifications />
+          <NotificationsComponent />
           <Calendar />
         </S.Container>
       </ScrollContainer>

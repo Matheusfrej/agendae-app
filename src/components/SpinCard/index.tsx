@@ -1,4 +1,6 @@
+import { useNavigation } from '@react-navigation/native'
 import * as S from './styles'
+import { Nav } from 'src/@types/navigation'
 
 export type SpinCardContainerVariant =
   | 'purple'
@@ -23,8 +25,14 @@ export function SpinCard({
   creator,
   background_color = 'purple',
 }: SpinCardProps) {
+  const navigation = useNavigation<Nav>()
+
+  const goToSpin = () => {
+    navigation.navigate('Spin')
+  }
+
   return (
-    <S.TouchableOpacity>
+    <S.TouchableOpacity onPress={() => goToSpin()}>
       <S.SpinCardContainer variant={background_color}>
         <S.Header>
           <S.Creator>

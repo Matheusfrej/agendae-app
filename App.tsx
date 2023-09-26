@@ -10,17 +10,14 @@ import {
 import theme from './src/theme'
 
 // Routes
-import { Routes } from '@routes/routes'
-import { NavigationContainer } from '@react-navigation/native'
+import { Routes } from '@routes/index'
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Overpass_400Regular, Overpass_700Bold })
 
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        {fontsLoaded ? <Routes /> : <ActivityIndicator />}
-      </NavigationContainer>
+      {fontsLoaded ? <Routes /> : <ActivityIndicator />}
     </ThemeProvider>
   )
 }
