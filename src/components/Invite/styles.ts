@@ -52,7 +52,7 @@ interface ButtonProps {
 
 export const Button = styled.TouchableOpacity<ButtonProps>`
   border-radius: 8px;
-  padding: 6px 12px;
+  padding: 5px 12px;
   background: ${(props) =>
     props.variant === 'accept' ? props.theme.COLORS.BLUE : 'transparent'};
   ${(props) =>

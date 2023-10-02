@@ -111,8 +111,12 @@ export function Calendar() {
     renderCalendar(yearOffset, monthOffset)
   }
 
-  const goToDate = () => {
-    navigation.navigate('SpinsOfDay')
+  const goToDate = (day: string) => {
+    navigation.navigate('SpinsOfDay', {
+      day,
+      month: months[currMonth].toLocaleLowerCase(),
+      year: currYear,
+    })
   }
 
   return (
@@ -159,7 +163,7 @@ export function Calendar() {
               return (
                 <S.Day
                   key={`${day.day}+${idx}`}
-                  onPress={() => goToDate()}
+                  onPress={() => goToDate(`${day.day}`)}
                   activeOpacity={0.7}
                   underlayColor={theme.COLORS.GRAY_300}
                 >
