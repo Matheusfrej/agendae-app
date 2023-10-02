@@ -2,6 +2,7 @@ import * as S from './styles'
 import { Nav } from 'src/@types/navigation'
 import { useNavigation } from '@react-navigation/native'
 import { useTheme } from 'styled-components'
+import { CustomButton } from '@components/CustomButton'
 
 interface InviteProps {
   name: string
@@ -37,12 +38,8 @@ export function Invite({ name, type }: InviteProps) {
                 )}
               </S.Texts>
               <S.Actions>
-                <S.Button variant="accept">
-                  <S.Text variant="accept">Aceitar</S.Text>
-                </S.Button>
-                <S.Button variant="deny">
-                  <S.Text variant="deny">Recusar</S.Text>
-                </S.Button>
+                <CustomButton variant="accept" />
+                <CustomButton variant="deny" />
               </S.Actions>
             </S.Section>
           </S.Content>
