@@ -6,8 +6,13 @@ import { NotificationsComponent } from '@components/NotificationsComponent'
 import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { CreateSpin } from '@components/CreateSpin'
 import { ScrollContainer } from '../../theme/global'
+import { CustomButton } from '@components/CustomButton'
 
-export function HomeList() {
+interface HomeListProps {
+  navigation: any
+}
+
+export function HomeList({ navigation }: HomeListProps) {
   const [pastSpinsOpen, setPastSpinsOpen] = useState<boolean>(false)
   const [closestSpinsOpen, setClosestSpinsOpen] = useState<boolean>(false)
   const [allSpinsOpen, setAllSpinsOpen] = useState<boolean>(false)
@@ -171,6 +176,12 @@ export function HomeList() {
                 })}
               </S.SpinsContainer>
             )}
+            <S.Title>Provisório</S.Title>
+            <CustomButton
+              variant="default"
+              text="Fazer login"
+              onPress={() => navigation.navigate('Login')}
+            />
           </S.Content>
         </S.Container>
       </ScrollContainer>

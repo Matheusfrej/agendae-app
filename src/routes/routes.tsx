@@ -16,6 +16,7 @@ import { SpinsOfDay } from '@screens/SpinsOfDay'
 import { CreateUpdateSpin } from '@screens/CreateUpdateSpin'
 import { Notifications } from '@screens/Notifications'
 import { Spin } from '@screens/Spin'
+import { Login } from '@screens/Login'
 
 const Tab = createBottomTabNavigator()
 const { Screen, Navigator } = createNativeStackNavigator()
@@ -42,6 +43,12 @@ function HomeListStack() {
       <Screen
         name="Spin"
         component={Spin}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+
+      <Screen
+        name="Login"
+        component={Login}
         options={{ animation: 'fade_from_bottom' }}
       />
     </Navigator>
@@ -77,6 +84,12 @@ function HomeCalendarStack() {
         component={Spin}
         options={{ animation: 'fade_from_bottom' }}
       />
+
+      <Screen
+        name="Login"
+        component={Login}
+        options={{ animation: 'fade_from_bottom' }}
+      />
     </Navigator>
   )
 }
@@ -89,6 +102,12 @@ function ProfileStack() {
       }}
     >
       <Screen name="Profile" component={Profile} />
+
+      <Screen
+        name="Login"
+        component={Login}
+        options={{ animation: 'fade_from_bottom' }}
+      />
     </Navigator>
   )
 }

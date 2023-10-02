@@ -38,8 +38,8 @@ export function Invite({ name, type }: InviteProps) {
                 )}
               </S.Texts>
               <S.Actions>
-                <CustomButton variant="accept" />
-                <CustomButton variant="deny" />
+                <CustomButton variant="accept" text="Aceitar" />
+                <CustomButton variant="deny" text="Recusar" />
               </S.Actions>
             </S.Section>
           </S.Content>

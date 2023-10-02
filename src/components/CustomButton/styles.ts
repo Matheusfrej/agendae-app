@@ -7,7 +7,14 @@ interface ButtonProps {
 
 export const Button = styled.TouchableOpacity<ButtonProps>`
   border-radius: 8px;
-  padding: 5px 12px;
+  ${(props) =>
+    props.variant === 'default'
+      ? css`
+          padding: 10px 20px;
+        `
+      : css`
+          padding: 5px 12px;
+        `}
   background: ${(props) =>
     props.variant === 'accept'
       ? props.theme.COLORS.BLUE
@@ -30,6 +37,7 @@ export const Button = styled.TouchableOpacity<ButtonProps>`
 `
 
 export const Text = styled.Text<ButtonProps>`
+  text-align: center;
   color: ${(props) =>
     props.variant === 'accept' ||
     props.variant === 'default' ||
