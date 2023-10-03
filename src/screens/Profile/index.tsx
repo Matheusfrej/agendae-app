@@ -1,4 +1,4 @@
-import { ScrollContainer } from '../../theme/global'
+import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
 

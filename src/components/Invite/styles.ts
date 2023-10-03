@@ -68,7 +68,3 @@ export const Text = styled.Text<ButtonProps>`
       ? props.theme.COLORS.WHITE
       : props.theme.COLORS.RED};
 `
-
-export const Bar = styled.View`
-  border: 1px solid ${(props) => props.theme.COLORS.GRAY_300};
-`

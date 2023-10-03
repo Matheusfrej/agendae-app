@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
 import { PropsStack } from 'src/@types/navigation'
+import { Line } from '@components/Line'
 
 interface DaysType {
   day: number
@@ -113,8 +114,6 @@ export function Calendar() {
 
   const goToDate = (day: string, variant: string) => {
     if (variant === 'inactive') {
-      console.log(variant)
-
       if (+day > 15) {
         navigation.navigate('SpinsOfDay', {
           day,
@@ -174,7 +173,9 @@ export function Calendar() {
           <S.Weekday>Sex</S.Weekday>
           <S.Weekday>Sáb</S.Weekday>
         </S.Weeks>
-        <S.Line />
+        <S.LineContainer>
+          <Line />
+        </S.LineContainer>
         <S.Days>
           {isCalendarRendered &&
             days.map((day, idx) => {
@@ -188,7 +189,7 @@ export function Calendar() {
                   <>
                     <S.Text variant={day.variant}>{day.day}</S.Text>
                     <S.SpinsQuantity quantity={0}>4+</S.SpinsQuantity>
-                    <S.Line />
+                    <Line />
                   </>
                 </S.Day>
               )

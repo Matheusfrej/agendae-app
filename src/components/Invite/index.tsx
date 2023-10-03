@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useTheme } from 'styled-components'
 import { CustomButton } from '@components/CustomButton'
 import { PropsStack } from 'src/@types/navigation'
+import { Line } from '@components/Line'
 
 interface InviteProps {
   name: string
@@ -44,7 +45,7 @@ export function Invite({ name, type }: InviteProps) {
             </S.Section>
           </S.Content>
         </S.Container>
-        <S.Bar></S.Bar>
+        <Line />
       </>
     </S.InviteContainer>
   )

@@ -30,9 +30,8 @@ export const IconContainer = styled.TouchableHighlight`
   border-radius: 1000px;
 `
 
-export const Line = styled.View`
+export const LineContainer = styled.View`
   margin-top: 8px;
-  border: 1px solid ${(props) => props.theme.COLORS.GRAY_300};
 `
 
 export const Button = styled.TouchableOpacity`

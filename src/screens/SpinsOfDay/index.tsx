@@ -1,7 +1,7 @@
 import { CreateSpin } from '@components/CreateSpin'
 
 import * as S from './styles'
-import { ScrollContainer } from '../../theme/global'
+import { ScrollContainer } from '../../components/ScrollContainer'
 import { BackButton } from '@components/BackButton'
 import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { SpinsOfDayScreenRouteProp } from 'src/@types/navigation'

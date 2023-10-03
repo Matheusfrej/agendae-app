@@ -1,5 +1,5 @@
 import { BackButton } from '@components/BackButton'
-import { ScrollContainer } from '../../theme/global'
+import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
 import { Invite } from '@components/Invite'

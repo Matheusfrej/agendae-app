@@ -1,13 +1,17 @@
-import { ScrollContainer } from '../../theme/global'
+import { BackButton } from '@components/BackButton'
+import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
 
 export function Spin() {
   return (
-    <ScrollContainer>
-      <S.Container>
-        <S.Title>Spin</S.Title>
-      </S.Container>
-    </ScrollContainer>
+    <>
+      <BackButton />
+      <ScrollContainer>
+        <S.Container>
+          <S.Title>rolê</S.Title>
+        </S.Container>
+      </ScrollContainer>
+    </>
   )
 }

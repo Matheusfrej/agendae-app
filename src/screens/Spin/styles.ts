@@ -11,5 +11,4 @@ export const Container = styled.View`
 export const Title = styled.Text`
   font-size: 32px;
   color: ${({ theme }) => theme.COLORS.PURPLE_500};
-  font-weight: bold;
 `

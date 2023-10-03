@@ -5,7 +5,7 @@ import { useTheme } from 'styled-components'
 import { NotificationsComponent } from '@components/NotificationsComponent'
 import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { CreateSpin } from '@components/CreateSpin'
-import { ScrollContainer } from '../../theme/global'
+import { ScrollContainer } from '../../components/ScrollContainer'
 import { CustomButton } from '@components/CustomButton'
 import { PropsStack } from 'src/@types/navigation'
 

@@ -1,5 +1,5 @@
 import { CustomButton } from '@components/CustomButton'
-import { ScrollContainer } from '../../theme/global'
+import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
 import { useTheme } from 'styled-components'
