@@ -36,7 +36,11 @@ export const Button = styled.TouchableOpacity<ButtonProps>`
       : ''};
 `
 
-export const Text = styled.Text<ButtonProps>`
+type TextProps = ButtonProps & {
+  fontSize?: number
+}
+
+export const Text = styled.Text<TextProps>`
   text-align: center;
   color: ${(props) =>
     props.variant === 'accept' ||
@@ -46,4 +50,12 @@ export const Text = styled.Text<ButtonProps>`
       : props.variant === 'deny'
       ? props.theme.COLORS.RED
       : props.theme.COLORS.BLACK};
+  ${(props) =>
+    props.fontSize
+      ? css`
+          font-size: ${props.fontSize}px;
+        `
+      : css`
+          font-size: 14px;
+        `};
 `

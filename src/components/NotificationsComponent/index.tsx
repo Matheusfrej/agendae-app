@@ -3,13 +3,13 @@ import { useState } from 'react'
 import { useTheme } from 'styled-components'
 import * as S from './styles'
 import { useNavigation } from '@react-navigation/native'
-import { Nav } from 'src/@types/navigation'
+import { PropsStack } from 'src/@types/navigation'
 
 export function NotificationsComponent() {
   const [hasNotifications, setHasNotifications] = useState<boolean>(true)
   const theme = useTheme()
 
-  const navigation = useNavigation<Nav>()
+  const navigation = useNavigation<PropsStack>()
 
   const goToNotifications = () => {
     setHasNotifications(!hasNotifications)

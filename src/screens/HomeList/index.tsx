@@ -7,9 +7,10 @@ import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { CreateSpin } from '@components/CreateSpin'
 import { ScrollContainer } from '../../theme/global'
 import { CustomButton } from '@components/CustomButton'
+import { PropsStack } from 'src/@types/navigation'
 
 interface HomeListProps {
-  navigation: any
+  navigation: PropsStack
 }
 
 export function HomeList({ navigation }: HomeListProps) {

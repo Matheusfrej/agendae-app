@@ -3,25 +3,28 @@ import { ScrollContainer } from '../../theme/global'
 
 import * as S from './styles'
 import { useTheme } from 'styled-components'
+import { useNavigation } from '@react-navigation/native'
 import { PropsStack } from 'src/@types/navigation'
 
-interface LoginProps {
-  navigation: PropsStack
-}
-
-export function Login({ navigation }: LoginProps) {
+export function Register() {
   const theme = useTheme()
 
-  const navigateToRegister = () => {
-    navigation.navigate('Register')
+  const navigation = useNavigation<PropsStack>()
+
+  const navigateToLogin = () => {
+    navigation.navigate('Login')
   }
 
   return (
     <ScrollContainer>
       <S.Container>
-        <S.Title>Login</S.Title>
+        <S.Title>Cadastre-se</S.Title>
         <S.Content>
           <S.Form>
+            <S.InputSection>
+              <S.Label>Nome Completo</S.Label>
+              <S.TextInput cursorColor={theme.COLORS.GRAY_700} />
+            </S.InputSection>
             <S.InputSection>
               <S.Label>Email</S.Label>
               <S.TextInput
@@ -38,15 +41,28 @@ export function Login({ navigation }: LoginProps) {
                 secureTextEntry
               />
             </S.InputSection>
+            <S.InputSection>
+              <S.Label>Confirmar senha</S.Label>
+              <S.TextInput
+                autoCapitalize="none"
+                cursorColor={theme.COLORS.GRAY_700}
+                secureTextEntry
+              />
+            </S.InputSection>
           </S.Form>
-          <S.Register>
-            <S.Text>Não possui uma conta?</S.Text>
-            <S.Touchable onPress={() => navigateToRegister()}>
-              <S.Span>Cadastre-se aqui</S.Span>
+          <S.Login>
+            <S.Text>Já possui uma conta?</S.Text>
+            <S.Touchable onPress={() => navigateToLogin()}>
+              <S.Span>Faça login aqui</S.Span>
             </S.Touchable>
-          </S.Register>
+          </S.Login>
           <S.ButtonContainer>
-            <CustomButton fontSize={16} text="Entrar" variant="default" />
+            <CustomButton
+              fontSize={16}
+              text="Cadastrar"
+              variant="default"
+              onPress={() => navigateToLogin()}
+            />
           </S.ButtonContainer>
         </S.Content>
       </S.Container>

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
-import { Nav } from 'src/@types/navigation'
+import { PropsStack } from 'src/@types/navigation'
 
 interface DaysType {
   day: number
@@ -17,7 +17,7 @@ export function Calendar() {
   const [isCalendarRendered, setIsCalendarRendered] = useState(false)
 
   const theme = useTheme()
-  const navigation = useNavigation<Nav>()
+  const navigation = useNavigation<PropsStack>()
 
   // storing full name of all months in array
   const months = [
@@ -111,12 +111,30 @@ export function Calendar() {
     renderCalendar(yearOffset, monthOffset)
   }
 
-  const goToDate = (day: string) => {
-    navigation.navigate('SpinsOfDay', {
-      day,
-      month: months[currMonth].toLocaleLowerCase(),
-      year: currYear,
-    })
+  const goToDate = (day: string, variant: string) => {
+    if (variant === 'inactive') {
+      console.log(variant)
+
+      if (+day > 15) {
+        navigation.navigate('SpinsOfDay', {
+          day,
+          month: months[currMonth - 1].toLocaleLowerCase(),
+          year: currYear,
+        })
+      } else {
+        navigation.navigate('SpinsOfDay', {
+          day,
+          month: months[currMonth + 1].toLocaleLowerCase(),
+          year: currYear,
+        })
+      }
+    } else {
+      navigation.navigate('SpinsOfDay', {
+        day,
+        month: months[currMonth].toLocaleLowerCase(),
+        year: currYear,
+      })
+    }
   }
 
   return (
@@ -163,7 +181,7 @@ export function Calendar() {
               return (
                 <S.Day
                   key={`${day.day}+${idx}`}
-                  onPress={() => goToDate(`${day.day}`)}
+                  onPress={() => goToDate(`${day.day}`, day.variant)}
                   activeOpacity={0.7}
                   underlayColor={theme.COLORS.GRAY_300}
                 >

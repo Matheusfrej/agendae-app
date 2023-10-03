@@ -2,13 +2,13 @@ import { Entypo } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
 
 import * as S from './styles'
-import { Nav } from 'src/@types/navigation'
 import { useNavigation } from '@react-navigation/native'
+import { PropsStack } from 'src/@types/navigation'
 
 export function CreateSpin() {
   const theme = useTheme()
 
-  const navigation = useNavigation<Nav>()
+  const navigation = useNavigation<PropsStack>()
 
   const goToCreateSpin = () => {
     navigation.navigate('CreateUpdateSpin')

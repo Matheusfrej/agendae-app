@@ -1,8 +1,8 @@
 import * as S from './styles'
-import { Nav } from 'src/@types/navigation'
 import { useNavigation } from '@react-navigation/native'
 import { useTheme } from 'styled-components'
 import { CustomButton } from '@components/CustomButton'
+import { PropsStack } from 'src/@types/navigation'
 
 interface InviteProps {
   name: string
@@ -12,7 +12,7 @@ interface InviteProps {
 export function Invite({ name, type }: InviteProps) {
   const theme = useTheme()
 
-  const navigation = useNavigation<Nav>()
+  const navigation = useNavigation<PropsStack>()
 
   const goBack = () => {
     navigation.navigate('Notifications')

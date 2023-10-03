@@ -4,13 +4,11 @@ import * as S from './styles'
 import { ScrollContainer } from '../../theme/global'
 import { BackButton } from '@components/BackButton'
 import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
+import { SpinsOfDayScreenRouteProp } from 'src/@types/navigation'
+import { useRoute } from '@react-navigation/native'
 
-interface SpinsOfDayNavigationProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  route: any
-}
-
-export function SpinsOfDay({ route }: SpinsOfDayNavigationProps) {
+export function SpinsOfDay() {
+  const route = useRoute<SpinsOfDayScreenRouteProp>()
   const { day, month, year } = route.params
 
   const spins = [
