@@ -16,7 +16,11 @@ export function Invite({ name, type }: InviteProps) {
   const navigation = useNavigation<PropsStack>()
 
   const goBack = () => {
-    navigation.navigate('Notifications')
+    if (type === 'friend') {
+      navigation.navigate('Profile')
+    } else if (type === 'spin') {
+      navigation.navigate('Spin')
+    }
   }
 
   return (

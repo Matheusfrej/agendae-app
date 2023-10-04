@@ -58,6 +58,8 @@ function HomeListStack() {
         component={Login}
         options={{ animation: 'fade_from_bottom' }}
       />
+
+      <Screen name="Profile" component={Profile} />
     </Navigator>
   )
 }
@@ -103,6 +105,8 @@ function HomeCalendarStack() {
         component={Register}
         options={{ animation: 'fade_from_bottom' }}
       />
+
+      <Screen name="Profile" component={Profile} />
     </Navigator>
   )
 }
