@@ -27,6 +27,7 @@ export function Login({ navigation }: LoginProps) {
               <S.TextInput
                 inputMode="email"
                 autoCapitalize="none"
+                selectionColor={theme.COLORS.BLUE}
                 cursorColor={theme.COLORS.GRAY_700}
               />
             </S.InputSection>
@@ -34,6 +35,7 @@ export function Login({ navigation }: LoginProps) {
               <S.Label>Senha</S.Label>
               <S.TextInput
                 autoCapitalize="none"
+                selectionColor={theme.COLORS.BLUE}
                 cursorColor={theme.COLORS.GRAY_700}
                 secureTextEntry
               />

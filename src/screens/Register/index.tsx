@@ -23,13 +23,17 @@ export function Register() {
           <S.Form>
             <S.InputSection>
               <S.Label>Nome Completo</S.Label>
-              <S.TextInput cursorColor={theme.COLORS.GRAY_700} />
+              <S.TextInput
+                selectionColor={theme.COLORS.BLUE}
+                cursorColor={theme.COLORS.GRAY_700}
+              />
             </S.InputSection>
             <S.InputSection>
               <S.Label>Email</S.Label>
               <S.TextInput
                 inputMode="email"
                 autoCapitalize="none"
+                selectionColor={theme.COLORS.BLUE}
                 cursorColor={theme.COLORS.GRAY_700}
               />
             </S.InputSection>
@@ -37,6 +41,7 @@ export function Register() {
               <S.Label>Senha</S.Label>
               <S.TextInput
                 autoCapitalize="none"
+                selectionColor={theme.COLORS.BLUE}
                 cursorColor={theme.COLORS.GRAY_700}
                 secureTextEntry
               />
@@ -45,6 +50,7 @@ export function Register() {
               <S.Label>Confirmar senha</S.Label>
               <S.TextInput
                 autoCapitalize="none"
+                selectionColor={theme.COLORS.BLUE}
                 cursorColor={theme.COLORS.GRAY_700}
                 secureTextEntry
               />
