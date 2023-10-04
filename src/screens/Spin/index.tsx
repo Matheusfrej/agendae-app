@@ -23,10 +23,6 @@ export function Spin({ navigation }: SpinProps) {
       action: () => navigation.navigate('CreateUpdateSpin'),
     },
     {
-      name: 'Compartilhar',
-      action: () => navigation.navigate('CreateUpdateSpin'),
-    },
-    {
       name: 'Excluir',
       action: () => navigation.navigate('HomeList'),
       color: theme.COLORS.RED,

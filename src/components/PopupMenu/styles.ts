@@ -42,4 +42,5 @@ export const ModelView = styled.View`
   border: 1px solid ${(props) => props.theme.COLORS.GRAY_300};
   background: ${(props) => props.theme.COLORS.WHITE};
   border-radius: 8px;
+  min-width: 90px;
 `
