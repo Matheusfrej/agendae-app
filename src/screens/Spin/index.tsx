@@ -20,7 +20,7 @@ export function Spin({ navigation }: SpinProps) {
   const spinActions = [
     {
       name: 'Editar',
-      action: () => navigation.navigate('CreateUpdateSpin'),
+      action: () => navigation.navigate('CreateUpdateSpin', { spinId: '1' }),
     },
     {
       name: 'Excluir',

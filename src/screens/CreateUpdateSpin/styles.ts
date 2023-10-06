@@ -1,3 +1,5 @@
+import { SpinCardContainerVariant } from '@components/SpinCard'
+import { css } from 'styled-components'
 import styled from 'styled-components/native'
 
 export const Container = styled.View`
@@ -8,8 +10,116 @@ export const Container = styled.View`
   width: 100%;
 `
 
+export const SaveButtonContainer = styled.View`
+  align-self: flex-end;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  position: absolute;
+  align-self: flex-end;
+  border-radius: 8px;
+
+  top: 11%;
+  right: 7%;
+`
+
 export const Title = styled.Text`
   font-size: 32px;
-  color: ${({ theme }) => theme.COLORS.PURPLE_500};
-  font-weight: bold;
+  margin-bottom: 10%;
+`
+
+export const Content = styled.View`
+  width: 80%;
+`
+
+export const Form = styled.View`
+  gap: 20px;
+`
+
+export const InputSection = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
+
+export const Label = styled.Text`
+  width: 30%;
+  font-size: 14px;
+`
+
+interface TextInputProps {
+  half?: boolean
+}
+
+export const TextInput = styled.TextInput<TextInputProps>`
+  border-bottom-width: 1px;
+  ${(props) =>
+    !props.half
+      ? css`
+          flex: 1;
+        `
+      : css`
+          width: 40%;
+        `}
+  border-color: ${(props) => props.theme.COLORS.GRAY_300};
+`
+
+export const TextInputHour = styled(TextInput)`
+  width: 20%;
+  align-self: flex-end;
+  margin-left: 10%;
+  text-align: center;
+`
+
+export const Login = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 20px 0;
+`
+
+export const ButtonContainer = styled.View`
+  margin: auto;
+`
+
+export const Text = styled.Text`
+  color: ${(props) => props.theme.COLORS.GRAY_700};
+`
+
+export const Span = styled.Text`
+  color: ${(props) => props.theme.COLORS.PURPLE_500};
+`
+
+interface ColorBoxProps {
+  variant: SpinCardContainerVariant
+}
+
+export const ColorBox = styled.View<ColorBoxProps>`
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background-color: ${({ theme, variant }) => {
+    switch (variant) {
+      case 'purple':
+        return theme.COLORS.CARD_PURPLE
+      case 'green':
+        return theme.COLORS.CARD_GREEN
+      case 'red':
+        return theme.COLORS.CARD_RED
+      case 'yellow':
+        return theme.COLORS.CARD_YELLOW
+      case 'cyan':
+        return theme.COLORS.CARD_CYAN
+      case 'blue':
+        return theme.COLORS.CARD_BLUE
+      default:
+        return theme.COLORS.CARD_PURPLE
+    }
+  }};
+`
+
+export const ColorAndLabel = styled.View`
+  width: 30%;
+  flex-direction: row;
+  gap: 8px;
 `

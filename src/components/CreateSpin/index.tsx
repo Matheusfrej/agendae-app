@@ -11,7 +11,7 @@ export function CreateSpin() {
   const navigation = useNavigation<PropsStack>()
 
   const goToCreateSpin = () => {
-    navigation.navigate('CreateUpdateSpin')
+    navigation.navigate('CreateUpdateSpin', { spinId: null })
   }
 
   return (

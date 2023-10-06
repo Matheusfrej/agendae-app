@@ -3,7 +3,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 type StackParamList = {
   HomeList: undefined
-  CreateUpdateSpin: undefined
+  CreateUpdateSpin: {
+    spinId: string | null
+  }
   Notifications: undefined
   Spin: undefined
   Register: undefined
@@ -20,3 +22,8 @@ type StackParamList = {
 export type PropsStack = NativeStackNavigationProp<StackParamList>
 
 export type SpinsOfDayScreenRouteProp = RouteProp<StackParamList, 'SpinsOfDay'>
+
+export type CreateUpdateSpinScreenRouteProp = RouteProp<
+  StackParamList,
+  'CreateUpdateSpin'
+>
