@@ -12,6 +12,9 @@ import { SelectList } from 'react-native-dropdown-select-list'
 import { useState } from 'react'
 import { View } from 'react-native'
 import { SpinCardContainerVariant } from '@components/SpinCard'
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from '@react-native-community/datetimepicker'
 
 interface CreateUpdateSpinProps {
   navigation: PropsStack
@@ -24,6 +27,52 @@ interface SelectColorType {
 
 export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
   const [selected, setSelected] = useState<SpinCardContainerVariant>('purple')
+  const [startDate, setStartDate] = useState(new Date())
+  const [startTime, setStartTime] = useState(new Date())
+  const [showStartDate, setShowStartDate] = useState(false)
+  const [showStartTime, setShowStartTime] = useState(false)
+  const [endDate, setEndDate] = useState(new Date())
+  const [endTime, setEndTime] = useState(new Date())
+  const [showEndDate, setShowEndDate] = useState(false)
+  const [showEndTime, setShowEndTime] = useState(false)
+
+  const onChangeStartDate = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date,
+  ) => {
+    const currentDate = selectedDate
+    setShowStartDate(false)
+    if (currentDate) {
+      setStartDate(currentDate)
+    }
+  }
+
+  const onChangeStartTime = (
+    event: DateTimePickerEvent,
+    selectedTime?: Date,
+  ) => {
+    const currentTime = selectedTime
+    setShowStartTime(false)
+    if (currentTime) {
+      setStartTime(currentTime)
+    }
+  }
+
+  const onChangeEndDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    const currentDate = selectedDate
+    setShowEndDate(false)
+    if (currentDate) {
+      setEndDate(currentDate)
+    }
+  }
+
+  const onChangeEndTime = (event: DateTimePickerEvent, selectedTime?: Date) => {
+    const currentTime = selectedTime
+    setShowEndTime(false)
+    if (currentTime) {
+      setEndTime(currentTime)
+    }
+  }
 
   const data: SelectColorType[] = [
     { key: 'purple', value: 'Roxo' },
@@ -80,29 +129,94 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
               </S.InputSection>
               <S.InputSection>
                 <S.Label>Data de início</S.Label>
-                <S.TextInput
-                  half={true}
-                  selectionColor={theme.COLORS.BLUE}
-                  cursorColor={theme.COLORS.GRAY_700}
-                />
-                <S.TextInputHour
-                  placeholder="Hora"
-                  selectionColor={theme.COLORS.BLUE}
-                  cursorColor={theme.COLORS.GRAY_700}
-                />
+                <S.Touchable
+                  variant="big"
+                  onPress={() => setShowStartDate(true)}
+                >
+                  <S.TextInput
+                    value={startDate.toLocaleDateString()}
+                    style={{ textAlign: 'center', color: 'black' }}
+                    cursorColor={theme.COLORS.BLACK}
+                    editable={false}
+                  />
+                </S.Touchable>
+                {showStartDate && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={startDate}
+                    mode="date"
+                    is24Hour={true}
+                    onChange={onChangeStartDate}
+                  />
+                )}
+                {showStartTime && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={startTime}
+                    mode="time"
+                    is24Hour={true}
+                    onChange={onChangeStartTime}
+                  />
+                )}
+                <S.Touchable
+                  variant="small"
+                  onPress={() => setShowStartTime(true)}
+                >
+                  <S.TextInputHour
+                    placeholder="Hora"
+                    value={startTime.toLocaleTimeString('pt-BR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                    selectionColor={theme.COLORS.BLUE}
+                    cursorColor={theme.COLORS.GRAY_700}
+                    editable={false}
+                  />
+                </S.Touchable>
               </S.InputSection>
               <S.InputSection>
                 <S.Label>Data de fim</S.Label>
-                <S.TextInput
-                  half={true}
-                  selectionColor={theme.COLORS.BLUE}
-                  cursorColor={theme.COLORS.GRAY_700}
-                />
-                <S.TextInputHour
-                  placeholder="Hora"
-                  selectionColor={theme.COLORS.BLUE}
-                  cursorColor={theme.COLORS.GRAY_700}
-                />
+                <S.Touchable variant="big" onPress={() => setShowEndDate(true)}>
+                  <S.TextInput
+                    value={endDate.toLocaleDateString()}
+                    style={{ textAlign: 'center', color: 'black' }}
+                    cursorColor={theme.COLORS.BLACK}
+                    editable={false}
+                  />
+                </S.Touchable>
+                {showEndDate && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={endDate}
+                    mode="date"
+                    is24Hour={true}
+                    onChange={onChangeEndDate}
+                  />
+                )}
+                {showEndTime && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={endTime}
+                    mode="time"
+                    is24Hour={true}
+                    onChange={onChangeEndTime}
+                  />
+                )}
+                <S.Touchable
+                  variant="small"
+                  onPress={() => setShowEndTime(true)}
+                >
+                  <S.TextInputHour
+                    placeholder="Hora"
+                    value={endTime.toLocaleTimeString('pt-BR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                    selectionColor={theme.COLORS.BLUE}
+                    cursorColor={theme.COLORS.GRAY_700}
+                    editable={false}
+                  />
+                </S.Touchable>
               </S.InputSection>
               <S.InputSection>
                 <S.Label>Local</S.Label>

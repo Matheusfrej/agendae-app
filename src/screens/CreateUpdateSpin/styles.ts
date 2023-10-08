@@ -33,7 +33,7 @@ export const Content = styled.View`
 `
 
 export const Form = styled.View`
-  gap: 20px;
+  gap: 30px;
 `
 
 export const InputSection = styled.View`
@@ -64,10 +64,10 @@ export const TextInput = styled.TextInput<TextInputProps>`
 `
 
 export const TextInputHour = styled(TextInput)`
-  width: 20%;
+  width: 100%;
   align-self: flex-end;
-  margin-left: 10%;
   text-align: center;
+  color: black;
 `
 
 export const Login = styled.View`
@@ -122,4 +122,13 @@ export const ColorAndLabel = styled.View`
   width: 30%;
   flex-direction: row;
   gap: 8px;
+`
+
+interface TouchableProps {
+  variant: 'small' | 'big'
+}
+
+export const Touchable = styled.TouchableOpacity<TouchableProps>`
+  width: ${(props) => (props.variant === 'big' ? '40%' : '20%')};
+  margin-left: ${(props) => (props.variant === 'small' ? '10%' : '0')};
 `
