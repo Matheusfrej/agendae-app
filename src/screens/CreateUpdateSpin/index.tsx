@@ -8,10 +8,7 @@ import {
 import { useRoute } from '@react-navigation/native'
 import { BackButton } from '@components/BackButton'
 import { CustomButton } from '@components/CustomButton'
-import {
-  SelectList,
-  MultipleSelectList,
-} from 'react-native-dropdown-select-list'
+import { SelectList } from 'react-native-dropdown-select-list'
 import { useState } from 'react'
 import { Switch } from 'react-native'
 import { SpinCardContainerVariant } from '@components/SpinCard'
@@ -19,6 +16,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
 import { Label } from '@components/Label'
+import MultiSelect from 'react-native-multiple-select'
 
 interface CreateUpdateSpinProps {
   navigation: PropsStack
@@ -32,7 +30,11 @@ interface SelectColorType {
 export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
   const [colorSelected, setColorSelected] =
     useState<SpinCardContainerVariant>('purple')
-  const [participantsSelected, setParticipantsSelected] = useState<string[]>([])
+  const [participantsSelected, setParticipantsSelected] = useState([
+    '1',
+    '2',
+    '3',
+  ])
   const [startDate, setStartDate] = useState(new Date())
   const [startTime, setStartTime] = useState(new Date())
   const [showStartDate, setShowStartDate] = useState(false)
@@ -117,14 +119,14 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     { key: 'blue', value: 'Azul' },
   ]
 
-  const data: { key: string; value: string }[] = [
-    { key: '1', value: 'Matheus' },
-    { key: '2', value: 'Bruna' },
-    { key: '3', value: 'Zé' },
-    { key: '4', value: 'Carmen' },
-    { key: '5', value: 'Nina' },
-    { key: '6', value: 'Floffytinha' },
-    { key: '7', value: 'Doiss' },
+  const participantsData: { id: string; name: string }[] = [
+    { id: '1', name: 'Matheus' },
+    { id: '2', name: 'Bruna' },
+    { id: '3', name: 'Zé' },
+    { id: '4', name: 'Carmen' },
+    { id: '5', name: 'Nina' },
+    { id: '6', name: 'Floffytinha' },
+    { id: '7', name: 'Doiss' },
   ]
 
   const route = useRoute<CreateUpdateSpinScreenRouteProp>()
@@ -372,6 +374,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                     save="key"
                     defaultOption={{ key: 'purple', value: 'Roxo' }}
                     searchPlaceholder="Escolher cor"
+                    notFoundText="Cor não encontrada"
                     dropdownShown={false}
                     boxStyles={{}}
                   />
@@ -381,14 +384,32 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                 <Label text="Participantes" isInline />
 
                 <S.MultipleSelectListContainer>
-                  <MultipleSelectList
-                    setSelected={(val: string[]) =>
-                      handleParticipantsSelected(val)
-                    }
-                    data={data}
-                    save="value"
-                    searchPlaceholder="Escolher participantes"
-                    label="Participantes"
+                  <MultiSelect
+                    items={participantsData}
+                    uniqueKey="id"
+                    onSelectedItemsChange={handleParticipantsSelected}
+                    selectedItems={participantsSelected}
+                    selectText="Escolher participantes"
+                    selectedText="escolhidos"
+                    searchInputPlaceholderText="Buscar participantes"
+                    tagRemoveIconColor="#CCC"
+                    tagBorderColor="#CCC"
+                    tagTextColor={theme.COLORS.BLACK}
+                    styleListContainer={{ padding: 10 }}
+                    styleInputGroup={{
+                      padding: 10,
+                      borderColor: theme.COLORS.GRAY_700,
+                      borderWidth: 1,
+                      borderRadius: 8,
+                    }}
+                    noItemsText="Usuário não encontrado"
+                    selectedItemTextColor={theme.COLORS.PURPLE_500}
+                    selectedItemIconColor={theme.COLORS.PURPLE_500}
+                    itemTextColor="#000"
+                    displayKey="name"
+                    searchInputStyle={{ color: '#CCC' }}
+                    submitButtonColor="#CCC"
+                    submitButtonText="Fechar"
                   />
                 </S.MultipleSelectListContainer>
               </S.InputSection>
