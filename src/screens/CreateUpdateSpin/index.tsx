@@ -8,7 +8,10 @@ import {
 import { useRoute } from '@react-navigation/native'
 import { BackButton } from '@components/BackButton'
 import { CustomButton } from '@components/CustomButton'
-import { SelectList } from 'react-native-dropdown-select-list'
+import {
+  SelectList,
+  MultipleSelectList,
+} from 'react-native-dropdown-select-list'
 import { useState } from 'react'
 import { Switch } from 'react-native'
 import { SpinCardContainerVariant } from '@components/SpinCard'
@@ -27,7 +30,9 @@ interface SelectColorType {
 }
 
 export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
-  const [selected, setSelected] = useState<SpinCardContainerVariant>('purple')
+  const [colorSelected, setColorSelected] =
+    useState<SpinCardContainerVariant>('purple')
+  const [participantsSelected, setParticipantsSelected] = useState<string[]>([])
   const [startDate, setStartDate] = useState(new Date())
   const [startTime, setStartTime] = useState(new Date())
   const [showStartDate, setShowStartDate] = useState(false)
@@ -103,7 +108,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     }
   }
 
-  const data: SelectColorType[] = [
+  const colorsData: SelectColorType[] = [
     { key: 'purple', value: 'Roxo' },
     { key: 'green', value: 'Verde' },
     { key: 'red', value: 'Vermelho' },
@@ -112,11 +117,25 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     { key: 'blue', value: 'Azul' },
   ]
 
+  const data: { key: string; value: string }[] = [
+    { key: '1', value: 'Matheus' },
+    { key: '2', value: 'Bruna' },
+    { key: '3', value: 'Zé' },
+    { key: '4', value: 'Carmen' },
+    { key: '5', value: 'Nina' },
+    { key: '6', value: 'Floffytinha' },
+    { key: '7', value: 'Doiss' },
+  ]
+
   const route = useRoute<CreateUpdateSpinScreenRouteProp>()
   const theme = useTheme()
 
   const handleColorSelected = (val: SpinCardContainerVariant) => {
-    setSelected(val)
+    setColorSelected(val)
+  }
+
+  const handleParticipantsSelected = (val: string[]) => {
+    setParticipantsSelected(val)
   }
 
   const goToSpin = () => {
@@ -327,6 +346,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                   cursorColor={theme.COLORS.GRAY_700}
                 />
               </S.InputSection>
+
               <S.InputSection>
                 <Label text="Descrição" isInline />
 
@@ -336,9 +356,10 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                   multiline
                 />
               </S.InputSection>
+
               <S.InputSection>
                 <S.ColorAndLabel>
-                  <S.ColorBox variant={selected}></S.ColorBox>
+                  <S.ColorBox variant={colorSelected}></S.ColorBox>
                   <Label text="Cor" isInline />
                 </S.ColorAndLabel>
 
@@ -347,7 +368,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                     setSelected={(val: SpinCardContainerVariant) =>
                       handleColorSelected(val)
                     }
-                    data={data}
+                    data={colorsData}
                     save="key"
                     defaultOption={{ key: 'purple', value: 'Roxo' }}
                     searchPlaceholder="Escolher cor"
@@ -355,6 +376,21 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                     boxStyles={{}}
                   />
                 </S.SelectListContainer>
+              </S.InputSection>
+              <S.InputSection isFlexDirecitionColumn>
+                <Label text="Participantes" isInline />
+
+                <S.MultipleSelectListContainer>
+                  <MultipleSelectList
+                    setSelected={(val: string[]) =>
+                      handleParticipantsSelected(val)
+                    }
+                    data={data}
+                    save="value"
+                    searchPlaceholder="Escolher participantes"
+                    label="Participantes"
+                  />
+                </S.MultipleSelectListContainer>
               </S.InputSection>
             </S.Form>
           </S.Content>

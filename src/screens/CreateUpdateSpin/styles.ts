@@ -38,9 +38,21 @@ export const Form = styled.View`
   gap: 30px;
 `
 
-export const InputSection = styled.View`
-  flex-direction: row;
-  align-items: center;
+interface InputSectionProps {
+  isFlexDirecitionColumn?: boolean
+}
+
+export const InputSection = styled.View<InputSectionProps>`
+  flex-direction: ${(props) =>
+    props.isFlexDirecitionColumn ? 'column' : 'row'};
+  ${(props) =>
+    !props.isFlexDirecitionColumn
+      ? css`
+          align-items: center;
+        `
+      : css`
+          gap: 10px;
+        `}
 `
 
 interface TextInputProps {
@@ -147,5 +159,9 @@ export const SwitchContainer = styled.View`
 `
 
 export const SelectListContainer = styled.View`
-  flex: 1;
+  width: 70%;
+`
+
+export const MultipleSelectListContainer = styled.View`
+  width: 100%;
 `
