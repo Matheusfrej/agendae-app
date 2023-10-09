@@ -15,6 +15,7 @@ import { SpinCardContainerVariant } from '@components/SpinCard'
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
+import { Label } from '@components/Label'
 
 interface CreateUpdateSpinProps {
   navigation: PropsStack
@@ -149,14 +150,15 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
           <S.Content>
             <S.Form>
               <S.InputSection>
-                <S.Label>Título</S.Label>
+                <Label text="Título" isInline isRequired />
                 <S.TextInput
                   selectionColor={theme.COLORS.BLUE}
                   cursorColor={theme.COLORS.GRAY_700}
                 />
               </S.InputSection>
               <S.InputSection>
-                <S.Label>Data de início</S.Label>
+                <Label text="Data de início" isInline />
+
                 <S.Touchable
                   variant="big"
                   onPress={() => handleShowStartDate()}
@@ -238,7 +240,8 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                 </S.SwitchContainer>
               </S.SwitchInputSection>
               <S.InputSection>
-                <S.Label>Data de fim</S.Label>
+                <Label text="Data de fim" isInline />
+
                 <S.Touchable variant="big" onPress={() => handleShowEndDate()}>
                   <S.TextInputDate
                     value={hasEndDate ? endDate.toLocaleDateString() : ''}
@@ -317,14 +320,16 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                 </S.SwitchContainer>
               </S.SwitchInputSection>
               <S.InputSection>
-                <S.Label>Local</S.Label>
+                <Label text="Local" isInline />
+
                 <S.TextInput
                   selectionColor={theme.COLORS.BLUE}
                   cursorColor={theme.COLORS.GRAY_700}
                 />
               </S.InputSection>
               <S.InputSection>
-                <S.Label>Descrição</S.Label>
+                <Label text="Descrição" isInline />
+
                 <S.TextInput
                   selectionColor={theme.COLORS.BLUE}
                   cursorColor={theme.COLORS.GRAY_700}
@@ -334,7 +339,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
               <S.InputSection>
                 <S.ColorAndLabel>
                   <S.ColorBox variant={selected}></S.ColorBox>
-                  <S.Label>Cor</S.Label>
+                  <Label text="Cor" isInline />
                 </S.ColorAndLabel>
 
                 <S.SelectListContainer>

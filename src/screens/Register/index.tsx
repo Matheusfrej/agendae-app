@@ -5,6 +5,7 @@ import * as S from './styles'
 import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
 import { PropsStack } from 'src/@types/navigation'
+import { Label } from '@components/Label'
 
 export function Register() {
   const theme = useTheme()
@@ -22,14 +23,22 @@ export function Register() {
         <S.Content>
           <S.Form>
             <S.InputSection>
-              <S.Label>Nome Completo</S.Label>
+              <Label text="Nome completo" isRequired />
               <S.TextInput
                 selectionColor={theme.COLORS.BLUE}
                 cursorColor={theme.COLORS.GRAY_700}
               />
             </S.InputSection>
             <S.InputSection>
-              <S.Label>Email</S.Label>
+              <Label text="Apelido" />
+              <S.TextInput
+                selectionColor={theme.COLORS.BLUE}
+                cursorColor={theme.COLORS.GRAY_700}
+              />
+            </S.InputSection>
+            <S.InputSection>
+              <Label text="Email" isRequired />
+
               <S.TextInput
                 inputMode="email"
                 autoCapitalize="none"
@@ -38,7 +47,7 @@ export function Register() {
               />
             </S.InputSection>
             <S.InputSection>
-              <S.Label>Senha</S.Label>
+              <Label text="Senha" isRequired />
               <S.TextInput
                 autoCapitalize="none"
                 selectionColor={theme.COLORS.BLUE}
@@ -47,7 +56,7 @@ export function Register() {
               />
             </S.InputSection>
             <S.InputSection>
-              <S.Label>Confirmar senha</S.Label>
+              <Label text="Confirmar senha" isRequired />
               <S.TextInput
                 autoCapitalize="none"
                 selectionColor={theme.COLORS.BLUE}

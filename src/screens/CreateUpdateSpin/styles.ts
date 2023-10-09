@@ -43,11 +43,6 @@ export const InputSection = styled.View`
   align-items: center;
 `
 
-export const Label = styled.Text`
-  width: 30%;
-  font-size: 14px;
-`
-
 interface TextInputProps {
   half?: boolean
 }

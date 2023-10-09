@@ -4,6 +4,7 @@ import { ScrollContainer } from '../../components/ScrollContainer'
 import * as S from './styles'
 import { useTheme } from 'styled-components'
 import { PropsStack } from 'src/@types/navigation'
+import { Label } from '@components/Label'
 
 interface LoginProps {
   navigation: PropsStack
@@ -23,7 +24,7 @@ export function Login({ navigation }: LoginProps) {
         <S.Content>
           <S.Form>
             <S.InputSection>
-              <S.Label>Email</S.Label>
+              <Label text="Email" />
               <S.TextInput
                 inputMode="email"
                 autoCapitalize="none"
@@ -32,7 +33,7 @@ export function Login({ navigation }: LoginProps) {
               />
             </S.InputSection>
             <S.InputSection>
-              <S.Label>Senha</S.Label>
+              <Label text="Senha" />
               <S.TextInput
                 autoCapitalize="none"
                 selectionColor={theme.COLORS.BLUE}
