@@ -10,7 +10,7 @@ import { BackButton } from '@components/BackButton'
 import { CustomButton } from '@components/CustomButton'
 import { SelectList } from 'react-native-dropdown-select-list'
 import { useState } from 'react'
-import { View } from 'react-native'
+import { Switch } from 'react-native'
 import { SpinCardContainerVariant } from '@components/SpinCard'
 import DateTimePicker, {
   DateTimePickerEvent,
@@ -35,6 +35,10 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
   const [endTime, setEndTime] = useState(new Date())
   const [showEndDate, setShowEndDate] = useState(false)
   const [showEndTime, setShowEndTime] = useState(false)
+  const [hasStartDate, setHasStartDate] = useState(true)
+  const [hasEndDate, setHasEndDate] = useState(true)
+  const [hasStartTime, setHasStartTime] = useState(true)
+  const [hasEndTime, setHasEndTime] = useState(true)
 
   const onChangeStartDate = (
     event: DateTimePickerEvent,
@@ -55,6 +59,30 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     setShowStartTime(false)
     if (currentTime) {
       setStartTime(currentTime)
+    }
+  }
+
+  const handleShowStartDate = () => {
+    if (hasStartDate) {
+      setShowStartDate(true)
+    }
+  }
+
+  const handleShowStartTime = () => {
+    if (hasStartTime) {
+      setShowStartTime(true)
+    }
+  }
+
+  const handleShowEndDate = () => {
+    if (hasEndDate) {
+      setShowEndDate(true)
+    }
+  }
+
+  const handleShowEndTime = () => {
+    if (hasEndTime) {
+      setShowEndTime(true)
     }
   }
 
@@ -131,11 +159,10 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                 <S.Label>Data de início</S.Label>
                 <S.Touchable
                   variant="big"
-                  onPress={() => setShowStartDate(true)}
+                  onPress={() => handleShowStartDate()}
                 >
-                  <S.TextInput
-                    value={startDate.toLocaleDateString()}
-                    style={{ textAlign: 'center', color: 'black' }}
+                  <S.TextInputDate
+                    value={hasStartDate ? startDate.toLocaleDateString() : ''}
                     cursorColor={theme.COLORS.BLACK}
                     editable={false}
                   />
@@ -160,26 +187,61 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                 )}
                 <S.Touchable
                   variant="small"
-                  onPress={() => setShowStartTime(true)}
+                  onPress={() => handleShowStartTime()}
                 >
                   <S.TextInputHour
                     placeholder="Hora"
-                    value={startTime.toLocaleTimeString('pt-BR', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                    value={
+                      hasStartTime
+                        ? startTime.toLocaleTimeString('pt-BR', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })
+                        : ''
+                    }
                     selectionColor={theme.COLORS.BLUE}
                     cursorColor={theme.COLORS.GRAY_700}
                     editable={false}
                   />
                 </S.Touchable>
               </S.InputSection>
+              <S.SwitchInputSection>
+                <S.SwitchContainer>
+                  <Switch
+                    value={hasStartDate}
+                    trackColor={{
+                      true: theme.COLORS.CARD_PURPLE,
+                    }}
+                    thumbColor={
+                      hasStartDate
+                        ? theme.COLORS.PURPLE_300
+                        : theme.COLORS.GRAY_300
+                    }
+                    onValueChange={() => setHasStartDate((state) => !state)}
+                  />
+                  <S.Text>Data de Início</S.Text>
+                </S.SwitchContainer>
+                <S.SwitchContainer>
+                  <Switch
+                    value={hasStartTime}
+                    trackColor={{
+                      true: theme.COLORS.CARD_PURPLE,
+                    }}
+                    thumbColor={
+                      hasStartTime
+                        ? theme.COLORS.PURPLE_300
+                        : theme.COLORS.GRAY_300
+                    }
+                    onValueChange={() => setHasStartTime((state) => !state)}
+                  />
+                  <S.Text>Hora</S.Text>
+                </S.SwitchContainer>
+              </S.SwitchInputSection>
               <S.InputSection>
                 <S.Label>Data de fim</S.Label>
-                <S.Touchable variant="big" onPress={() => setShowEndDate(true)}>
-                  <S.TextInput
-                    value={endDate.toLocaleDateString()}
-                    style={{ textAlign: 'center', color: 'black' }}
+                <S.Touchable variant="big" onPress={() => handleShowEndDate()}>
+                  <S.TextInputDate
+                    value={hasEndDate ? endDate.toLocaleDateString() : ''}
                     cursorColor={theme.COLORS.BLACK}
                     editable={false}
                   />
@@ -204,20 +266,56 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                 )}
                 <S.Touchable
                   variant="small"
-                  onPress={() => setShowEndTime(true)}
+                  onPress={() => handleShowEndTime()}
                 >
                   <S.TextInputHour
                     placeholder="Hora"
-                    value={endTime.toLocaleTimeString('pt-BR', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                    value={
+                      hasEndTime
+                        ? endTime.toLocaleTimeString('pt-BR', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })
+                        : ''
+                    }
                     selectionColor={theme.COLORS.BLUE}
                     cursorColor={theme.COLORS.GRAY_700}
                     editable={false}
                   />
                 </S.Touchable>
               </S.InputSection>
+              <S.SwitchInputSection>
+                <S.SwitchContainer>
+                  <Switch
+                    value={hasEndDate}
+                    trackColor={{
+                      true: theme.COLORS.CARD_PURPLE,
+                    }}
+                    thumbColor={
+                      hasEndDate
+                        ? theme.COLORS.PURPLE_300
+                        : theme.COLORS.GRAY_300
+                    }
+                    onValueChange={() => setHasEndDate((state) => !state)}
+                  />
+                  <S.Text>Data de fim</S.Text>
+                </S.SwitchContainer>
+                <S.SwitchContainer>
+                  <Switch
+                    value={hasEndTime}
+                    trackColor={{
+                      true: theme.COLORS.CARD_PURPLE,
+                    }}
+                    thumbColor={
+                      hasEndTime
+                        ? theme.COLORS.PURPLE_300
+                        : theme.COLORS.GRAY_300
+                    }
+                    onValueChange={() => setHasEndTime((state) => !state)}
+                  />
+                  <S.Text>Hora</S.Text>
+                </S.SwitchContainer>
+              </S.SwitchInputSection>
               <S.InputSection>
                 <S.Label>Local</S.Label>
                 <S.TextInput
@@ -239,7 +337,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                   <S.Label>Cor</S.Label>
                 </S.ColorAndLabel>
 
-                <View style={{ flex: 1 }}>
+                <S.SelectListContainer>
                   <SelectList
                     setSelected={(val: SpinCardContainerVariant) =>
                       handleColorSelected(val)
@@ -251,7 +349,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                     dropdownShown={false}
                     boxStyles={{}}
                   />
-                </View>
+                </S.SelectListContainer>
               </S.InputSection>
             </S.Form>
           </S.Content>

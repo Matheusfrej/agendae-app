@@ -8,6 +8,8 @@ export const Container = styled.View`
   align-items: center;
   justify-content: center;
   width: 100%;
+  margin-top: 30%;
+  margin-bottom: 20%;
 `
 
 export const SaveButtonContainer = styled.View`
@@ -61,6 +63,11 @@ export const TextInput = styled.TextInput<TextInputProps>`
           width: 40%;
         `}
   border-color: ${(props) => props.theme.COLORS.GRAY_300};
+`
+
+export const TextInputDate = styled(TextInput)`
+  text-align: center;
+  color: ${(props) => props.theme.COLORS.BLACK};
 `
 
 export const TextInputHour = styled(TextInput)`
@@ -131,4 +138,19 @@ interface TouchableProps {
 export const Touchable = styled.TouchableOpacity<TouchableProps>`
   width: ${(props) => (props.variant === 'big' ? '40%' : '20%')};
   margin-left: ${(props) => (props.variant === 'small' ? '10%' : '0')};
+`
+
+export const SwitchInputSection = styled(InputSection)`
+  justify-content: flex-end;
+  margin: -20px 0;
+  gap: 10px;
+`
+
+export const SwitchContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
+
+export const SelectListContainer = styled.View`
+  flex: 1;
 `
