@@ -6,9 +6,9 @@ export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
-  margin-top: 30%;
+  margin-top: 40%;
   margin-bottom: 20%;
 `
 
