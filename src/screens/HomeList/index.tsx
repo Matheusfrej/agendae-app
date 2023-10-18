@@ -6,7 +6,6 @@ import { NotificationsComponent } from '@components/NotificationsComponent'
 import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { CreateSpin } from '@components/CreateSpin'
 import { ScrollContainer } from '../../components/ScrollContainer'
-import { CustomButton } from '@components/CustomButton'
 import { PropsStack } from 'src/@types/navigation'
 
 interface HomeListProps {
@@ -177,12 +176,6 @@ export function HomeList({ navigation }: HomeListProps) {
                 })}
               </S.SpinsContainer>
             )}
-            <S.Title>Provisório</S.Title>
-            <CustomButton
-              variant="default"
-              text="Fazer login"
-              onPress={() => navigation.navigate('Login')}
-            />
           </S.Content>
         </S.Container>
       </ScrollContainer>

@@ -10,7 +10,7 @@ export const PopupMenuContainer = styled.TouchableHighlight`
   border-radius: 1000px;
   padding: 10px;
 
-  top: 10%;
+  top: 90px;
   right: 7%;
 `
 

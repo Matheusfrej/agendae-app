@@ -8,7 +8,7 @@ export const Container = styled.View`
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  margin-top: 40%;
+  margin-top: 200px;
   margin-bottom: 20%;
 `
 
@@ -21,7 +21,7 @@ export const SaveButtonContainer = styled.View`
   align-self: flex-end;
   border-radius: 8px;
 
-  top: 11%;
+  top: 94px;
   right: 7%;
 `
 

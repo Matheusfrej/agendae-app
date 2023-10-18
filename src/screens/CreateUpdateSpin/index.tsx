@@ -149,15 +149,15 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
   return (
     <>
       <BackButton />
-      <S.SaveButtonContainer>
-        <CustomButton
-          variant="accept"
-          text="Salvar"
-          fontSize={16}
-          onPress={() => goToSpin()}
-        />
-      </S.SaveButtonContainer>
       <ScrollContainer>
+        <S.SaveButtonContainer>
+          <CustomButton
+            variant="accept"
+            text="Salvar"
+            fontSize={16}
+            onPress={() => goToSpin()}
+          />
+        </S.SaveButtonContainer>
         <S.Container>
           {spinId ? (
             <S.Title>

@@ -4,9 +4,10 @@ export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
   align-items: center;
-  justify-content: center;
   width: 80%;
   margin: auto;
+  margin-top: 200px;
+  margin-bottom: 20%;
 `
 
 export const HeaderTitle = styled.Text`
@@ -15,7 +16,21 @@ export const HeaderTitle = styled.Text`
   margin-bottom: 20px;
 `
 
+export const Section = styled.TouchableOpacity`
+  width: 90%;
+  border-radius: 8px;
+  flex-direction: row;
+  height: fit-content;
+  align-items: baseline;
+  gap: 10px;
+  align-items: center;
+`
+
 export const Content = styled.View`
+  gap: 12px;
+`
+
+export const ParticipantsContainer = styled.View`
   gap: 12px;
 `
 
