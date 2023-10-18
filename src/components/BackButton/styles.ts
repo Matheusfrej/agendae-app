@@ -10,6 +10,6 @@ export const BackButtonContainer = styled.TouchableHighlight`
   position: absolute;
   align-self: flex-end;
 
-  top: 10%;
+  top: 90px;
   left: 7%;
 `

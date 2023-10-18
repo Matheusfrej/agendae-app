@@ -63,8 +63,8 @@ export function SpinsOfDay() {
 
   return (
     <>
-      <BackButton />
       <ScrollContainer>
+        <BackButton />
         <S.Container>
           <S.Header>
             <S.Text>

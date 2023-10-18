@@ -7,8 +7,8 @@ import { Invite } from '@components/Invite'
 export function Notifications() {
   return (
     <>
-      <BackButton />
       <ScrollContainer>
+        <BackButton />
         <S.Container>
           <S.Title>Notificações</S.Title>
           <S.InvitesContainer>

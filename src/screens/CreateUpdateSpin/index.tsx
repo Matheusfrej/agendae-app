@@ -148,8 +148,8 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
 
   return (
     <>
-      <BackButton />
       <ScrollContainer>
+        <BackButton />
         <S.SaveButtonContainer>
           <CustomButton
             variant="accept"

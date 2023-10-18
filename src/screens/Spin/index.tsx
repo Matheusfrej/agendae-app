@@ -36,8 +36,8 @@ export function Spin({ navigation }: SpinProps) {
 
   return (
     <>
-      <BackButton />
       <ScrollContainer>
+        <BackButton />
         <PopupMenu actions={spinActions} />
         <S.Container>
           <S.HeaderTitle>rolê</S.HeaderTitle>
