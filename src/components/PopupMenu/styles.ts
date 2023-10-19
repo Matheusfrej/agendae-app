@@ -35,7 +35,7 @@ export const ModelView = styled.View`
   justify-self: center;
   margin: 0;
   position: absolute;
-  top: 15%;
+  top: 130px;
   z-index: 1000;
   /* padding: 10px; */
   right: 10%;

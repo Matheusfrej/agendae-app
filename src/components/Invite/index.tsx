@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components'
 import { CustomButton } from '@components/CustomButton'
 import { PropsStack } from 'src/@types/navigation'
 import { Line } from '@components/Line'
+import { ProfileImage } from '@components/ProfileImage'
 
 interface InviteProps {
   name: string
@@ -32,7 +33,7 @@ export function Invite({ name, type }: InviteProps) {
       <>
         <S.Container>
           <S.Content>
-            <S.ProfileImage></S.ProfileImage>
+            <ProfileImage size={60} />
             <S.Section>
               <S.Texts>
                 <S.Name>{name}</S.Name>

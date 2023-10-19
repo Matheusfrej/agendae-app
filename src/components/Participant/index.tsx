@@ -3,6 +3,7 @@ import * as S from './styles'
 import { PropsStack } from 'src/@types/navigation'
 import { AntDesign, Feather } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
+import { ProfileImage } from '@components/ProfileImage'
 
 interface ParticipantProps {
   id: string
@@ -17,7 +18,7 @@ export function Participant({ name, invite_status }: ParticipantProps) {
   return (
     <S.ParticipantContainer onPress={() => navigation.navigate('Profile')}>
       <S.Div>
-        <S.ProfileImage></S.ProfileImage>
+        <ProfileImage size={50} />
         <S.Name>{name}</S.Name>
       </S.Div>
       {invite_status === 'accepted' && (
