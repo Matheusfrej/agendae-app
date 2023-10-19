@@ -146,7 +146,7 @@ function ProfileStack() {
       <Screen
         name="Friends"
         component={Friends}
-        options={{ animation: 'fade_from_bottom' }}
+        options={{ animation: 'none' }}
       />
 
       <Screen
