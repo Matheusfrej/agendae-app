@@ -17,6 +17,11 @@ type StackParamList = {
     year: number
   }
   Profile: undefined
+  AddFriend: undefined
+  Report: undefined
+  Blocked: undefined
+  EditProfile: undefined
+  Friends: undefined
 }
 
 export type PropsStack = NativeStackNavigationProp<StackParamList>

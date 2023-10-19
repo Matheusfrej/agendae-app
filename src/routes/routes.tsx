@@ -18,6 +18,11 @@ import { Notifications } from '@screens/Notifications'
 import { Spin } from '@screens/Spin'
 import { Login } from '@screens/Login'
 import { Register } from '@screens/Register'
+import { AddFriend } from '@screens/AddFriend'
+import { Blocked } from '@screens/Blocked'
+import { EditProfile } from '@screens/EditProfile'
+import { Friends } from '@screens/Friends'
+import { Report } from '@screens/Report'
 
 const Tab = createBottomTabNavigator()
 const { Screen, Navigator } = createNativeStackNavigator()
@@ -129,6 +134,36 @@ function ProfileStack() {
       <Screen
         name="Register"
         component={Register}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+
+      <Screen
+        name="Report"
+        component={Report}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+
+      <Screen
+        name="Friends"
+        component={Friends}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+
+      <Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+
+      <Screen
+        name="Blocked"
+        component={Blocked}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+
+      <Screen
+        name="AddFriend"
+        component={AddFriend}
         options={{ animation: 'fade_from_bottom' }}
       />
     </Navigator>
