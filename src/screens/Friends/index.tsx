@@ -6,12 +6,22 @@ import { useState } from 'react'
 import { NavigationType } from 'src/@types/navigation'
 import { FriendCard } from '@components/FriendCard'
 import { NoContentText } from '@components/NoContentText'
+import { useSwipe } from '../../hooks/useSwipe'
 
 interface FriendsProps {
   navigation: NavigationType
 }
 
 export function Friends({ navigation }: FriendsProps) {
+  const { onTouchStart, onTouchEnd } = useSwipe({
+    onSwipeRight,
+    rangeOffset: 6,
+  })
+
+  function onSwipeRight() {
+    navigation.navigate('Profile')
+  }
+
   const [areThereFriends, setAreThereFriends] = useState()
 
   return (
@@ -25,7 +35,7 @@ export function Friends({ navigation }: FriendsProps) {
             onPress={() => navigation.navigate('AddFriend')}
           />
         </S.AddFriendButtonContainer>
-        <S.Container>
+        <S.Container onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
           <S.NavigationContainer>
             <S.ProfileNavigationContainer
               variant="black"

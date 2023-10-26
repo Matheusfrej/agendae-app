@@ -9,13 +9,17 @@ import { useTheme } from 'styled-components'
 import { useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Participant } from '@components/Participant'
+import { InviteBanner } from '@components/InviteBanner'
 
 interface SpinProps {
   navigation: NavigationType
 }
 
+type SpinStatus = 'mine' | 'invited' | 'friend_spin'
+
 export function Spin({ navigation }: SpinProps) {
   const [areParticipantsOpen, setAreParticipantsOpen] = useState(false)
+  const [spinStatus, setSpinStatus] = useState<SpinStatus>('mine')
 
   const theme = useTheme()
 
@@ -38,9 +42,10 @@ export function Spin({ navigation }: SpinProps) {
     <>
       <ScrollContainer>
         <BackButton />
-        <PopupMenu actions={spinActions} />
+        {spinStatus === 'mine' && <PopupMenu actions={spinActions} />}
         <S.Container>
-          <S.HeaderTitle>rolê</S.HeaderTitle>
+          {spinStatus === 'invited' && <InviteBanner type="spin" />}
+          <S.HeaderTitle invited={spinStatus === 'invited'}>rolê</S.HeaderTitle>
           <S.Content>
             <S.Title>Frejversário</S.Title>
             <S.Date>Início: Domingo, 15 de outubro de 2023, 18h</S.Date>
@@ -91,6 +96,25 @@ export function Spin({ navigation }: SpinProps) {
             <S.Description>{description}</S.Description>
           </S.Content>
         </S.Container>
+
+        {spinStatus === 'friend_spin' && (
+          <S.LeaveContainer>
+            <S.Leave>Sair do rolê</S.Leave>
+          </S.LeaveContainer>
+        )}
+
+        {spinStatus !== 'mine' && (
+          <S.CreatedContainer>
+            <S.Created>
+              Criado por{' '}
+              <S.CreatedTouchableText
+                onPress={() => navigation.navigate('Profile')}
+              >
+                Matheus
+              </S.CreatedTouchableText>
+            </S.Created>
+          </S.CreatedContainer>
+        )}
       </ScrollContainer>
     </>
   )

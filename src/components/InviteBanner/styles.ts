@@ -5,7 +5,6 @@ export const InviteContainer = styled.View`
 `
 
 export const Container = styled.View`
-  flex: 1;
   gap: 20px;
   padding: 10px 0;
 `
@@ -20,7 +19,6 @@ export const Description = styled.Text`
 `
 
 export const Actions = styled.View`
-  flex: 1;
   flex-direction: row;
   gap: 40px;
   justify-content: center;

@@ -9,6 +9,7 @@ import { useTheme } from 'styled-components'
 import { ProfileImage } from '@components/ProfileImage'
 import { BackButton } from '@components/BackButton'
 import { InviteBanner } from '@components/InviteBanner'
+import { useSwipe } from '../../hooks/useSwipe'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -19,7 +20,18 @@ type ProfileStatus = 'mine' | 'friend' | 'user' | 'friend_request'
 export function Profile({ navigation }: ProfileProps) {
   const [isLogged] = useState(true)
   const [profileStatus, setProfileStatus] = useState<ProfileStatus>('mine')
+  const { onTouchStart, onTouchEnd } = useSwipe({
+    onSwipeLeft,
+    rangeOffset: 6,
+  })
+
   const theme = useTheme()
+
+  function onSwipeLeft() {
+    if (profileStatus === 'mine') {
+      navigation.navigate('Friends')
+    }
+  }
 
   const profileActions = [
     {
@@ -75,7 +87,7 @@ export function Profile({ navigation }: ProfileProps) {
             </S.AddFriendButtonContainer>
           )}
 
-          <S.Container>
+          <S.Container onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
             {profileStatus === 'friend_request' && <InviteBanner type="spin" />}
 
             {profileStatus === 'mine' && (
@@ -94,7 +106,6 @@ export function Profile({ navigation }: ProfileProps) {
                 </S.ProfileNavigationContainer>
               </S.NavigationContainer>
             )}
-
             <S.ProfileImageAndName>
               <ProfileImage size={100} />
               <S.Text>
@@ -119,9 +130,13 @@ export function Profile({ navigation }: ProfileProps) {
           {profileStatus !== 'mine' && (
             <S.FooterTextContainer>
               {profileStatus === 'friend' && (
-                <S.FooterText>Desfazer amizade</S.FooterText>
+                <S.FooterTextTouchable>
+                  <S.FooterText>Desfazer amizade</S.FooterText>
+                </S.FooterTextTouchable>
               )}
-              <S.FooterText>Bloquear usuário</S.FooterText>
+              <S.FooterTextTouchable>
+                <S.FooterText>Bloquear usuário</S.FooterText>
+              </S.FooterTextTouchable>
             </S.FooterTextContainer>
           )}
         </ScrollContainer>

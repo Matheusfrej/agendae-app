@@ -10,10 +10,15 @@ export const Container = styled.View`
   margin-bottom: 20%;
 `
 
-export const HeaderTitle = styled.Text`
+interface HeaderTitleProps {
+  invited?: boolean
+}
+
+export const HeaderTitle = styled.Text<HeaderTitleProps>`
   font-size: 32px;
   color: ${({ theme }) => theme.COLORS.PURPLE_500};
   margin-bottom: 20px;
+  margin-top: ${(props) => (props.invited ? '20px' : '')};
 `
 
 export const Section = styled.TouchableOpacity`
@@ -50,4 +55,41 @@ export const Place = styled.Text`
 
 export const Description = styled.Text`
   font-size: 18px;
+  line-height: 24px;
+`
+
+const BaseContainer = styled.View`
+  margin-top: 50px;
+  margin-bottom: 50px;
+  gap: 20px;
+`
+
+export const CreatedContainer = styled(BaseContainer)`
+  align-self: flex-end;
+  margin-right: 10%;
+`
+
+export const LeaveContainer = styled.TouchableOpacity`
+  align-self: center;
+  margin-top: 0px;
+  margin-bottom: 0px;
+`
+
+const BaseText = styled.Text`
+  font-size: 20px;
+`
+
+export const Created = styled(BaseText)`
+  color: ${(props) => props.theme.COLORS.GRAY_700};
+`
+
+export const Leave = styled(BaseText)`
+  color: ${(props) => props.theme.COLORS.RED};
+  text-decoration: underline;
+`
+
+export const CreatedTouchableText = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: underline;
 `

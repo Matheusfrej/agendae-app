@@ -96,13 +96,15 @@ export const FooterText = styled.Text`
   color: ${(props) => props.theme.COLORS.RED};
 `
 
-export const FooterTextContainer = styled.TouchableOpacity`
+export const FooterTextContainer = styled.View`
   align-self: center;
   width: fit-content;
   margin-top: 50px;
   margin-bottom: 50px;
   gap: 20px;
 `
+
+export const FooterTextTouchable = styled.TouchableOpacity``
 
 export const AddFriendButtonContainer = styled.View`
   align-items: center;
