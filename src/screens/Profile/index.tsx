@@ -7,13 +7,18 @@ import { useState } from 'react'
 import { PopupMenu } from '@components/PopupMenu'
 import { useTheme } from 'styled-components'
 import { ProfileImage } from '@components/ProfileImage'
+import { BackButton } from '@components/BackButton'
+import { InviteBanner } from '@components/InviteBanner'
 
 interface ProfileProps {
   navigation: PropsStack
 }
 
+type ProfileStatus = 'mine' | 'friend' | 'user' | 'friend_request'
+
 export function Profile({ navigation }: ProfileProps) {
   const [isLogged] = useState(true)
+  const [profileStatus, setProfileStatus] = useState<ProfileStatus>('mine')
   const theme = useTheme()
 
   const profileActions = [
@@ -57,22 +62,39 @@ export function Profile({ navigation }: ProfileProps) {
         </ScrollContainer>
       ) : (
         <ScrollContainer>
-          <PopupMenu actions={profileActions} />
+          {profileStatus !== 'mine' && <BackButton />}
+          {profileStatus === 'mine' && <PopupMenu actions={profileActions} />}
+          {profileStatus === 'user' && (
+            <S.AddFriendButtonContainer>
+              <CustomButton
+                text="Adicionar"
+                variant="accept"
+                fontSize={20}
+                onPress={() => navigation.navigate('AddFriend')}
+              />
+            </S.AddFriendButtonContainer>
+          )}
+
           <S.Container>
-            <S.NavigationContainer>
-              <S.ProfileNavigationContainer
-                variant="purple"
-                onPress={() => navigation.navigate('Profile')}
-              >
-                <S.Title variant="purple">Perfil</S.Title>
-              </S.ProfileNavigationContainer>
-              <S.ProfileNavigationContainer
-                variant="black"
-                onPress={() => navigation.navigate('Friends')}
-              >
-                <S.Title variant="black">Amigos</S.Title>
-              </S.ProfileNavigationContainer>
-            </S.NavigationContainer>
+            {profileStatus === 'friend_request' && <InviteBanner type="spin" />}
+
+            {profileStatus === 'mine' && (
+              <S.NavigationContainer>
+                <S.ProfileNavigationContainer
+                  variant="purple"
+                  onPress={() => navigation.navigate('Profile')}
+                >
+                  <S.Title variant="purple">Perfil</S.Title>
+                </S.ProfileNavigationContainer>
+                <S.ProfileNavigationContainer
+                  variant="black"
+                  onPress={() => navigation.navigate('Friends')}
+                >
+                  <S.Title variant="black">Amigos</S.Title>
+                </S.ProfileNavigationContainer>
+              </S.NavigationContainer>
+            )}
+
             <S.ProfileImageAndName>
               <ProfileImage size={100} />
               <S.Text>
@@ -94,6 +116,14 @@ export function Profile({ navigation }: ProfileProps) {
               </S.Statistic>
             </S.StatisticsContainer>
           </S.Container>
+          {profileStatus !== 'mine' && (
+            <S.FooterTextContainer>
+              {profileStatus === 'friend' && (
+                <S.FooterText>Desfazer amizade</S.FooterText>
+              )}
+              <S.FooterText>Bloquear usuário</S.FooterText>
+            </S.FooterTextContainer>
+          )}
         </ScrollContainer>
       )}
     </>

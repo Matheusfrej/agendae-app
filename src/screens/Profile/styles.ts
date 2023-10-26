@@ -89,3 +89,32 @@ export const ProfileNavigationContainer = styled.TouchableOpacity<ProfileNavigat
   padding-bottom: 10px;
   border-bottom-width: 1px;
 `
+
+export const FooterText = styled.Text`
+  text-decoration: underline;
+  text-align: center;
+  color: ${(props) => props.theme.COLORS.RED};
+`
+
+export const FooterTextContainer = styled.TouchableOpacity`
+  align-self: center;
+  width: fit-content;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  gap: 20px;
+`
+
+export const AddFriendButtonContainer = styled.View`
+  align-items: center;
+  margin-top: 24px;
+  justify-self: center;
+  margin: 0;
+  position: absolute;
+  top: 95px;
+  z-index: 1000;
+  right: 5%;
+  border: 1px solid ${(props) => props.theme.COLORS.GRAY_300};
+  background: ${(props) => props.theme.COLORS.WHITE};
+  border-radius: 8px;
+  min-width: 90px;
+`

@@ -23,7 +23,7 @@ export function Register() {
         <S.Content>
           <S.Form>
             <S.InputSection>
-              <Label text="Nome completo" isRequired />
+              <Label text="Nome" isRequired />
               <S.TextInput
                 selectionColor={theme.COLORS.BLUE}
                 cursorColor={theme.COLORS.GRAY_700}
