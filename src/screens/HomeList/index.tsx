@@ -14,7 +14,6 @@ interface HomeListProps {
 
 export function HomeList({ navigation }: HomeListProps) {
   const [pastSpinsOpen, setPastSpinsOpen] = useState<boolean>(false)
-  const [closestSpinsOpen, setClosestSpinsOpen] = useState<boolean>(false)
   const [allSpinsOpen, setAllSpinsOpen] = useState<boolean>(false)
   const theme = useTheme()
 
@@ -78,46 +77,6 @@ export function HomeList({ navigation }: HomeListProps) {
               </S.Texts>
             </S.Section>
             {pastSpinsOpen && (
-              <S.SpinsContainer>
-                {pastSpins.map((spin, idx) => {
-                  return (
-                    <SpinCard
-                      key={idx}
-                      title={spin.title}
-                      creator={spin.creator}
-                      start_date={spin.start_date}
-                      end_date={spin.end_date}
-                      background_color={
-                        spin.background_color as SpinCardContainerVariant
-                      }
-                    />
-                  )
-                })}
-              </S.SpinsContainer>
-            )}
-
-            <S.Section onPress={() => setClosestSpinsOpen(!closestSpinsOpen)}>
-              {!closestSpinsOpen ? (
-                <MaterialIcons
-                  name="arrow-right"
-                  size={32}
-                  color={theme.COLORS.PURPLE_500}
-                />
-              ) : (
-                <MaterialIcons
-                  name="arrow-drop-down"
-                  size={32}
-                  color={theme.COLORS.PURPLE_500}
-                />
-              )}
-              <S.Texts>
-                <S.Title>
-                  <S.Span>Rolês</S.Span> mais próximos
-                </S.Title>
-                <S.Subtitle>rolês marcados para os próximos 7 dias</S.Subtitle>
-              </S.Texts>
-            </S.Section>
-            {closestSpinsOpen && (
               <S.SpinsContainer>
                 {pastSpins.map((spin, idx) => {
                   return (

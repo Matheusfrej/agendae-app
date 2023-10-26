@@ -19,11 +19,11 @@ export function Profile({ navigation }: ProfileProps) {
   const profileActions = [
     {
       name: 'Editar perfil',
-      action: () => navigation.navigate('Profile'),
+      action: () => navigation.navigate('EditProfile'),
     },
     {
       name: 'Ver bloqueados',
-      action: () => navigation.navigate('Profile'),
+      action: () => navigation.navigate('Blocked'),
     },
     {
       name: 'Sair',
@@ -60,10 +60,16 @@ export function Profile({ navigation }: ProfileProps) {
           <PopupMenu actions={profileActions} />
           <S.Container>
             <S.NavigationContainer>
-              <S.ProfileNavigationContainer variant="purple">
+              <S.ProfileNavigationContainer
+                variant="purple"
+                onPress={() => navigation.navigate('Profile')}
+              >
                 <S.Title variant="purple">Perfil</S.Title>
               </S.ProfileNavigationContainer>
-              <S.ProfileNavigationContainer variant="black">
+              <S.ProfileNavigationContainer
+                variant="black"
+                onPress={() => navigation.navigate('Friends')}
+              >
                 <S.Title variant="black">Amigos</S.Title>
               </S.ProfileNavigationContainer>
             </S.NavigationContainer>

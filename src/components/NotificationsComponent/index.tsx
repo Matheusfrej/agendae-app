@@ -12,7 +12,7 @@ export function NotificationsComponent() {
   const navigation = useNavigation<PropsStack>()
 
   const goToNotifications = () => {
-    setHasNotifications(!hasNotifications)
+    setHasNotifications(false)
     navigation.navigate('Notifications')
   }
 

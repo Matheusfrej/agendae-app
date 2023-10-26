@@ -35,7 +35,10 @@ export function PopupMenu({ actions }: PopupMenuProps) {
               <S.ActionTouchable
                 key={action.name}
                 underlayColor={theme.COLORS.GRAY_300}
-                onPress={() => action.action()}
+                onPress={() => {
+                  setIsModalOpen(!isModalOpen)
+                  action.action()
+                }}
               >
                 <S.ActionText color={action.color}>{action.name}</S.ActionText>
               </S.ActionTouchable>

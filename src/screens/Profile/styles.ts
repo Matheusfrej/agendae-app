@@ -79,7 +79,7 @@ export const NavigationContainer = styled.View`
   width: 100%;
 `
 
-export const ProfileNavigationContainer = styled.View<ProfileNavigationContainerProps>`
+export const ProfileNavigationContainer = styled.TouchableOpacity<ProfileNavigationContainerProps>`
   width: 35%;
   align-items: center;
   border-bottom-color: ${(props) =>

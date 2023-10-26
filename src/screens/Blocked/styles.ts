@@ -4,12 +4,18 @@ export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
   align-items: center;
-  justify-content: center;
   width: 100%;
+  margin-top: 150px;
+  margin-bottom: 150px;
 `
 
 export const Title = styled.Text`
-  font-size: 32px;
-  color: ${({ theme }) => theme.COLORS.PURPLE_500};
-  font-weight: bold;
+  font-size: 28px;
+`
+
+export const BlockedContainer = styled.View`
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 20px;
+  gap: 10px;
 `

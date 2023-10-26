@@ -16,7 +16,7 @@ export function Invite({ name, type }: InviteProps) {
 
   const navigation = useNavigation<PropsStack>()
 
-  const goBack = () => {
+  const navigateToInvite = () => {
     if (type === 'friend') {
       navigation.navigate('Profile')
     } else if (type === 'spin') {
@@ -27,7 +27,7 @@ export function Invite({ name, type }: InviteProps) {
   return (
     <S.InviteContainer
       activeOpacity={0.7}
-      onPress={() => goBack()}
+      onPress={() => navigateToInvite()}
       underlayColor={theme.COLORS.GRAY_300}
     >
       <>
