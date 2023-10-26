@@ -2,7 +2,7 @@ import { CustomButton } from '@components/CustomButton'
 import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 import { useState } from 'react'
 import { PopupMenu } from '@components/PopupMenu'
 import { useTheme } from 'styled-components'
@@ -11,7 +11,7 @@ import { BackButton } from '@components/BackButton'
 import { InviteBanner } from '@components/InviteBanner'
 
 interface ProfileProps {
-  navigation: PropsStack
+  navigation: NavigationType
 }
 
 type ProfileStatus = 'mine' | 'friend' | 'user' | 'friend_request'

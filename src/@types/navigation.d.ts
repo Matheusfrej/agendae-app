@@ -24,7 +24,7 @@ type StackParamList = {
   Friends: undefined
 }
 
-export type PropsStack = NativeStackNavigationProp<StackParamList>
+export type NavigationType = NativeStackNavigationProp<StackParamList>
 
 export type SpinsOfDayScreenRouteProp = RouteProp<StackParamList, 'SpinsOfDay'>
 

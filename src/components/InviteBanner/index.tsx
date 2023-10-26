@@ -2,7 +2,7 @@ import * as S from './styles'
 import { useNavigation } from '@react-navigation/native'
 import { useTheme } from 'styled-components'
 import { CustomButton } from '@components/CustomButton'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 import { Line } from '@components/Line'
 
 interface InviteBannerProps {
@@ -12,7 +12,7 @@ interface InviteBannerProps {
 export function InviteBanner({ type }: InviteBannerProps) {
   const theme = useTheme()
 
-  const navigation = useNavigation<PropsStack>()
+  const navigation = useNavigation<NavigationType>()
 
   const navigateToInvite = () => {
     if (type === 'friend') {

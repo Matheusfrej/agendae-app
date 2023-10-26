@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import * as S from './styles'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 
 export type SpinCardContainerVariant =
   | 'purple'
@@ -25,7 +25,7 @@ export function SpinCard({
   creator,
   background_color = 'purple',
 }: SpinCardProps) {
-  const navigation = useNavigation<PropsStack>()
+  const navigation = useNavigation<NavigationType>()
 
   const goToSpin = () => {
     navigation.navigate('Spin')

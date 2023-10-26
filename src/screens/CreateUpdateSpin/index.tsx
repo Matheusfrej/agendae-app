@@ -3,7 +3,7 @@ import { ScrollContainer } from '../../components/ScrollContainer'
 import { useTheme } from 'styled-components'
 import {
   CreateUpdateSpinScreenRouteProp,
-  PropsStack,
+  NavigationType,
 } from 'src/@types/navigation'
 import { useRoute } from '@react-navigation/native'
 import { BackButton } from '@components/BackButton'
@@ -19,7 +19,7 @@ import { Label } from '@components/Label'
 import MultiSelect from 'react-native-multiple-select'
 
 interface CreateUpdateSpinProps {
-  navigation: PropsStack
+  navigation: NavigationType
 }
 
 interface SelectColorType {

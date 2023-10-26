@@ -6,10 +6,10 @@ import { NotificationsComponent } from '@components/NotificationsComponent'
 import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { CreateSpin } from '@components/CreateSpin'
 import { ScrollContainer } from '../../components/ScrollContainer'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 
 interface HomeListProps {
-  navigation: PropsStack
+  navigation: NavigationType
 }
 
 export function HomeList({ navigation }: HomeListProps) {

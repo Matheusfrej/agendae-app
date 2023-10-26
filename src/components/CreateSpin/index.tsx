@@ -3,12 +3,12 @@ import { useTheme } from 'styled-components'
 
 import * as S from './styles'
 import { useNavigation } from '@react-navigation/native'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 
 export function CreateSpin() {
   const theme = useTheme()
 
-  const navigation = useNavigation<PropsStack>()
+  const navigation = useNavigation<NavigationType>()
 
   const goToCreateSpin = () => {
     navigation.navigate('CreateUpdateSpin', { spinId: null })

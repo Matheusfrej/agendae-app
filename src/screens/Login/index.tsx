@@ -3,11 +3,11 @@ import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
 import { useTheme } from 'styled-components'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 import { Label } from '@components/Label'
 
 interface LoginProps {
-  navigation: PropsStack
+  navigation: NavigationType
 }
 
 export function Login({ navigation }: LoginProps) {

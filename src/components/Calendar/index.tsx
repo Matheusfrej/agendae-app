@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 import { Line } from '@components/Line'
 
 interface DaysType {
@@ -18,7 +18,7 @@ export function Calendar() {
   const [isCalendarRendered, setIsCalendarRendered] = useState(false)
 
   const theme = useTheme()
-  const navigation = useNavigation<PropsStack>()
+  const navigation = useNavigation<NavigationType>()
 
   // storing full name of all months in array
   const months = [

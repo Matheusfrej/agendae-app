@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import * as S from './styles'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 import { AntDesign, Feather } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
 import { ProfileImage } from '@components/ProfileImage'
@@ -12,7 +12,7 @@ interface ParticipantProps {
 }
 
 export function Participant({ name, invite_status }: ParticipantProps) {
-  const navigation = useNavigation<PropsStack>()
+  const navigation = useNavigation<NavigationType>()
   const theme = useTheme()
 
   return (

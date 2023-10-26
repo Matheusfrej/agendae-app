@@ -3,12 +3,12 @@ import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
 import { useState } from 'react'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 import { FriendCard } from '@components/FriendCard'
 import { NoContentText } from '@components/NoContentText'
 
 interface FriendsProps {
-  navigation: PropsStack
+  navigation: NavigationType
 }
 
 export function Friends({ navigation }: FriendsProps) {

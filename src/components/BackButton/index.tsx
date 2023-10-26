@@ -1,14 +1,14 @@
 import { AntDesign } from '@expo/vector-icons'
 
 import * as S from './styles'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 import { useNavigation } from '@react-navigation/native'
 import { useTheme } from 'styled-components'
 
 export function BackButton() {
   const theme = useTheme()
 
-  const navigation = useNavigation<PropsStack>()
+  const navigation = useNavigation<NavigationType>()
 
   const goBack = () => {
     navigation.goBack()

@@ -5,10 +5,10 @@ import * as S from './styles'
 import { CustomButton } from '@components/CustomButton'
 import { Label } from '@components/Label'
 import { useTheme } from 'styled-components'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 
 interface EditProfileProps {
-  navigation: PropsStack
+  navigation: NavigationType
 }
 
 export function EditProfile({ navigation }: EditProfileProps) {

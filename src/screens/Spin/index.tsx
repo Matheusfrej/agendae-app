@@ -4,14 +4,14 @@ import { ScrollContainer } from '../../components/ScrollContainer'
 import * as S from './styles'
 import { Line } from '@components/Line'
 import { PopupMenu } from '@components/PopupMenu'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 import { useTheme } from 'styled-components'
 import { useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Participant } from '@components/Participant'
 
 interface SpinProps {
-  navigation: PropsStack
+  navigation: NavigationType
 }
 
 export function Spin({ navigation }: SpinProps) {

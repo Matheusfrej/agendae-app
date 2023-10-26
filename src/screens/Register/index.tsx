@@ -4,13 +4,13 @@ import { ScrollContainer } from '../../components/ScrollContainer'
 import * as S from './styles'
 import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 import { Label } from '@components/Label'
 
 export function Register() {
   const theme = useTheme()
 
-  const navigation = useNavigation<PropsStack>()
+  const navigation = useNavigation<NavigationType>()
 
   const navigateToLogin = () => {
     navigation.navigate('Login')

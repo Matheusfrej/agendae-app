@@ -4,10 +4,10 @@ import { ScrollContainer } from '../../components/ScrollContainer'
 import * as S from './styles'
 import { useTheme } from 'styled-components'
 import { CustomButton } from '@components/CustomButton'
-import { PropsStack } from 'src/@types/navigation'
+import { NavigationType } from 'src/@types/navigation'
 
 interface AddFriendProps {
-  navigation: PropsStack
+  navigation: NavigationType
 }
 
 export function AddFriend({ navigation }: AddFriendProps) {
