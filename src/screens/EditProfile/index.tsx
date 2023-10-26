@@ -6,6 +6,7 @@ import { CustomButton } from '@components/CustomButton'
 import { Label } from '@components/Label'
 import { useTheme } from 'styled-components'
 import { NavigationType } from 'src/@types/navigation'
+import { ProfileImage } from '@components/ProfileImage'
 
 interface EditProfileProps {
   navigation: NavigationType
@@ -27,6 +28,9 @@ export function EditProfile({ navigation }: EditProfileProps) {
       </S.SaveButtonContainer>
       <S.Container>
         <S.Title>Editar perfil</S.Title>
+        <S.ProfileImageContainer>
+          <ProfileImage size={100} />
+        </S.ProfileImageContainer>
         <S.Form>
           <S.InputSection>
             <Label text="Nome" isRequired />

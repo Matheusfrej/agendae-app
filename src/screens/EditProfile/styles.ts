@@ -5,7 +5,7 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.COLORS.WHITE};
   align-items: center;
   width: 100%;
-  margin-top: 200px;
+  margin-top: 150px;
   margin-bottom: 200px;
 `
 
@@ -50,4 +50,11 @@ export const TextContainer = styled.TouchableOpacity`
   align-self: center;
   width: fit-content;
   margin-bottom: 50px;
+`
+
+export const ProfileImageContainer = styled.View`
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding-top: 40px;
 `
