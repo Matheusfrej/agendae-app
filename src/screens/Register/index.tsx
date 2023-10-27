@@ -6,6 +6,7 @@ import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationType } from 'src/@types/navigation'
 import { Label } from '@components/Label'
+import { Logo } from '@components/Logo'
 
 export function Register() {
   const theme = useTheme()
@@ -19,6 +20,8 @@ export function Register() {
   return (
     <ScrollContainer>
       <S.Container>
+        <Logo style={{ paddingBottom: 50 }} />
+
         <S.Title>Cadastre-se</S.Title>
         <S.Content>
           <S.Form>

@@ -52,7 +52,6 @@ export function HomeList({ navigation }: HomeListProps) {
       <ScrollContainer>
         <S.Container>
           <NotificationsComponent />
-
           <S.Content>
             <S.Section onPress={() => setPastSpinsOpen(!pastSpinsOpen)}>
               {!pastSpinsOpen ? (

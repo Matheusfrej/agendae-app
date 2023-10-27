@@ -5,6 +5,7 @@ import * as S from './styles'
 import { useTheme } from 'styled-components'
 import { NavigationType } from 'src/@types/navigation'
 import { Label } from '@components/Label'
+import { Logo } from '@components/Logo'
 
 interface LoginProps {
   navigation: NavigationType
@@ -20,6 +21,7 @@ export function Login({ navigation }: LoginProps) {
   return (
     <ScrollContainer>
       <S.Container>
+        <Logo style={{ marginBottom: 50 }} />
         <S.Title>Login</S.Title>
         <S.Content>
           <S.Form>

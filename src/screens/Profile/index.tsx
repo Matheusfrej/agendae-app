@@ -10,6 +10,7 @@ import { ProfileImage } from '@components/ProfileImage'
 import { BackButton } from '@components/BackButton'
 import { InviteBanner } from '@components/InviteBanner'
 import { useSwipe } from '../../hooks/useSwipe'
+import { Logo } from '@components/Logo'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -18,7 +19,7 @@ interface ProfileProps {
 type ProfileStatus = 'mine' | 'friend' | 'user' | 'friend_request'
 
 export function Profile({ navigation }: ProfileProps) {
-  const [isLogged] = useState(true)
+  const [isLogged] = useState(false)
   const [profileStatus, setProfileStatus] = useState<ProfileStatus>('mine')
   const { onTouchStart, onTouchEnd } = useSwipe({
     onSwipeLeft,
@@ -53,8 +54,8 @@ export function Profile({ navigation }: ProfileProps) {
     <>
       {!isLogged ? (
         <ScrollContainer>
-          <S.Container>
-            <S.TitleNotLogged>Ops...</S.TitleNotLogged>
+          <S.NotLoggedContainer>
+            <Logo style={{ marginBottom: 50 }} />
             <S.Subtitle>
               Você precisa ter uma conta para ver o seu perfil
             </S.Subtitle>
@@ -70,7 +71,7 @@ export function Profile({ navigation }: ProfileProps) {
                 onPress={() => navigation.navigate('Register')}
               />
             </S.Buttons>
-          </S.Container>
+          </S.NotLoggedContainer>
         </ScrollContainer>
       ) : (
         <ScrollContainer>

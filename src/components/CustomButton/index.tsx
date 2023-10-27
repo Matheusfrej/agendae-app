@@ -1,4 +1,5 @@
 import * as S from './styles'
+import { ViewStyle } from 'react-native'
 
 interface CustomButtonProps {
   variant: 'default' | 'accept' | 'deny' | 'warning' | 'abort'
@@ -7,7 +8,7 @@ interface CustomButtonProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onPress?: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  style?: any
+  style?: ViewStyle
 }
 
 export function CustomButton({

@@ -9,6 +9,11 @@ export const Container = styled.View`
   margin-top: 150px;
 `
 
+export const NotLoggedContainer = styled(Container)`
+  justify-content: center;
+  margin-top: 0px;
+`
+
 interface ProfileNavigationContainerProps {
   variant: 'black' | 'purple'
 }
