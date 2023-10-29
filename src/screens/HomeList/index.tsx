@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import * as S from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
@@ -7,6 +7,7 @@ import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { CreateSpin } from '@components/CreateSpin'
 import { ScrollContainer } from '../../components/ScrollContainer'
 import { NavigationType } from 'src/@types/navigation'
+import api from '../../libs/api'
 
 interface HomeListProps {
   navigation: NavigationType
@@ -15,6 +16,7 @@ interface HomeListProps {
 export function HomeList({ navigation }: HomeListProps) {
   const [pastSpinsOpen, setPastSpinsOpen] = useState<boolean>(false)
   const [allSpinsOpen, setAllSpinsOpen] = useState<boolean>(false)
+  const [id, setId] = useState('')
   const theme = useTheme()
 
   const pastSpins = [
@@ -46,6 +48,20 @@ export function HomeList({ navigation }: HomeListProps) {
       background_color: 'purple',
     },
   ]
+
+  const testRequest = async () => {
+    try {
+      const response = await api.get('/users/user-id/matheusfrej@gmail.com')
+      console.log(response.data)
+      setId(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    testRequest()
+  }, [])
 
   return (
     <>
