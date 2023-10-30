@@ -11,13 +11,16 @@ import theme from './src/theme'
 
 // Routes
 import { Routes } from '@routes/index'
+import { AuthContextProvider } from './src/contexts/AuthContext'
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Overpass_400Regular, Overpass_700Bold })
 
   return (
-    <ThemeProvider theme={theme}>
-      {fontsLoaded ? <Routes /> : <ActivityIndicator />}
-    </ThemeProvider>
+    <AuthContextProvider>
+      <ThemeProvider theme={theme}>
+        {fontsLoaded ? <Routes /> : <ActivityIndicator />}
+      </ThemeProvider>
+    </AuthContextProvider>
   )
 }

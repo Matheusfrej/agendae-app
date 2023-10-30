@@ -7,7 +7,6 @@ import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { CreateSpin } from '@components/CreateSpin'
 import { ScrollContainer } from '../../components/ScrollContainer'
 import { NavigationType } from 'src/@types/navigation'
-import api from '../../libs/api'
 
 interface HomeListProps {
   navigation: NavigationType
@@ -49,19 +48,22 @@ export function HomeList({ navigation }: HomeListProps) {
     },
   ]
 
-  const testRequest = async () => {
-    try {
-      const response = await api.get('/users/user-id/matheusfrej@gmail.com')
-      console.log(response.data)
-      setId(response.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const testRequest = async () => {
+  //   try {
+  //     const response = await api.get('/users/user-id/1gmail.com')
+  //     setId(response.data.user_id)
+  //   } catch (error) {
+  //     if (error instanceof AppError) {
+  //       console.log(error.message)
+  //     } else {
+  //       console.log('Não foi possível fazer a requisição')
+  //     }
+  //   }
+  // }
 
-  useEffect(() => {
-    testRequest()
-  }, [])
+  // useEffect(() => {
+  //   testRequest()
+  // }, [])
 
   return (
     <>
@@ -83,7 +85,6 @@ export function HomeList({ navigation }: HomeListProps) {
                   color={theme.COLORS.PURPLE_500}
                 />
               )}
-
               <S.Texts>
                 <S.Title>
                   <S.Span>Rolês</S.Span> anteriores
