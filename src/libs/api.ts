@@ -69,7 +69,23 @@ api.registerInterceptTokenManager = (signOut) => {
 
               if (data.token && newRefreshToken) {
                 await storageAuthTokenSave(data.token, newRefreshToken)
+
+                if (originalRequestConfig.data) {
+                  originalRequestConfig.data = JSON.parse(
+                    originalRequestConfig.data,
+                  )
+                }
+
+                originalRequestConfig.headers = { Authorization: data.token }
                 api.defaults.headers.common.Authorization = data.token
+
+                failedQueue.forEach((request) => {
+                  request.onSuccess(data.token)
+                })
+
+                // console.log('TOKEN ATUALIZADO!')
+
+                resolve(api(originalRequestConfig))
               }
             } catch (error: any) {
               console.log(error)

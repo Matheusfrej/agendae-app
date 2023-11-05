@@ -82,6 +82,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   useEffect(() => {
+    signOut()
     loadUserData()
     signIn('matheusfrej@gmail.com', '123456')
     // eslint-disable-next-line react-hooks/exhaustive-deps

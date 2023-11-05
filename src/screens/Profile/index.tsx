@@ -22,10 +22,8 @@ interface ProfileProps {
 type ProfileStatus = 'mine' | 'friend' | 'user' | 'friend_request'
 
 export function Profile({ navigation }: ProfileProps) {
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
   const route = useRoute<ProfileScreenRouteProp>()
-
-  console.log(user)
 
   const isLogged = user !== undefined
 
@@ -49,7 +47,10 @@ export function Profile({ navigation }: ProfileProps) {
     },
     {
       name: 'Sair',
-      action: () => navigation.navigate('HomeList'),
+      action: () => {
+        signOut()
+        navigation.navigate('HomeList')
+      },
       color: theme.COLORS.RED,
     },
   ]
