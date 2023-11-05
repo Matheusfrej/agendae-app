@@ -6,8 +6,16 @@ import {
   useState,
 } from 'react'
 import api from '../libs/api'
-import { storageAuthTokenSave } from '@storage/storageAuthToken'
-import { storageUserSave } from '@storage/storageUser'
+import {
+  storageAuthTokenGet,
+  storageAuthTokenRemove,
+  storageAuthTokenSave,
+} from '@storage/storageAuthToken'
+import {
+  storageUserGet,
+  storageUserRemove,
+  storageUserSave,
+} from '@storage/storageUser'
 
 interface AuthContextProviderProps {
   children: ReactNode
@@ -15,45 +23,76 @@ interface AuthContextProviderProps {
 
 interface AuthContextType {
   user: any
-  userStatistics: any
+  signIn: (email: string, password: string) => Promise<void>
+  signOut: () => Promise<void>
 }
 
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<any>()
-  const [userStatistics, setUserStatistics] = useState<any>()
 
-  async function storageUserAndToken(user: any, token: string) {
+  async function userAndTokenUpdate(user: any, token: string) {
     api.defaults.headers.common.Authorization = token
 
-    await storageUserSave(user)
-    await storageAuthTokenSave(token)
+    setUser(user)
   }
 
-  async function getProfile(user_id: any) {
-    try {
-      const profile_response = await api.get(`/users/${user_id}`)
-      setUserStatistics(profile_response.data.statistics)
-      console.log(profile_response.data.statistics)
-    } catch (error) {}
+  async function storageUserAndTokenSave(
+    user: any,
+    token: string,
+    refreshToken: string,
+  ) {
+    await storageUserSave(user)
+    await storageAuthTokenSave(token, refreshToken)
   }
 
   async function signIn(email: string, password: string) {
     try {
-      const { data } = await api.post('/users/login', { email, password })
+      const { data, headers } = await api.post('/users/login', {
+        email,
+        password,
+      })
 
-      if (data.user && data.token) {
+      const refreshToken = headers['set-cookie']?.[0]
+        .split('; ')[0]
+        .split('refreshToken=')[1]
+
+      if (data.user && data.token && refreshToken) {
         setUser(user)
-        storageUserAndToken(data.user, data.token)
-        console.log(data.user)
-        getProfile(data.user.id)
+        storageUserAndTokenSave(data.user, data.token, refreshToken)
+        userAndTokenUpdate(data.user, data.token)
       }
     } catch (error) {}
   }
 
+  async function signOut() {
+    setUser(undefined)
+    await storageUserRemove()
+    await storageAuthTokenRemove()
+  }
+
+  async function loadUserData() {
+    const userLogged = await storageUserGet()
+    const { token } = await storageAuthTokenGet()
+
+    if (token && userLogged) {
+      userAndTokenUpdate(userLogged, token)
+    }
+  }
+
   useEffect(() => {
+    loadUserData()
     signIn('matheusfrej@gmail.com', '123456')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    const subscribe = api.registerInterceptTokenManager(signOut)
+
+    return () => {
+      subscribe()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -61,7 +100,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     <AuthContext.Provider
       value={{
         user,
-        userStatistics,
+        signIn,
+        signOut,
       }}
     >
       {children}

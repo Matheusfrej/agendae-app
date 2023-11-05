@@ -2,8 +2,8 @@ import { CustomButton } from '@components/CustomButton'
 import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
-import { NavigationType } from 'src/@types/navigation'
-import { useState } from 'react'
+import { NavigationType, ProfileScreenRouteProp } from 'src/@types/navigation'
+import { useEffect, useState } from 'react'
 import { PopupMenu } from '@components/PopupMenu'
 import { useTheme } from 'styled-components'
 import { ProfileImage } from '@components/ProfileImage'
@@ -11,6 +11,9 @@ import { BackButton } from '@components/BackButton'
 import { InviteBanner } from '@components/InviteBanner'
 import { useSwipe } from '../../hooks/useSwipe'
 import { Logo } from '@components/Logo'
+import api from '../../libs/api'
+import { useAuth } from '../../contexts/AuthContext'
+import { useRoute } from '@react-navigation/native'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -19,20 +22,21 @@ interface ProfileProps {
 type ProfileStatus = 'mine' | 'friend' | 'user' | 'friend_request'
 
 export function Profile({ navigation }: ProfileProps) {
-  const [isLogged] = useState(false)
+  const { user } = useAuth()
+  const route = useRoute<ProfileScreenRouteProp>()
+
+  console.log(user)
+
+  const isLogged = user !== undefined
+
   const [profileStatus, setProfileStatus] = useState<ProfileStatus>('mine')
+  const [userStatistics, setUserStatistics] = useState<any>()
   const { onTouchStart, onTouchEnd } = useSwipe({
     onSwipeLeft,
     rangeOffset: 6,
   })
 
   const theme = useTheme()
-
-  function onSwipeLeft() {
-    if (profileStatus === 'mine') {
-      navigation.navigate('Friends')
-    }
-  }
 
   const profileActions = [
     {
@@ -49,6 +53,39 @@ export function Profile({ navigation }: ProfileProps) {
       color: theme.COLORS.RED,
     },
   ]
+
+  function onSwipeLeft() {
+    if (profileStatus === 'mine') {
+      navigation.navigate('Friends')
+    }
+  }
+
+  async function getProfile(user_id: any) {
+    try {
+      const profileResponse = await api.get(`/users/${user_id}`)
+
+      const isMine = profileResponse.data.user.id === user.id
+
+      setUserStatistics(profileResponse.data.statistics)
+      if (!isMine) {
+        if (profileResponse.data.is_friend) {
+          setProfileStatus('friend')
+        } else if (route.params?.isFriendRequest) {
+          setProfileStatus('friend_request')
+        } else {
+          setProfileStatus('user')
+        }
+      }
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    if (route.params) {
+      getProfile(route.params.userId)
+    } else {
+      getProfile(user.id)
+    }
+  }, [])
 
   return (
     <>
@@ -140,6 +177,11 @@ export function Profile({ navigation }: ProfileProps) {
               </S.FooterTextTouchable>
             </S.FooterTextContainer>
           )}
+          <CustomButton
+            text="Fazer request"
+            variant="default"
+            onPress={() => getProfile('1')}
+          />
         </ScrollContainer>
       )}
     </>

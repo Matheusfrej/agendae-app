@@ -16,7 +16,12 @@ type StackParamList = {
     month: string
     year: number
   }
-  Profile: undefined
+  Profile:
+    | undefined
+    | {
+        userId: string
+        isFriendRequest: boolean
+      }
   AddFriend: undefined
   Report: undefined
   Blocked: undefined
@@ -32,3 +37,5 @@ export type CreateUpdateSpinScreenRouteProp = RouteProp<
   StackParamList,
   'CreateUpdateSpin'
 >
+
+export type ProfileScreenRouteProp = RouteProp<StackParamList, 'Profile'>
