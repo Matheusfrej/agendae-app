@@ -83,7 +83,7 @@ export function Profile({ navigation }: ProfileProps) {
   useEffect(() => {
     if (route.params) {
       getProfile(route.params.userId)
-    } else {
+    } else if (isLogged) {
       getProfile(user.id)
     }
   }, [])
@@ -178,11 +178,6 @@ export function Profile({ navigation }: ProfileProps) {
               </S.FooterTextTouchable>
             </S.FooterTextContainer>
           )}
-          <CustomButton
-            text="Fazer request"
-            variant="default"
-            onPress={() => getProfile('1')}
-          />
         </ScrollContainer>
       )}
     </>

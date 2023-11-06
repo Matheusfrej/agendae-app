@@ -16,6 +16,9 @@ import {
   storageUserRemove,
   storageUserSave,
 } from '@storage/storageUser'
+import { SnackBar, setSnackBarType } from 'react-native-simple-snackbar'
+import { useTheme } from 'styled-components'
+import { AppError } from '@utils/AppError'
 
 interface AuthContextProviderProps {
   children: ReactNode
@@ -23,19 +26,34 @@ interface AuthContextProviderProps {
 
 interface AuthContextType {
   user: any
-  signIn: (email: string, password: string) => Promise<void>
+  signIn: (email: string, password: string) => Promise<boolean>
   signOut: () => Promise<void>
+  setSnackbarStatus: (text: string, isSuccess: boolean) => void
 }
 
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
+  const [status, setStatus] = useState<setSnackBarType | undefined>()
   const [user, setUser] = useState<any>()
+  const theme = useTheme()
 
   async function userAndTokenUpdate(user: any, token: string) {
     api.defaults.headers.common.Authorization = token
 
     setUser(user)
+  }
+
+  const setSnackbarStatus = (text: string, isSuccess: boolean) => {
+    setStatus({
+      content: text,
+      backgroundColor: isSuccess ? theme.COLORS.BLUE : theme.COLORS.RED,
+      color: theme.COLORS.WHITE,
+      fontSize: 20,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      position: 'bottom',
+    })
   }
 
   async function storageUserAndTokenSave(
@@ -49,10 +67,13 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   async function signIn(email: string, password: string) {
     try {
+      console.log('chegou aq')
+
       const { data, headers } = await api.post('/users/login', {
         email,
         password,
       })
+      console.log(data)
 
       const refreshToken = headers['set-cookie']?.[0]
         .split('; ')[0]
@@ -62,8 +83,19 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         setUser(user)
         storageUserAndTokenSave(data.user, data.token, refreshToken)
         userAndTokenUpdate(data.user, data.token)
+        setSnackbarStatus('Logado com sucesso!', true)
+        return true
       }
-    } catch (error) {}
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível entrar. Tente novamente mais tarde.'
+      setSnackbarStatus(title, false)
+      return false
+    }
+    return false
   }
 
   async function signOut() {
@@ -82,9 +114,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   useEffect(() => {
-    signOut()
     loadUserData()
-    signIn('matheusfrej@gmail.com', '123456')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -103,9 +133,11 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         user,
         signIn,
         signOut,
+        setSnackbarStatus,
       }}
     >
       {children}
+      <SnackBar setSnackBar={status} />
     </AuthContext.Provider>
   )
 }

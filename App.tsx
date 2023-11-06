@@ -17,10 +17,10 @@ export default function App() {
   const [fontsLoaded] = useFonts({ Overpass_400Regular, Overpass_700Bold })
 
   return (
-    <AuthContextProvider>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <AuthContextProvider>
         {fontsLoaded ? <Routes /> : <ActivityIndicator />}
-      </ThemeProvider>
-    </AuthContextProvider>
+      </AuthContextProvider>
+    </ThemeProvider>
   )
 }

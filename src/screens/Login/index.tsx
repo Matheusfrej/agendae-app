@@ -6,16 +6,31 @@ import { useTheme } from 'styled-components'
 import { NavigationType } from 'src/@types/navigation'
 import { Label } from '@components/Label'
 import { Logo } from '@components/Logo'
+import { useAuth } from '../../contexts/AuthContext'
 
 interface LoginProps {
   navigation: NavigationType
 }
 
 export function Login({ navigation }: LoginProps) {
+  const { signIn } = useAuth()
+
   const theme = useTheme()
 
   const navigateToRegister = () => {
     navigation.navigate('Register')
+  }
+
+  const handleSignIn = async () => {
+    console.log('clicou')
+
+    const success = await signIn('matheusfrej@gmail.com', '123456')
+    if (success) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Profile' }],
+      })
+    }
   }
 
   return (
@@ -51,7 +66,12 @@ export function Login({ navigation }: LoginProps) {
             </S.Touchable>
           </S.Register>
           <S.ButtonContainer>
-            <CustomButton fontSize={16} text="Entrar" variant="default" />
+            <CustomButton
+              fontSize={16}
+              text="Entrar"
+              variant="default"
+              onPress={() => handleSignIn()}
+            />
           </S.ButtonContainer>
         </S.Content>
       </S.Container>
