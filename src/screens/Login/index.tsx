@@ -7,6 +7,7 @@ import { NavigationType } from 'src/@types/navigation'
 import { Label } from '@components/Label'
 import { Logo } from '@components/Logo'
 import { useAuth } from '../../contexts/AuthContext'
+import { BackButton } from '@components/BackButton'
 
 interface LoginProps {
   navigation: NavigationType
@@ -18,7 +19,7 @@ export function Login({ navigation }: LoginProps) {
   const theme = useTheme()
 
   const navigateToRegister = () => {
-    navigation.navigate('Register')
+    navigation.navigate('AuthStack', { screen: 'Register' })
   }
 
   const handleSignIn = async () => {
@@ -26,15 +27,13 @@ export function Login({ navigation }: LoginProps) {
 
     const success = await signIn('matheusfrej@gmail.com', '123456')
     if (success) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Profile' }],
-      })
+      navigation.navigate('Profile')
     }
   }
 
   return (
     <ScrollContainer>
+      <BackButton />
       <S.Container>
         <Logo style={{ marginBottom: 50 }} />
         <S.Title>Login</S.Title>

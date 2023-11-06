@@ -22,10 +22,8 @@ interface ProfileProps {
 type ProfileStatus = 'mine' | 'friend' | 'user' | 'friend_request'
 
 export function Profile({ navigation }: ProfileProps) {
-  const { user, signOut } = useAuth()
+  const { user, isLogged, signOut } = useAuth()
   const route = useRoute<ProfileScreenRouteProp>()
-
-  const isLogged = user !== undefined
 
   const [profileStatus, setProfileStatus] = useState<ProfileStatus>('mine')
   const [userStatistics, setUserStatistics] = useState<any>()
@@ -101,12 +99,16 @@ export function Profile({ navigation }: ProfileProps) {
               <CustomButton
                 text="Login"
                 variant="default"
-                onPress={() => navigation.navigate('Login')}
+                onPress={() =>
+                  navigation.navigate('AuthStack', { screen: 'Login' })
+                }
               />
               <CustomButton
                 text="Cadastrar"
                 variant="default"
-                onPress={() => navigation.navigate('Register')}
+                onPress={() =>
+                  navigation.navigate('AuthStack', { screen: 'Register' })
+                }
               />
             </S.Buttons>
           </S.NotLoggedContainer>

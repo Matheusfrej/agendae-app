@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native'
 import { NavigationType } from 'src/@types/navigation'
 import { Label } from '@components/Label'
 import { Logo } from '@components/Logo'
+import { BackButton } from '@components/BackButton'
 
 export function Register() {
   const theme = useTheme()
@@ -14,11 +15,12 @@ export function Register() {
   const navigation = useNavigation<NavigationType>()
 
   const navigateToLogin = () => {
-    navigation.navigate('Login')
+    navigation.navigate('AuthStack', { screen: 'Login' })
   }
 
   return (
     <ScrollContainer>
+      <BackButton />
       <S.Container>
         <Logo style={{ paddingBottom: 50 }} />
 

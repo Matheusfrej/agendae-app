@@ -8,8 +8,9 @@ type StackParamList = {
   }
   Notifications: undefined
   Spin: undefined
-  Register: undefined
-  Login: undefined
+  AuthStack: {
+    screen: 'Login' | 'Register'
+  }
   HomeCalendar: undefined
   SpinsOfDay: {
     day: string

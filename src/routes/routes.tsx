@@ -27,6 +27,28 @@ import { Report } from '@screens/Report'
 const Tab = createBottomTabNavigator()
 const { Screen, Navigator } = createNativeStackNavigator()
 
+function AuthStack() {
+  return (
+    <Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Screen
+        name="Register"
+        component={Register}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+
+      <Screen
+        name="Login"
+        component={Login}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+    </Navigator>
+  )
+}
+
 function HomeListStack() {
   return (
     <Navigator
@@ -57,14 +79,6 @@ function HomeListStack() {
         component={Register}
         options={{ animation: 'fade_from_bottom' }}
       />
-
-      <Screen
-        name="Login"
-        component={Login}
-        options={{ animation: 'fade_from_bottom' }}
-      />
-
-      <Screen name="Profile" component={Profile} />
     </Navigator>
   )
 }
@@ -99,18 +113,6 @@ function HomeCalendarStack() {
         options={{ animation: 'fade_from_bottom' }}
       />
 
-      <Screen
-        name="Login"
-        component={Login}
-        options={{ animation: 'fade_from_bottom' }}
-      />
-
-      <Screen
-        name="Register"
-        component={Register}
-        options={{ animation: 'fade_from_bottom' }}
-      />
-
       <Screen name="Profile" component={Profile} />
     </Navigator>
   )
@@ -124,18 +126,6 @@ function ProfileStack() {
       }}
     >
       <Screen name="Profile" component={Profile} />
-
-      <Screen
-        name="Login"
-        component={Login}
-        options={{ animation: 'fade_from_bottom' }}
-      />
-
-      <Screen
-        name="Register"
-        component={Register}
-        options={{ animation: 'fade_from_bottom' }}
-      />
 
       <Screen
         name="Report"
@@ -320,5 +310,18 @@ export function TabRoutes() {
         }}
       />
     </Tab.Navigator>
+  )
+}
+
+export function Stack() {
+  return (
+    <Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Screen name="TabRoutes" component={TabRoutes} />
+      <Screen name="AuthStack" component={AuthStack} />
+    </Navigator>
   )
 }

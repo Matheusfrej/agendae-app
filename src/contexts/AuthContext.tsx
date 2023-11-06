@@ -26,6 +26,7 @@ interface AuthContextProviderProps {
 
 interface AuthContextType {
   user: any
+  isLogged: boolean
   signIn: (email: string, password: string) => Promise<boolean>
   signOut: () => Promise<void>
   setSnackbarStatus: (text: string, isSuccess: boolean) => void
@@ -37,6 +38,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [status, setStatus] = useState<setSnackBarType | undefined>()
   const [user, setUser] = useState<any>()
   const theme = useTheme()
+  const isLogged = user !== undefined
 
   async function userAndTokenUpdate(user: any, token: string) {
     api.defaults.headers.common.Authorization = token
@@ -131,6 +133,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     <AuthContext.Provider
       value={{
         user,
+        isLogged,
         signIn,
         signOut,
         setSnackbarStatus,
