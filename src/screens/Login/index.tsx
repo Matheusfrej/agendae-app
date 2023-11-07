@@ -8,13 +8,36 @@ import { Label } from '@components/Label'
 import { Logo } from '@components/Logo'
 import { useAuth } from '../../contexts/AuthContext'
 import { BackButton } from '@components/BackButton'
+import { Controller, useForm } from 'react-hook-form'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 interface LoginProps {
   navigation: NavigationType
 }
 
+const loginFormSchema = z.object({
+  email: z
+    .string({ required_error: 'Informe um email' })
+    .email({ message: 'Informe um email válido' }),
+  password: z
+    .string({ required_error: 'Senha é obrigatório' })
+    .min(6, { message: 'A senha deve conter ao menos 6 caracteres' }),
+})
+
+type LoginFormInputs = z.infer<typeof loginFormSchema>
+
 export function Login({ navigation }: LoginProps) {
   const { signIn } = useAuth()
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<LoginFormInputs>({
+    resolver: zodResolver(loginFormSchema),
+  })
 
   const theme = useTheme()
 
@@ -22,12 +45,11 @@ export function Login({ navigation }: LoginProps) {
     navigation.navigate('AuthStack', { screen: 'Register' })
   }
 
-  const handleSignIn = async () => {
-    console.log('clicou')
-
-    const success = await signIn('matheusfrej@gmail.com', '123456')
+  const handleSignIn = async (data: LoginFormInputs) => {
+    const success = await signIn(data.email, data.password)
     if (success) {
       navigation.navigate('Profile')
+      reset()
     }
   }
 
@@ -41,20 +63,56 @@ export function Login({ navigation }: LoginProps) {
           <S.Form>
             <S.InputSection>
               <Label text="Email" />
-              <S.TextInput
-                inputMode="email"
-                autoCapitalize="none"
-                selectionColor={theme.COLORS.BLUE}
-                cursorColor={theme.COLORS.GRAY_700}
+              <Controller
+                name="email"
+                control={control}
+                render={({
+                  field: { onChange, value },
+                  fieldState: { error },
+                }) => {
+                  return (
+                    <>
+                      <S.TextInput
+                        inputMode="email"
+                        autoCapitalize="none"
+                        value={value}
+                        onChangeText={onChange}
+                        selectionColor={theme.COLORS.BLUE}
+                        cursorColor={theme.COLORS.GRAY_700}
+                      />
+                      {error && error.message !== '' && (
+                        <S.ErrorMessageText>{error.message}</S.ErrorMessageText>
+                      )}
+                    </>
+                  )
+                }}
               />
             </S.InputSection>
             <S.InputSection>
               <Label text="Senha" />
-              <S.TextInput
-                autoCapitalize="none"
-                selectionColor={theme.COLORS.BLUE}
-                cursorColor={theme.COLORS.GRAY_700}
-                secureTextEntry
+              <Controller
+                name="password"
+                control={control}
+                render={({
+                  field: { onChange, value },
+                  fieldState: { error },
+                }) => {
+                  return (
+                    <>
+                      <S.TextInput
+                        autoCapitalize="none"
+                        selectionColor={theme.COLORS.BLUE}
+                        cursorColor={theme.COLORS.GRAY_700}
+                        value={value}
+                        onChangeText={onChange}
+                        secureTextEntry
+                      />
+                      {error && error.message !== '' && (
+                        <S.ErrorMessageText>{error.message}</S.ErrorMessageText>
+                      )}
+                    </>
+                  )
+                }}
               />
             </S.InputSection>
           </S.Form>
@@ -69,7 +127,7 @@ export function Login({ navigation }: LoginProps) {
               fontSize={16}
               text="Entrar"
               variant="default"
-              onPress={() => handleSignIn()}
+              onPress={handleSubmit(handleSignIn)}
             />
           </S.ButtonContainer>
         </S.Content>

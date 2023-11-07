@@ -13,6 +13,13 @@ export const Title = styled.Text`
   margin-bottom: 10%;
 `
 
+export const ErrorMessageText = styled.Text`
+  font-size: 12px;
+  color: ${(props) => props.theme.COLORS.RED};
+  margin-top: 4px;
+  font-weight: bold;
+`
+
 export const Content = styled.View`
   width: 80%;
 `
