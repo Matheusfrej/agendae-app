@@ -8,6 +8,7 @@ import { NavigationType } from 'src/@types/navigation'
 import { Label } from '@components/Label'
 import { Logo } from '@components/Logo'
 import { BackButton } from '@components/BackButton'
+import { CustomInput } from '@components/CustomInput'
 
 export function Register() {
   const theme = useTheme()
@@ -27,13 +28,14 @@ export function Register() {
         <S.Title>Cadastre-se</S.Title>
         <S.Content>
           <S.Form>
-            <S.InputSection>
-              <Label text="Nome" isRequired />
-              <S.TextInput
-                selectionColor={theme.COLORS.BLUE}
-                cursorColor={theme.COLORS.GRAY_700}
-              />
-            </S.InputSection>
+            <CustomInput
+              isRequired
+              // value={value}
+              // onChangeText={onChange}
+              labelText="Nome"
+              autoCapitalize="words"
+              // errorMessage={error?.message}
+            />
             <S.InputSection>
               <Label text="Apelido" />
               <S.TextInput

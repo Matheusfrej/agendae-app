@@ -4,13 +4,13 @@ import { ScrollContainer } from '../../components/ScrollContainer'
 import * as S from './styles'
 import { useTheme } from 'styled-components'
 import { NavigationType } from 'src/@types/navigation'
-import { Label } from '@components/Label'
 import { Logo } from '@components/Logo'
 import { useAuth } from '../../contexts/AuthContext'
 import { BackButton } from '@components/BackButton'
 import { Controller, useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { CustomInput } from '@components/CustomInput'
 
 interface LoginProps {
   navigation: NavigationType
@@ -21,7 +21,7 @@ const loginFormSchema = z.object({
     .string({ required_error: 'Informe um email' })
     .email({ message: 'Informe um email válido' }),
   password: z
-    .string({ required_error: 'Senha é obrigatório' })
+    .string({ required_error: 'Informe uma senha' })
     .min(6, { message: 'A senha deve conter ao menos 6 caracteres' }),
 })
 
@@ -35,6 +35,7 @@ export function Login({ navigation }: LoginProps) {
     handleSubmit,
     reset,
     formState: { errors },
+    resetField,
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginFormSchema),
   })
@@ -50,6 +51,8 @@ export function Login({ navigation }: LoginProps) {
     if (success) {
       navigation.navigate('Profile')
       reset()
+    } else {
+      resetField('password')
     }
   }
 
@@ -62,7 +65,6 @@ export function Login({ navigation }: LoginProps) {
         <S.Content>
           <S.Form>
             <S.InputSection>
-              <Label text="Email" />
               <Controller
                 name="email"
                 control={control}
@@ -71,25 +73,18 @@ export function Login({ navigation }: LoginProps) {
                   fieldState: { error },
                 }) => {
                   return (
-                    <>
-                      <S.TextInput
-                        inputMode="email"
-                        autoCapitalize="none"
-                        value={value}
-                        onChangeText={onChange}
-                        selectionColor={theme.COLORS.BLUE}
-                        cursorColor={theme.COLORS.GRAY_700}
-                      />
-                      {error && error.message !== '' && (
-                        <S.ErrorMessageText>{error.message}</S.ErrorMessageText>
-                      )}
-                    </>
+                    <CustomInput
+                      inputMode="email"
+                      value={value}
+                      onChangeText={onChange}
+                      labelText="Email"
+                      errorMessage={error?.message}
+                    />
                   )
                 }}
               />
             </S.InputSection>
             <S.InputSection>
-              <Label text="Senha" />
               <Controller
                 name="password"
                 control={control}
@@ -98,19 +93,13 @@ export function Login({ navigation }: LoginProps) {
                   fieldState: { error },
                 }) => {
                   return (
-                    <>
-                      <S.TextInput
-                        autoCapitalize="none"
-                        selectionColor={theme.COLORS.BLUE}
-                        cursorColor={theme.COLORS.GRAY_700}
-                        value={value}
-                        onChangeText={onChange}
-                        secureTextEntry
-                      />
-                      {error && error.message !== '' && (
-                        <S.ErrorMessageText>{error.message}</S.ErrorMessageText>
-                      )}
-                    </>
+                    <CustomInput
+                      value={value}
+                      onChangeText={onChange}
+                      labelText="Senha"
+                      secureTextEntry
+                      errorMessage={error?.message}
+                    />
                   )
                 }}
               />
