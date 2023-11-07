@@ -2,7 +2,6 @@ import { CustomButton } from '@components/CustomButton'
 import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
-import { useTheme } from 'styled-components'
 import { NavigationType } from 'src/@types/navigation'
 import { Logo } from '@components/Logo'
 import { useAuth } from '../../contexts/AuthContext'
@@ -30,17 +29,11 @@ type LoginFormInputs = z.infer<typeof loginFormSchema>
 export function Login({ navigation }: LoginProps) {
   const { signIn } = useAuth()
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-    resetField,
-  } = useForm<LoginFormInputs>({
-    resolver: zodResolver(loginFormSchema),
-  })
-
-  const theme = useTheme()
+  const { control, handleSubmit, reset, resetField } = useForm<LoginFormInputs>(
+    {
+      resolver: zodResolver(loginFormSchema),
+    },
+  )
 
   const navigateToRegister = () => {
     navigation.navigate('AuthStack', { screen: 'Register' })

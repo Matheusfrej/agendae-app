@@ -24,10 +24,18 @@ interface AuthContextProviderProps {
   children: ReactNode
 }
 
+type RegisterRequestData = {
+  name: string
+  nickname?: string
+  email: string
+  password: string
+}
+
 interface AuthContextType {
   user: any
   isLogged: boolean
   signIn: (email: string, password: string) => Promise<boolean>
+  register: (data: RegisterRequestData) => Promise<boolean>
   signOut: () => Promise<void>
   setSnackbarStatus: (text: string, isSuccess: boolean) => void
 }
@@ -69,13 +77,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   async function signIn(email: string, password: string) {
     try {
-      console.log('chegou aq')
-
       const { data, headers } = await api.post('/users/login', {
         email,
         password,
       })
-      console.log(data)
 
       const refreshToken = headers['set-cookie']?.[0]
         .split('; ')[0]
@@ -98,6 +103,23 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       return false
     }
     return false
+  }
+
+  async function register(data: RegisterRequestData) {
+    try {
+      await api.post('/users', data)
+
+      setSnackbarStatus('Cadastrado com sucesso!', true)
+      return true
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível se cadastrar. Tente novamente mais tarde.'
+      setSnackbarStatus(title, false)
+      return false
+    }
   }
 
   async function signOut() {
@@ -135,6 +157,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         user,
         isLogged,
         signIn,
+        register,
         signOut,
         setSnackbarStatus,
       }}

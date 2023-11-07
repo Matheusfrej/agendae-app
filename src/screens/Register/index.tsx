@@ -2,21 +2,59 @@ import { CustomButton } from '@components/CustomButton'
 import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
-import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationType } from 'src/@types/navigation'
-import { Label } from '@components/Label'
 import { Logo } from '@components/Logo'
 import { BackButton } from '@components/BackButton'
+import * as z from 'zod'
 import { CustomInput } from '@components/CustomInput'
+import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuth } from '../../contexts/AuthContext'
+
+const registerFormSchema = z
+  .object({
+    name: z
+      .string({ required_error: 'Nome é obrigatório' })
+      .min(1)
+      .max(100, 'Tamanho máximo atingido'),
+    nickname: z.string().min(1).max(100).optional(),
+    email: z
+      .string({ required_error: 'Email é obrigatório' })
+      .email({ message: 'Informe um email válido' }),
+    password: z
+      .string({ required_error: 'Senha é obrigatório' })
+      .min(6, { message: 'A senha deve conter 6 caracteres' })
+      .refine((value) => /^(?=.*[a-zA-Z])(?=.*\d).+$/.test(value), {
+        message: 'A senha deve conter letras e números',
+      }),
+    confirmPassword: z.string({
+      required_error: 'Confirmar a senha é obrigatório',
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'As senhas não são iguais',
+    path: ['confirmPassword'],
+  })
+
+type registerFormInputs = z.infer<typeof registerFormSchema>
 
 export function Register() {
-  const theme = useTheme()
+  const { register } = useAuth()
 
   const navigation = useNavigation<NavigationType>()
 
-  const navigateToLogin = () => {
-    navigation.navigate('AuthStack', { screen: 'Login' })
+  const { control, handleSubmit, reset, resetField } =
+    useForm<registerFormInputs>({
+      resolver: zodResolver(registerFormSchema),
+    })
+
+  const handleRegister = async (data: registerFormInputs) => {
+    const success = await register(data)
+    if (success) {
+      navigation.navigate('AuthStack', { screen: 'Login' })
+      reset()
+    }
   }
 
   return (
@@ -28,53 +66,108 @@ export function Register() {
         <S.Title>Cadastre-se</S.Title>
         <S.Content>
           <S.Form>
-            <CustomInput
-              isRequired
-              // value={value}
-              // onChangeText={onChange}
-              labelText="Nome"
-              autoCapitalize="words"
-              // errorMessage={error?.message}
+            <Controller
+              name="name"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => {
+                return (
+                  <CustomInput
+                    isRequired
+                    value={value}
+                    onChangeText={onChange}
+                    labelText="Nome"
+                    autoCapitalize="words"
+                    errorMessage={error?.message}
+                  />
+                )
+              }}
             />
-            <S.InputSection>
-              <Label text="Apelido" />
-              <S.TextInput
-                selectionColor={theme.COLORS.BLUE}
-                cursorColor={theme.COLORS.GRAY_700}
-              />
-            </S.InputSection>
-            <S.InputSection>
-              <Label text="Email" isRequired />
-
-              <S.TextInput
-                inputMode="email"
-                autoCapitalize="none"
-                selectionColor={theme.COLORS.BLUE}
-                cursorColor={theme.COLORS.GRAY_700}
-              />
-            </S.InputSection>
-            <S.InputSection>
-              <Label text="Senha" isRequired />
-              <S.TextInput
-                autoCapitalize="none"
-                selectionColor={theme.COLORS.BLUE}
-                cursorColor={theme.COLORS.GRAY_700}
-                secureTextEntry
-              />
-            </S.InputSection>
-            <S.InputSection>
-              <Label text="Confirmar senha" isRequired />
-              <S.TextInput
-                autoCapitalize="none"
-                selectionColor={theme.COLORS.BLUE}
-                cursorColor={theme.COLORS.GRAY_700}
-                secureTextEntry
-              />
-            </S.InputSection>
+            <Controller
+              name="nickname"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => {
+                return (
+                  <CustomInput
+                    value={value}
+                    onChangeText={onChange}
+                    labelText="Apelido"
+                    autoCapitalize="sentences"
+                    errorMessage={error?.message}
+                  />
+                )
+              }}
+            />
+            <Controller
+              name="email"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => {
+                return (
+                  <CustomInput
+                    isRequired
+                    value={value}
+                    onChangeText={onChange}
+                    labelText="Email"
+                    inputMode="email"
+                    errorMessage={error?.message}
+                  />
+                )
+              }}
+            />
+            <Controller
+              name="password"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => {
+                return (
+                  <CustomInput
+                    isRequired
+                    value={value}
+                    onChangeText={onChange}
+                    labelText="Senha"
+                    secureTextEntry
+                    errorMessage={error?.message}
+                  />
+                )
+              }}
+            />
+            <Controller
+              name="confirmPassword"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => {
+                return (
+                  <CustomInput
+                    isRequired
+                    value={value}
+                    onChangeText={onChange}
+                    labelText="Confirmar senha"
+                    secureTextEntry
+                    errorMessage={error?.message}
+                  />
+                )
+              }}
+            />
           </S.Form>
           <S.Login>
             <S.Text>Já possui uma conta?</S.Text>
-            <S.Touchable onPress={() => navigateToLogin()}>
+            <S.Touchable
+              onPress={() =>
+                navigation.navigate('AuthStack', { screen: 'Login' })
+              }
+            >
               <S.Span>Faça login aqui</S.Span>
             </S.Touchable>
           </S.Login>
@@ -83,7 +176,7 @@ export function Register() {
               fontSize={16}
               text="Cadastrar"
               variant="default"
-              onPress={() => navigateToLogin()}
+              onPress={handleSubmit(handleRegister)}
             />
           </S.ButtonContainer>
         </S.Content>

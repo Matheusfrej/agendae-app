@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import * as S from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
@@ -47,23 +47,6 @@ export function HomeList({ navigation }: HomeListProps) {
       background_color: 'purple',
     },
   ]
-
-  // const testRequest = async () => {
-  //   try {
-  //     const response = await api.get('/users/user-id/1gmail.com')
-  //     setId(response.data.user_id)
-  //   } catch (error) {
-  //     if (error instanceof AppError) {
-  //       console.log(error.message)
-  //     } else {
-  //       console.log('Não foi possível fazer a requisição')
-  //     }
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   testRequest()
-  // }, [])
 
   return (
     <>
