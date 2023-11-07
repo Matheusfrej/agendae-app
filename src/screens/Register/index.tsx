@@ -11,6 +11,8 @@ import { CustomInput } from '@components/CustomInput'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '../../contexts/AuthContext'
+import { AppError } from '@utils/AppError'
+import api from '../../libs/api'
 
 const registerFormSchema = z
   .object({
@@ -39,15 +41,38 @@ const registerFormSchema = z
 
 type registerFormInputs = z.infer<typeof registerFormSchema>
 
+type RegisterRequestData = {
+  name: string
+  nickname?: string
+  email: string
+  password: string
+}
+
 export function Register() {
-  const { register } = useAuth()
+  const { setSnackbarStatus } = useAuth()
 
   const navigation = useNavigation<NavigationType>()
 
-  const { control, handleSubmit, reset, resetField } =
-    useForm<registerFormInputs>({
-      resolver: zodResolver(registerFormSchema),
-    })
+  const { control, handleSubmit, reset } = useForm<registerFormInputs>({
+    resolver: zodResolver(registerFormSchema),
+  })
+
+  async function register(data: RegisterRequestData) {
+    try {
+      await api.post('/users', data)
+
+      setSnackbarStatus('Cadastrado com sucesso!', true)
+      return true
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível se cadastrar. Tente novamente mais tarde.'
+      setSnackbarStatus(title, false)
+      return false
+    }
+  }
 
   const handleRegister = async (data: registerFormInputs) => {
     const success = await register(data)
