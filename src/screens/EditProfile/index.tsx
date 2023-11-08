@@ -6,6 +6,8 @@ import { CustomButton } from '@components/CustomButton'
 import { NavigationType } from 'src/@types/navigation'
 import { ProfileImage } from '@components/ProfileImage'
 
+import { useState } from 'react'
+
 import * as z from 'zod'
 import { CustomInput } from '@components/CustomInput'
 import { Controller, useForm } from 'react-hook-form'
@@ -13,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '../../contexts/AuthContext'
 import api from '../../libs/api'
 import { AppError } from '@utils/AppError'
+import { CustomModal } from '@components/CustomModal'
 
 interface EditProfileProps {
   navigation: NavigationType
@@ -26,19 +29,19 @@ const editProfileFormSchema = z.object({
 type editProfileFormInputs = z.infer<typeof editProfileFormSchema>
 
 export function EditProfile({ navigation }: EditProfileProps) {
-  const { setSnackbarStatus } = useAuth()
+  const { setSnackbarStatus, signOut } = useAuth()
 
   const { control, handleSubmit, reset } = useForm<editProfileFormInputs>({
     resolver: zodResolver(editProfileFormSchema),
   })
 
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+
   const editProfile = async (data: editProfileFormInputs) => {
     try {
-      const response = await api.put('/users', data)
+      await api.put('/users', data)
 
       setSnackbarStatus('Perfil editado com sucesso!', true)
-      console.log(response.data)
-
       return true
     } catch (error) {
       const isAppError = error instanceof AppError
@@ -51,12 +54,43 @@ export function EditProfile({ navigation }: EditProfileProps) {
     }
   }
 
+  const deleteProfile = async () => {
+    try {
+      await api.delete('/users')
+
+      return true
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível excluir sua conta. Tente novamente mais tarde.'
+      setSnackbarStatus(title, false)
+      return false
+    }
+  }
+
   const handleEditProfile = async (data: editProfileFormInputs) => {
     const success = await editProfile(data)
     if (success) {
       navigation.navigate('Profile')
       reset()
     }
+  }
+
+  const toggleModal = () => {
+    setIsModalVisible(true)
+  }
+
+  const onModalPress = async (confirm: boolean) => {
+    if (confirm) {
+      const success = await deleteProfile()
+      if (success) {
+        navigation.navigate('Profile')
+        signOut()
+      }
+    }
+    setIsModalVisible(false)
   }
 
   return (
@@ -108,9 +142,16 @@ export function EditProfile({ navigation }: EditProfileProps) {
           />
         </S.Form>
       </S.Container>
-      <S.TextContainer>
+      <S.TextContainer onPress={() => toggleModal()}>
         <S.Text>Excluir minha conta</S.Text>
       </S.TextContainer>
+      <CustomModal
+        text="Tem certeza que deseja excluir sua conta?"
+        isVisible={isModalVisible}
+        buttonConfirmText="Excluir"
+        onButtonPress={onModalPress}
+        warningText="Essa ação é irreversível"
+      />
     </ScrollContainer>
   )
 }
