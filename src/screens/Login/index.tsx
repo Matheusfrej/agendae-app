@@ -19,9 +19,7 @@ const loginFormSchema = z.object({
   email: z
     .string({ required_error: 'Informe um email' })
     .email({ message: 'Informe um email válido' }),
-  password: z
-    .string({ required_error: 'Informe uma senha' })
-    .min(6, { message: 'A senha deve conter ao menos 6 caracteres' }),
+  password: z.string({ required_error: 'Informe uma senha' }),
 })
 
 type LoginFormInputs = z.infer<typeof loginFormSchema>

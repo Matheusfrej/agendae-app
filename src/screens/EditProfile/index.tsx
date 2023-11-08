@@ -6,7 +6,7 @@ import { CustomButton } from '@components/CustomButton'
 import { NavigationType } from 'src/@types/navigation'
 import { ProfileImage } from '@components/ProfileImage'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import * as z from 'zod'
 import { CustomInput } from '@components/CustomInput'
@@ -22,25 +22,32 @@ interface EditProfileProps {
 }
 
 const editProfileFormSchema = z.object({
-  name: z.string().min(1).max(100, 'Tamanho máximo atingido').optional(),
-  nickname: z.string().min(1).max(100).optional(),
+  name: z
+    .string({ required_error: 'Nome é obrigatório' })
+    .min(1, { message: 'Nome é obrigatório' })
+    .max(100, 'Tamanho máximo atingido'),
+  nickname: z.string().max(100).optional(),
 })
 
 type editProfileFormInputs = z.infer<typeof editProfileFormSchema>
 
 export function EditProfile({ navigation }: EditProfileProps) {
-  const { setSnackbarStatus, signOut } = useAuth()
+  const { setSnackbarStatus, signOut, user, userUpdate } = useAuth()
 
-  const { control, handleSubmit, reset } = useForm<editProfileFormInputs>({
-    resolver: zodResolver(editProfileFormSchema),
-  })
+  const { control, handleSubmit, reset, setValue } =
+    useForm<editProfileFormInputs>({
+      resolver: zodResolver(editProfileFormSchema),
+    })
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
   const editProfile = async (data: editProfileFormInputs) => {
     try {
-      await api.put('/users', data)
+      console.log(data)
 
+      const response = await api.put('/users', data)
+
+      userUpdate(response.data.user)
       setSnackbarStatus('Perfil editado com sucesso!', true)
       return true
     } catch (error) {
@@ -92,6 +99,11 @@ export function EditProfile({ navigation }: EditProfileProps) {
     }
     setIsModalVisible(false)
   }
+
+  useEffect(() => {
+    setValue('name', user.name)
+    setValue('nickname', user.nickname)
+  }, [user, setValue])
 
   return (
     <ScrollContainer>

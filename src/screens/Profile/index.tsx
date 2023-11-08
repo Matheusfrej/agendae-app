@@ -66,6 +66,8 @@ export function Profile({ navigation }: ProfileProps) {
       const isMine = profileResponse.data.user.id === user.id
 
       setUserStatistics(profileResponse.data.statistics)
+      console.log(profileResponse.data.statistics)
+
       if (!isMine) {
         if (profileResponse.data.is_friend) {
           setProfileStatus('friend')
@@ -88,7 +90,7 @@ export function Profile({ navigation }: ProfileProps) {
 
   return (
     <>
-      {!isLogged ? (
+      {!isLogged || !userStatistics ? (
         <ScrollContainer>
           <S.NotLoggedContainer>
             <Logo style={{ marginBottom: 50 }} />
@@ -150,20 +152,23 @@ export function Profile({ navigation }: ProfileProps) {
             <S.ProfileImageAndName>
               <ProfileImage size={100} />
               <S.Text>
-                Matheus Frej <S.Bold>(Frej)</S.Bold>
+                {user.name}{' '}
+                {user.nickname && <S.Bold>({user.nickname})</S.Bold>}
               </S.Text>
             </S.ProfileImageAndName>
             <S.StatisticsContainer>
               <S.Statistic>
-                <S.Text variant="purple">8</S.Text>
+                <S.Text variant="purple">
+                  {userStatistics.previous_spins}
+                </S.Text>
                 <S.Text fontSize={18}>rolês passados</S.Text>
               </S.Statistic>
               <S.Statistic>
-                <S.Text variant="purple">3</S.Text>
+                <S.Text variant="purple">{userStatistics.invited_spins}</S.Text>
                 <S.Text fontSize={18}>rolês convidados</S.Text>
               </S.Statistic>
               <S.Statistic>
-                <S.Text variant="purple">20</S.Text>
+                <S.Text variant="purple">{userStatistics.total_spins}</S.Text>
                 <S.Text fontSize={18}>rolês organizados</S.Text>
               </S.Statistic>
             </S.StatisticsContainer>

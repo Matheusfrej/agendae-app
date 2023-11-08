@@ -30,6 +30,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<boolean>
   signOut: () => Promise<void>
   setSnackbarStatus: (text: string, isSuccess: boolean) => void
+  userUpdate: (user: any) => Promise<void>
 }
 
 export const AuthContext = createContext({} as AuthContextType)
@@ -39,6 +40,11 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<any>()
   const theme = useTheme()
   const isLogged = user !== undefined
+
+  async function userUpdate(user: any) {
+    setUser(user)
+    await storageUserSave(user)
+  }
 
   async function userAndTokenUpdate(user: any, token: string) {
     api.defaults.headers.common.Authorization = token
@@ -134,6 +140,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         signIn,
         signOut,
         setSnackbarStatus,
+        userUpdate,
       }}
     >
       {children}

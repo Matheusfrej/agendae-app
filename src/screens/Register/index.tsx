@@ -18,9 +18,9 @@ const registerFormSchema = z
   .object({
     name: z
       .string({ required_error: 'Nome é obrigatório' })
-      .min(1)
+      .min(1, { message: 'Nome é obrigatório' })
       .max(100, 'Tamanho máximo atingido'),
-    nickname: z.string().min(1).max(100).optional(),
+    nickname: z.string().max(100).optional(),
     email: z
       .string({ required_error: 'Email é obrigatório' })
       .email({ message: 'Informe um email válido' }),
