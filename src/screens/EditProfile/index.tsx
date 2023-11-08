@@ -43,8 +43,6 @@ export function EditProfile({ navigation }: EditProfileProps) {
 
   const editProfile = async (data: editProfileFormInputs) => {
     try {
-      console.log(data)
-
       const response = await api.put('/users', data)
 
       userUpdate(response.data.user)

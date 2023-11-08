@@ -7,46 +7,21 @@ import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { CreateSpin } from '@components/CreateSpin'
 import { ScrollContainer } from '../../components/ScrollContainer'
 import { NavigationType } from 'src/@types/navigation'
+import { useSpins } from '../../contexts/SpinsContext'
+import { useAuth } from '../../contexts/AuthContext'
 
 interface HomeListProps {
   navigation: NavigationType
 }
 
 export function HomeList({ navigation }: HomeListProps) {
+  const { spins } = useSpins()
+  const { user } = useAuth()
+
   const [pastSpinsOpen, setPastSpinsOpen] = useState<boolean>(false)
   const [allSpinsOpen, setAllSpinsOpen] = useState<boolean>(false)
   const [id, setId] = useState('')
   const theme = useTheme()
-
-  const pastSpins = [
-    {
-      title: 'Teste 1',
-      start_date: '27/09',
-      end_date: '28/09',
-    },
-    {
-      title: 'Teste 2',
-      start_date: '27/09',
-      creator: 'Bruna',
-      background_color: 'red',
-    },
-    {
-      title: 'Teste 3',
-      creator: 'Zé',
-      background_color: 'yellow',
-    },
-    {
-      title: 'Teste 4',
-      background_color: 'green',
-    },
-    {
-      title: 'Teste 5',
-      start_date: '27/09 18h',
-      end_date: '28/09 18h',
-      creator: 'Bruna',
-      background_color: 'purple',
-    },
-  ]
 
   return (
     <>
@@ -75,14 +50,20 @@ export function HomeList({ navigation }: HomeListProps) {
                 <S.Subtitle>rolês que já terminaram</S.Subtitle>
               </S.Texts>
             </S.Section>
-            {pastSpinsOpen && (
+            {pastSpinsOpen && spins !== undefined && (
               <S.SpinsContainer>
-                {pastSpins.map((spin, idx) => {
+                {spins.map((spin, idx) => {
+                  const organizer_name =
+                    spin.organizer.id !== user.id
+                      ? spin.organizer.nickname ||
+                        spin.organizer.name.split(' ')[0]
+                      : ''
+
                   return (
                     <SpinCard
                       key={idx}
                       title={spin.title}
-                      creator={spin.creator}
+                      creator={organizer_name}
                       start_date={spin.start_date}
                       end_date={spin.end_date}
                       background_color={
@@ -116,18 +97,24 @@ export function HomeList({ navigation }: HomeListProps) {
                 </S.Subtitle>
               </S.Texts>
             </S.Section>
-            {allSpinsOpen && (
+            {allSpinsOpen && spins !== undefined && (
               <S.SpinsContainer>
-                {pastSpins.map((spin, idx) => {
+                {spins.map((spin, idx) => {
+                  const organizer_name =
+                    spin.organizer.id !== user.id
+                      ? spin.organizer.nickname ||
+                        spin.organizer.name.split(' ')[0]
+                      : ''
+
                   return (
                     <SpinCard
                       key={idx}
                       title={spin.title}
-                      creator={spin.creator}
+                      creator={organizer_name}
                       start_date={spin.start_date}
                       end_date={spin.end_date}
                       background_color={
-                        spin.background_color as SpinCardContainerVariant
+                        spin.theme_color as SpinCardContainerVariant
                       }
                     />
                   )

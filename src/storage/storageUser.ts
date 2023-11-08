@@ -9,7 +9,7 @@ export async function storageUserSave(user: any) {
 export async function storageUserGet() {
   const storage = await AsyncStorage.getItem(USER_STORAGE)
 
-  const user = storage ? JSON.parse(storage) : {}
+  const user = storage ? JSON.parse(storage) : undefined
 
   return user
 }

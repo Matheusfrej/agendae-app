@@ -22,7 +22,7 @@ export async function storageAuthTokenGet() {
 
   const { token, refreshToken }: StorageAuthTokenProps = response
     ? JSON.parse(response)
-    : {}
+    : undefined
 
   return { token, refreshToken }
 }

@@ -14,6 +14,7 @@ import { Logo } from '@components/Logo'
 import api from '../../libs/api'
 import { useAuth } from '../../contexts/AuthContext'
 import { useRoute } from '@react-navigation/native'
+import { AppError } from '@utils/AppError'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -22,7 +23,7 @@ interface ProfileProps {
 type ProfileStatus = 'mine' | 'friend' | 'user' | 'friend_request'
 
 export function Profile({ navigation }: ProfileProps) {
-  const { user, isLogged, signOut } = useAuth()
+  const { user, isLogged, signOut, setSnackbarStatus } = useAuth()
   const route = useRoute<ProfileScreenRouteProp>()
 
   const [profileStatus, setProfileStatus] = useState<ProfileStatus>('mine')
@@ -66,7 +67,6 @@ export function Profile({ navigation }: ProfileProps) {
       const isMine = profileResponse.data.user.id === user.id
 
       setUserStatistics(profileResponse.data.statistics)
-      console.log(profileResponse.data.statistics)
 
       if (!isMine) {
         if (profileResponse.data.is_friend) {
@@ -77,7 +77,14 @@ export function Profile({ navigation }: ProfileProps) {
           setProfileStatus('user')
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível entrar. Tente novamente mais tarde.'
+      setSnackbarStatus(title, false)
+    }
   }
 
   useEffect(() => {
