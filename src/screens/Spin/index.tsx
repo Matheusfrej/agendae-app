@@ -14,6 +14,10 @@ import { useRoute } from '@react-navigation/native'
 import { SpinDTO } from '../../dtos/spinDTO'
 import { getUserSocialName, convertToLocaleDate } from '@utils/format'
 import { useAuth } from '../../contexts/AuthContext'
+import { CustomModal } from '@components/CustomModal'
+import api from '../../libs/api'
+import { AppError } from '@utils/AppError'
+import { useSpins } from '../../contexts/SpinsContext'
 
 interface SpinProps {
   navigation: NavigationType
@@ -23,7 +27,8 @@ type SpinStatus = 'mine' | 'invited' | 'friend_spin'
 
 export function Spin({ navigation }: SpinProps) {
   const route = useRoute<SpinScreenRouteProp>()
-  const { user } = useAuth()
+  const { user, setSnackbarStatus } = useAuth()
+  const { spins, spinsUpdate } = useSpins()
 
   const [areParticipantsOpen, setAreParticipantsOpen] = useState(false)
   const [spin, setSpin] = useState<SpinDTO | undefined>(() => {
@@ -37,11 +42,43 @@ export function Spin({ navigation }: SpinProps) {
     }
     return 'mine'
   })
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+
+  const toggleModal = () => {
+    setIsModalVisible(true)
+  }
+
+  const leaveSpin = async () => {
+    try {
+      await api.post(`/spins/leave/${spin?.id}`)
+
+      const newSpins = spins?.filter((s) => s.id !== spin?.id)
+
+      if (newSpins !== undefined) spinsUpdate(newSpins)
+      setSnackbarStatus('Saiu do rolê com sucesso', true)
+      return true
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível sair desse rolê. Tente novamente mais tarde.'
+      setSnackbarStatus(title, false)
+      return false
+    }
+  }
+
+  const onModalPress = async (confirm: boolean) => {
+    if (confirm) {
+      const success = await leaveSpin()
+      if (success) {
+        navigation.navigate('HomeList')
+      }
+    }
+    setIsModalVisible(false)
+  }
 
   const theme = useTheme()
-
-  const description =
-    'Salve galera! Decidi organizar esse grupo pois está chegando uma data muito importante pra mim agora no dia 10 de outubro, o aniversário de Naruto Uzumaki.\nCoincidentemente, também é meu aniversário nesse dia. \nPorém, como caiu numa terça, decidi fazer  no dia 15 de outubro às 19h no Parada obrigatória da Zona Norte (R. Cardeal Arcoverde, 315).'
 
   const spinActions = [
     {
@@ -123,7 +160,7 @@ export function Spin({ navigation }: SpinProps) {
         </S.Container>
         <S.Footer>
           {spinStatus === 'friend_spin' && (
-            <S.LeaveContainer>
+            <S.LeaveContainer onPress={() => toggleModal()}>
               <S.Leave>Sair do rolê</S.Leave>
             </S.LeaveContainer>
           )}
@@ -145,6 +182,12 @@ export function Spin({ navigation }: SpinProps) {
             </S.CreatedContainer>
           )}
         </S.Footer>
+        <CustomModal
+          text="Tem certeza que deseja sair desse rolê?"
+          isVisible={isModalVisible}
+          buttonConfirmText="Sair"
+          onButtonPress={onModalPress}
+        />
       </ScrollContainer>
     </>
   )
