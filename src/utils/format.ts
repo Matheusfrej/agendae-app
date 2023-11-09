@@ -1,3 +1,5 @@
+import { UserDTO } from '../dtos/userDTO'
+
 export function convertToLocaleDate(isoDateString: string, hasTime: boolean) {
   if (!isoDateString) {
     return
@@ -15,6 +17,6 @@ export function convertToLocaleDate(isoDateString: string, hasTime: boolean) {
   return `${day}/${month}/${year}`
 }
 
-export function getUserSocialName(user: any) {
+export function getUserSocialName(user: UserDTO) {
   return user.nickname || user.name.split(' ')[0]
 }

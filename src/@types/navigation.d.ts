@@ -1,13 +1,19 @@
 import { RouteProp } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { SpinDTO } from '../dtos/spinDTO'
+import { UserDTO } from '../dtos/userDTO'
 
 type StackParamList = {
   HomeList: undefined
-  CreateUpdateSpin: {
-    spinId: string | null
-  }
+  CreateUpdateSpin:
+    | undefined
+    | {
+        spin: SpinDTO
+      }
   Notifications: undefined
-  Spin: undefined
+  Spin: {
+    spin: SpinDTO
+  }
   AuthStack: {
     screen: 'Login' | 'Register'
   }
@@ -20,8 +26,8 @@ type StackParamList = {
   Profile:
     | undefined
     | {
-        userId: string
-        isFriendRequest: boolean
+        user: UserDTO
+        isFriendRequest?: boolean
       }
   AddFriend: undefined
   Report: undefined
@@ -38,5 +44,7 @@ export type CreateUpdateSpinScreenRouteProp = RouteProp<
   StackParamList,
   'CreateUpdateSpin'
 >
+
+export type SpinScreenRouteProp = RouteProp<StackParamList, 'Spin'>
 
 export type ProfileScreenRouteProp = RouteProp<StackParamList, 'Profile'>

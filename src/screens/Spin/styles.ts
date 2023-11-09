@@ -1,13 +1,16 @@
 import styled from 'styled-components/native'
 
 export const Container = styled.View`
-  flex: 1;
-  background-color: ${({ theme }) => theme.COLORS.WHITE};
   align-items: center;
   width: 80%;
   margin: auto;
   margin-top: 150px;
-  margin-bottom: 20%;
+  margin-bottom: 10%;
+`
+
+export const FullContainer = styled.View`
+  width: 100%;
+  align-items: flex-end;
 `
 
 interface HeaderTitleProps {
@@ -33,6 +36,7 @@ export const Section = styled.TouchableOpacity`
 
 export const Content = styled.View`
   gap: 12px;
+  width: 100%;
 `
 
 export const ParticipantsContainer = styled.View`
@@ -92,4 +96,9 @@ export const CreatedTouchableText = styled.Text`
   font-size: 20px;
   font-weight: bold;
   text-decoration: underline;
+`
+
+export const Footer = styled.View`
+  margin-top: 100px;
+  width: 100%;
 `

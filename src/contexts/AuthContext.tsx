@@ -19,34 +19,35 @@ import {
 import { SnackBar, setSnackBarType } from 'react-native-simple-snackbar'
 import { useTheme } from 'styled-components'
 import { AppError } from '@utils/AppError'
+import { UserDTO } from '../dtos/userDTO'
 
 interface AuthContextProviderProps {
   children: ReactNode
 }
 
 interface AuthContextType {
-  user: any
+  user: UserDTO | undefined
   isLogged: boolean
   signIn: (email: string, password: string) => Promise<boolean>
   signOut: () => Promise<void>
   setSnackbarStatus: (text: string, isSuccess: boolean) => void
-  userUpdate: (user: any) => Promise<void>
+  userUpdate: (user: UserDTO) => Promise<void>
 }
 
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [status, setStatus] = useState<setSnackBarType | undefined>()
-  const [user, setUser] = useState<any>()
+  const [user, setUser] = useState<UserDTO | undefined>()
   const theme = useTheme()
   const isLogged = user !== undefined
 
-  async function userUpdate(user: any) {
+  async function userUpdate(user: UserDTO) {
     setUser(user)
     await storageUserSave(user)
   }
 
-  async function userAndTokenUpdate(user: any, token: string) {
+  async function userAndTokenUpdate(user: UserDTO, token: string) {
     api.defaults.headers.common.Authorization = token
 
     setUser(user)
@@ -65,7 +66,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   async function storageUserAndTokenSave(
-    user: any,
+    user: UserDTO,
     token: string,
     refreshToken: string,
   ) {

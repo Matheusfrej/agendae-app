@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
 import * as S from './styles'
 import { NavigationType } from 'src/@types/navigation'
+import { SpinDTO } from 'src/dtos/spinDTO'
 
 export type SpinCardContainerVariant =
   | 'purple'
@@ -11,6 +12,7 @@ export type SpinCardContainerVariant =
   | 'blue'
 
 interface SpinCardProps {
+  spin: SpinDTO
   title: string
   start_date?: string
   end_date?: string
@@ -19,6 +21,7 @@ interface SpinCardProps {
 }
 
 export function SpinCard({
+  spin,
   title,
   start_date,
   end_date,
@@ -28,7 +31,7 @@ export function SpinCard({
   const navigation = useNavigation<NavigationType>()
 
   const goToSpin = () => {
-    navigation.navigate('Spin')
+    navigation.navigate('Spin', { spin })
   }
 
   return (

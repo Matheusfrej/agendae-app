@@ -15,6 +15,7 @@ import api from '../../libs/api'
 import { useAuth } from '../../contexts/AuthContext'
 import { useRoute } from '@react-navigation/native'
 import { AppError } from '@utils/AppError'
+import { UserDTO } from 'src/dtos/userDTO'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -26,8 +27,22 @@ export function Profile({ navigation }: ProfileProps) {
   const { user, isLogged, signOut, setSnackbarStatus } = useAuth()
   const route = useRoute<ProfileScreenRouteProp>()
 
-  const [profileStatus, setProfileStatus] = useState<ProfileStatus>('mine')
-  const [userStatistics, setUserStatistics] = useState<any>()
+  const [profileStatus, setProfileStatus] = useState<ProfileStatus>(() => {
+    if (route.params?.user) {
+      return 'friend'
+    }
+    return 'mine'
+  })
+  const [currUserStatistics, setCurrUserStatistics] = useState<any>()
+  const [currUser, setCurrUser] = useState<UserDTO | undefined>(() => {
+    if (user) {
+      return user
+    } else if (route.params?.user) {
+      console.log('entrou aq')
+
+      return route.params.user
+    }
+  })
   const { onTouchStart, onTouchEnd } = useSwipe({
     onSwipeLeft,
     rangeOffset: 6,
@@ -54,19 +69,39 @@ export function Profile({ navigation }: ProfileProps) {
     },
   ]
 
+  useEffect(() => {
+    return navigation.addListener('focus', () => {
+      console.log('entrou nessa porra')
+      console.log(route.params)
+
+      if (route.params?.user) {
+        setProfileStatus('friend')
+        setCurrUser(route.params.user)
+        getProfile(route.params.user.id)
+      } else {
+        console.log(route.params)
+
+        setProfileStatus('mine')
+        setCurrUser(user)
+      }
+    })
+  }, [navigation])
+
   function onSwipeLeft() {
     if (profileStatus === 'mine') {
       navigation.navigate('Friends')
     }
   }
 
-  async function getProfile(user_id: any) {
+  async function getProfile(user_id: string) {
     try {
       const profileResponse = await api.get(`/users/${user_id}`)
 
-      const isMine = profileResponse.data.user.id === user.id
+      console.log(profileResponse.data)
 
-      setUserStatistics(profileResponse.data.statistics)
+      const isMine = profileResponse.data.user.id === user?.id
+
+      setCurrUserStatistics(profileResponse.data.statistics)
 
       if (!isMine) {
         if (profileResponse.data.is_friend) {
@@ -77,6 +112,7 @@ export function Profile({ navigation }: ProfileProps) {
           setProfileStatus('user')
         }
       }
+      setCurrUser(profileResponse.data.user)
     } catch (error) {
       const isAppError = error instanceof AppError
 
@@ -88,16 +124,20 @@ export function Profile({ navigation }: ProfileProps) {
   }
 
   useEffect(() => {
-    if (route.params) {
-      getProfile(route.params.userId)
-    } else if (isLogged) {
-      getProfile(user.id)
+    console.log(route.params?.user)
+
+    if (route.params?.user) {
+      console.log('entrou')
+
+      getProfile(route.params?.user.id)
+    } else if (isLogged && currUser) {
+      getProfile(currUser.id)
     }
-  }, [])
+  }, [isLogged])
 
   return (
     <>
-      {!isLogged || !userStatistics ? (
+      {!isLogged || !currUserStatistics ? (
         <ScrollContainer>
           <S.NotLoggedContainer>
             <Logo style={{ marginBottom: 50 }} />
@@ -159,23 +199,27 @@ export function Profile({ navigation }: ProfileProps) {
             <S.ProfileImageAndName>
               <ProfileImage size={100} />
               <S.Text>
-                {user.name}{' '}
-                {user.nickname && <S.Bold>({user.nickname})</S.Bold>}
+                {currUser?.name}{' '}
+                {currUser?.nickname && <S.Bold>({currUser?.nickname})</S.Bold>}
               </S.Text>
             </S.ProfileImageAndName>
             <S.StatisticsContainer>
               <S.Statistic>
                 <S.Text variant="purple">
-                  {userStatistics.previous_spins}
+                  {currUserStatistics.previous_spins}
                 </S.Text>
                 <S.Text fontSize={18}>rolês passados</S.Text>
               </S.Statistic>
               <S.Statistic>
-                <S.Text variant="purple">{userStatistics.invited_spins}</S.Text>
+                <S.Text variant="purple">
+                  {currUserStatistics.invited_spins}
+                </S.Text>
                 <S.Text fontSize={18}>rolês convidados</S.Text>
               </S.Statistic>
               <S.Statistic>
-                <S.Text variant="purple">{userStatistics.total_spins}</S.Text>
+                <S.Text variant="purple">
+                  {currUserStatistics.total_spins}
+                </S.Text>
                 <S.Text fontSize={18}>rolês organizados</S.Text>
               </S.Statistic>
             </S.StatisticsContainer>

@@ -4,12 +4,16 @@ import { ScrollContainer } from '../../components/ScrollContainer'
 import * as S from './styles'
 import { Line } from '@components/Line'
 import { PopupMenu } from '@components/PopupMenu'
-import { NavigationType } from 'src/@types/navigation'
+import { NavigationType, SpinScreenRouteProp } from 'src/@types/navigation'
 import { useTheme } from 'styled-components'
 import { useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Participant } from '@components/Participant'
 import { InviteBanner } from '@components/InviteBanner'
+import { useRoute } from '@react-navigation/native'
+import { SpinDTO } from '../../dtos/spinDTO'
+import { getUserSocialName, convertToLocaleDate } from '@utils/format'
+import { useAuth } from '../../contexts/AuthContext'
 
 interface SpinProps {
   navigation: NavigationType
@@ -18,8 +22,21 @@ interface SpinProps {
 type SpinStatus = 'mine' | 'invited' | 'friend_spin'
 
 export function Spin({ navigation }: SpinProps) {
+  const route = useRoute<SpinScreenRouteProp>()
+  const { user } = useAuth()
+
   const [areParticipantsOpen, setAreParticipantsOpen] = useState(false)
-  const [spinStatus, setSpinStatus] = useState<SpinStatus>('mine')
+  const [spin, setSpin] = useState<SpinDTO | undefined>(() => {
+    if (route.params.spin) {
+      return route.params.spin
+    }
+  })
+  const [spinStatus, setSpinStatus] = useState<SpinStatus>(() => {
+    if (user?.id !== route.params.spin.organizer.id) {
+      return 'friend_spin'
+    }
+    return 'mine'
+  })
 
   const theme = useTheme()
 
@@ -29,7 +46,7 @@ export function Spin({ navigation }: SpinProps) {
   const spinActions = [
     {
       name: 'Editar',
-      action: () => navigation.navigate('CreateUpdateSpin', { spinId: '1' }),
+      action: () => navigation.navigate('CreateUpdateSpin'),
     },
     {
       name: 'Excluir',
@@ -47,11 +64,19 @@ export function Spin({ navigation }: SpinProps) {
           {spinStatus === 'invited' && <InviteBanner type="spin" />}
           <S.HeaderTitle invited={spinStatus === 'invited'}>rolê</S.HeaderTitle>
           <S.Content>
-            <S.Title>Frejversário</S.Title>
-            <S.Date>Início: Domingo, 15 de outubro de 2023, 18h</S.Date>
-            <S.Place>
-              Parada Obrigatória Graças - R. Cardeal Arcoverde, 315
-            </S.Place>
+            <S.Title>{spin?.title}</S.Title>
+            {spin?.start_date && (
+              <S.Date>
+                Início:{' '}
+                {convertToLocaleDate(spin.start_date, spin.has_start_time)}
+              </S.Date>
+            )}
+            {spin?.end_date && (
+              <S.Date>
+                Fim: {convertToLocaleDate(spin.end_date, spin.has_end_time)}
+              </S.Date>
+            )}
+            <S.Place>{spin?.place}</S.Place>
             <S.Section
               onPress={() => setAreParticipantsOpen(!areParticipantsOpen)}
             >
@@ -93,28 +118,33 @@ export function Spin({ navigation }: SpinProps) {
               </S.ParticipantsContainer>
             )}
             <Line />
-            <S.Description>{description}</S.Description>
+            <S.Description>{spin?.description}</S.Description>
           </S.Content>
         </S.Container>
+        <S.Footer>
+          {spinStatus === 'friend_spin' && (
+            <S.LeaveContainer>
+              <S.Leave>Sair do rolê</S.Leave>
+            </S.LeaveContainer>
+          )}
 
-        {spinStatus === 'friend_spin' && (
-          <S.LeaveContainer>
-            <S.Leave>Sair do rolê</S.Leave>
-          </S.LeaveContainer>
-        )}
-
-        {spinStatus !== 'mine' && (
-          <S.CreatedContainer>
-            <S.Created>
-              Criado por{' '}
-              <S.CreatedTouchableText
-                onPress={() => navigation.navigate('Profile')}
-              >
-                Matheus
-              </S.CreatedTouchableText>
-            </S.Created>
-          </S.CreatedContainer>
-        )}
+          {spinStatus !== 'mine' && spin && (
+            <S.CreatedContainer>
+              <S.Created>
+                Criado por{' '}
+                <S.CreatedTouchableText
+                  onPress={() =>
+                    navigation.navigate('Profile', {
+                      user: spin.organizer,
+                    })
+                  }
+                >
+                  {getUserSocialName(spin.organizer)}
+                </S.CreatedTouchableText>
+              </S.Created>
+            </S.CreatedContainer>
+          )}
+        </S.Footer>
       </ScrollContainer>
     </>
   )

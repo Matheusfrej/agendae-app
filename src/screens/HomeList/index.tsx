@@ -55,21 +55,22 @@ export function HomeList({ navigation }: HomeListProps) {
               <S.SpinsContainer>
                 {spins.map((spin, idx) => {
                   const organizer_name =
-                    spin.organizer.id !== user.id
+                    spin.organizer.id !== user?.id
                       ? getUserSocialName(spin.organizer)
                       : ''
 
                   return (
                     <SpinCard
                       key={idx}
+                      spin={spin}
                       title={spin.title}
                       creator={organizer_name}
                       start_date={convertToLocaleDate(
-                        spin.start_date,
+                        spin.start_date!,
                         spin.has_start_time,
                       )}
                       end_date={convertToLocaleDate(
-                        spin.end_date,
+                        spin.end_date!,
                         spin.has_end_time,
                       )}
                       background_color={
@@ -107,21 +108,22 @@ export function HomeList({ navigation }: HomeListProps) {
               <S.SpinsContainer>
                 {spins.map((spin, idx) => {
                   const organizer_name =
-                    spin.organizer.id !== user.id
+                    spin.organizer.id !== user?.id
                       ? getUserSocialName(spin.organizer)
                       : ''
 
                   return (
                     <SpinCard
                       key={idx}
+                      spin={spin}
                       title={spin.title}
                       creator={organizer_name}
                       start_date={convertToLocaleDate(
-                        spin.start_date,
+                        spin.start_date!,
                         spin.has_start_time,
                       )}
                       end_date={convertToLocaleDate(
-                        spin.end_date,
+                        spin.end_date!,
                         spin.has_end_time,
                       )}
                       background_color={

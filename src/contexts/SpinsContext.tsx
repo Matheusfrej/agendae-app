@@ -8,14 +8,15 @@ import {
 } from 'react'
 import api from '../libs/api'
 import { useAuth } from './AuthContext'
+import { SpinDTO } from '../dtos/spinDTO'
 
 interface SpinsContextProviderProps {
   children: ReactNode
 }
 
 interface SpinsContextType {
-  spins: any[]
-  spinsUpdate: (spins: any) => Promise<void>
+  spins: SpinDTO[] | undefined
+  spinsUpdate: (spins: SpinDTO[]) => Promise<void>
 }
 
 export const SpinsContext = createContext({} as SpinsContextType)
@@ -23,9 +24,9 @@ export const SpinsContext = createContext({} as SpinsContextType)
 export function SpinsContextProvider({ children }: SpinsContextProviderProps) {
   const { setSnackbarStatus, isLogged } = useAuth()
 
-  const [spins, setSpins] = useState<any>()
+  const [spins, setSpins] = useState<SpinDTO[] | undefined>()
 
-  async function spinsUpdate(spins: any) {
+  async function spinsUpdate(spins: SpinDTO[]) {
     setSpins(spins)
   }
 
