@@ -9,6 +9,7 @@ import { ScrollContainer } from '../../components/ScrollContainer'
 import { NavigationType } from 'src/@types/navigation'
 import { useSpins } from '../../contexts/SpinsContext'
 import { useAuth } from '../../contexts/AuthContext'
+import { convertToLocaleDate, getUserSocialName } from '@utils/format'
 
 interface HomeListProps {
   navigation: NavigationType
@@ -16,7 +17,7 @@ interface HomeListProps {
 
 export function HomeList({ navigation }: HomeListProps) {
   const { spins } = useSpins()
-  const { user } = useAuth()
+  const { user, isLogged } = useAuth()
 
   const [pastSpinsOpen, setPastSpinsOpen] = useState<boolean>(false)
   const [allSpinsOpen, setAllSpinsOpen] = useState<boolean>(false)
@@ -50,13 +51,12 @@ export function HomeList({ navigation }: HomeListProps) {
                 <S.Subtitle>rolês que já terminaram</S.Subtitle>
               </S.Texts>
             </S.Section>
-            {pastSpinsOpen && spins !== undefined && (
+            {pastSpinsOpen && spins !== undefined && isLogged && (
               <S.SpinsContainer>
                 {spins.map((spin, idx) => {
                   const organizer_name =
                     spin.organizer.id !== user.id
-                      ? spin.organizer.nickname ||
-                        spin.organizer.name.split(' ')[0]
+                      ? getUserSocialName(spin.organizer)
                       : ''
 
                   return (
@@ -64,10 +64,16 @@ export function HomeList({ navigation }: HomeListProps) {
                       key={idx}
                       title={spin.title}
                       creator={organizer_name}
-                      start_date={spin.start_date}
-                      end_date={spin.end_date}
+                      start_date={convertToLocaleDate(
+                        spin.start_date,
+                        spin.has_start_time,
+                      )}
+                      end_date={convertToLocaleDate(
+                        spin.end_date,
+                        spin.has_end_time,
+                      )}
                       background_color={
-                        spin.background_color as SpinCardContainerVariant
+                        spin.theme_color as SpinCardContainerVariant
                       }
                     />
                   )
@@ -90,20 +96,19 @@ export function HomeList({ navigation }: HomeListProps) {
               )}
               <S.Texts>
                 <S.Title>
-                  Todos os seus <S.Span>rolês</S.Span>
+                  Seus <S.Span>rolês</S.Span> futuros
                 </S.Title>
                 <S.Subtitle>
-                  todos os seus rolês, ordenados pela data
+                  os seus próximos rolês, ordenados pela data
                 </S.Subtitle>
               </S.Texts>
             </S.Section>
-            {allSpinsOpen && spins !== undefined && (
+            {allSpinsOpen && spins !== undefined && isLogged && (
               <S.SpinsContainer>
                 {spins.map((spin, idx) => {
                   const organizer_name =
                     spin.organizer.id !== user.id
-                      ? spin.organizer.nickname ||
-                        spin.organizer.name.split(' ')[0]
+                      ? getUserSocialName(spin.organizer)
                       : ''
 
                   return (
@@ -111,8 +116,14 @@ export function HomeList({ navigation }: HomeListProps) {
                       key={idx}
                       title={spin.title}
                       creator={organizer_name}
-                      start_date={spin.start_date}
-                      end_date={spin.end_date}
+                      start_date={convertToLocaleDate(
+                        spin.start_date,
+                        spin.has_start_time,
+                      )}
+                      end_date={convertToLocaleDate(
+                        spin.end_date,
+                        spin.has_end_time,
+                      )}
                       background_color={
                         spin.theme_color as SpinCardContainerVariant
                       }

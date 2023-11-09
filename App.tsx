@@ -19,11 +19,11 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <SpinsContextProvider>
-        <AuthContextProvider>
+      <AuthContextProvider>
+        <SpinsContextProvider>
           {fontsLoaded ? <Routes /> : <ActivityIndicator />}
-        </AuthContextProvider>
-      </SpinsContextProvider>
+        </SpinsContextProvider>
+      </AuthContextProvider>
     </ThemeProvider>
   )
 }

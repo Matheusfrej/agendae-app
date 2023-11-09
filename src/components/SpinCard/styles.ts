@@ -37,16 +37,17 @@ export const SpinCardContainer = styled.View<SpinCardContainerProps>`
 export const Header = styled.View`
   width: 100%;
   flex-direction: row;
+  justify-content: space-between;
 `
 
 export const Creator = styled.Text`
-  flex: 1;
   font-size: ${({ theme }) => theme.FONT_SIZE.SM};
   color: ${({ theme }) => theme.COLORS.WHITE};
 `
 export const Bold = styled.Text`
   flex: 1;
   font-weight: bold;
+  text-decoration: underline;
   font-size: ${({ theme }) => theme.FONT_SIZE.SM};
   color: ${({ theme }) => theme.COLORS.WHITE};
 `
@@ -77,4 +78,5 @@ export const Title = styled.Text`
   text-align: center;
   font-size: ${({ theme }) => theme.FONT_SIZE.XL};
   color: ${({ theme }) => theme.COLORS.WHITE};
+  font-weight: bold;
 `

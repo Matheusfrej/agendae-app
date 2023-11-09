@@ -36,7 +36,7 @@ export function SpinCard({
       <S.SpinCardContainer variant={background_color}>
         <S.Header>
           <S.Creator>
-            {creator ? `Criado por ` : ''}
+            {creator ? 'Criado por ' : ''}
             {creator && <S.Bold>{creator}</S.Bold>}
           </S.Creator>
           <S.Dates>

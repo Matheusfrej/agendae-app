@@ -21,7 +21,7 @@ interface SpinsContextType {
 export const SpinsContext = createContext({} as SpinsContextType)
 
 export function SpinsContextProvider({ children }: SpinsContextProviderProps) {
-  const { setSnackbarStatus } = useAuth()
+  const { setSnackbarStatus, isLogged } = useAuth()
 
   const [spins, setSpins] = useState<any>()
 
@@ -45,9 +45,9 @@ export function SpinsContextProvider({ children }: SpinsContextProviderProps) {
   }
 
   useEffect(() => {
-    if (!spins) getSpins()
+    if (!spins && isLogged) getSpins()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isLogged])
 
   return (
     <SpinsContext.Provider
