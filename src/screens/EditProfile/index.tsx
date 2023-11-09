@@ -99,8 +99,10 @@ export function EditProfile({ navigation }: EditProfileProps) {
   }
 
   useEffect(() => {
-    setValue('name', user.name)
-    setValue('nickname', user.nickname)
+    if (user) {
+      setValue('name', user.name)
+      if (user.nickname) setValue('nickname', user.nickname)
+    }
   }, [user, setValue])
 
   return (

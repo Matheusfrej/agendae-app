@@ -16,6 +16,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useRoute } from '@react-navigation/native'
 import { AppError } from '@utils/AppError'
 import { UserDTO } from 'src/dtos/userDTO'
+import { storageUserGet } from '@storage/storageUser'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -38,8 +39,6 @@ export function Profile({ navigation }: ProfileProps) {
     if (user) {
       return user
     } else if (route.params?.user) {
-      console.log('entrou aq')
-
       return route.params.user
     }
   })
@@ -70,19 +69,17 @@ export function Profile({ navigation }: ProfileProps) {
   ]
 
   useEffect(() => {
-    return navigation.addListener('focus', () => {
-      console.log('entrou nessa porra')
-      console.log(route.params)
-
+    return navigation.addListener('focus', async () => {
       if (route.params?.user) {
+        console.log('asdfds')
+
         setProfileStatus('friend')
         setCurrUser(route.params.user)
         getProfile(route.params.user.id)
       } else {
-        console.log(route.params)
-
+        console.log(user)
         setProfileStatus('mine')
-        setCurrUser(user)
+        setCurrUser(await storageUserGet())
       }
     })
   }, [navigation])
@@ -96,8 +93,6 @@ export function Profile({ navigation }: ProfileProps) {
   async function getProfile(user_id: string) {
     try {
       const profileResponse = await api.get(`/users/${user_id}`)
-
-      console.log(profileResponse.data)
 
       const isMine = profileResponse.data.user.id === user?.id
 
@@ -124,11 +119,7 @@ export function Profile({ navigation }: ProfileProps) {
   }
 
   useEffect(() => {
-    console.log(route.params?.user)
-
     if (route.params?.user) {
-      console.log('entrou')
-
       getProfile(route.params?.user.id)
     } else if (isLogged && currUser) {
       getProfile(currUser.id)
