@@ -6,23 +6,65 @@ import { NotificationsComponent } from '@components/NotificationsComponent'
 import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { CreateSpin } from '@components/CreateSpin'
 import { ScrollContainer } from '../../components/ScrollContainer'
-import { NavigationType } from 'src/@types/navigation'
 import { useSpins } from '../../contexts/SpinsContext'
 import { useAuth } from '../../contexts/AuthContext'
 import { convertToLocaleDate, getUserSocialName } from '@utils/format'
+import { SpinDTO } from '../../dtos/spinDTO'
 
-interface HomeListProps {
-  navigation: NavigationType
-}
-
-export function HomeList({ navigation }: HomeListProps) {
+export function HomeList() {
   const { spins } = useSpins()
   const { user, isLogged } = useAuth()
 
   const [pastSpinsOpen, setPastSpinsOpen] = useState<boolean>(false)
   const [allSpinsOpen, setAllSpinsOpen] = useState<boolean>(false)
-  const [id, setId] = useState('')
   const theme = useTheme()
+
+  const pastSpins: SpinDTO[] = []
+  const nextSpins: SpinDTO[] = []
+  const currDate = new Date()
+  spins?.forEach((spin) => {
+    if (
+      (spin.start_date &&
+        new Date(spin.start_date) < currDate &&
+        !spin.end_date) ||
+      (spin.end_date &&
+        new Date(spin.end_date) < currDate &&
+        !spin.start_date) ||
+      (spin.end_date &&
+        spin.start_date &&
+        new Date(spin.end_date) < currDate &&
+        new Date(spin.start_date) < currDate)
+    ) {
+      pastSpins.push(spin)
+    } else {
+      nextSpins.push(spin)
+    }
+  })
+
+  const max = (a: number, b: number) => {
+    if (a < b) {
+      return b
+    }
+    return a
+  }
+
+  const sortByDate = (a: SpinDTO, b: SpinDTO) => {
+    const dateA = max(
+      new Date(a.start_date || 0).getTime(),
+      new Date(a.end_date || 0).getTime(),
+    )
+    const dateB = max(
+      new Date(b.start_date || 0).getTime(),
+      new Date(b.end_date || 0).getTime(),
+    )
+
+    if (!dateA && !dateB) return 1
+
+    return dateA - dateB
+  }
+
+  pastSpins.sort(sortByDate)
+  nextSpins.sort(sortByDate)
 
   return (
     <>
@@ -53,7 +95,7 @@ export function HomeList({ navigation }: HomeListProps) {
             </S.Section>
             {pastSpinsOpen && spins !== undefined && isLogged && (
               <S.SpinsContainer>
-                {spins.map((spin, idx) => {
+                {pastSpins.map((spin, idx) => {
                   const organizer_name =
                     spin.organizer.id !== user?.id
                       ? getUserSocialName(spin.organizer)
@@ -106,7 +148,7 @@ export function HomeList({ navigation }: HomeListProps) {
             </S.Section>
             {allSpinsOpen && spins !== undefined && isLogged && (
               <S.SpinsContainer>
-                {spins.map((spin, idx) => {
+                {nextSpins.map((spin, idx) => {
                   const organizer_name =
                     spin.organizer.id !== user?.id
                       ? getUserSocialName(spin.organizer)
