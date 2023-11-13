@@ -32,6 +32,7 @@ export function Spin({ navigation }: SpinProps) {
 
   const [areParticipantsOpen, setAreParticipantsOpen] = useState(false)
   const [spin] = useState<SpinDTO | undefined>(route.params.spin)
+
   const [spinStatus] = useState<SpinStatus>(() => {
     if (user?.id !== route.params.spin.organizer.id) {
       return 'friend_spin'

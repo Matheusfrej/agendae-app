@@ -55,46 +55,42 @@ export function Login({ navigation }: LoginProps) {
         <S.Title>Login</S.Title>
         <S.Content>
           <S.Form>
-            <S.InputSection>
-              <Controller
-                name="email"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => {
-                  return (
-                    <CustomInput
-                      inputMode="email"
-                      value={value}
-                      onChangeText={onChange}
-                      labelText="Email"
-                      errorMessage={error?.message}
-                    />
-                  )
-                }}
-              />
-            </S.InputSection>
-            <S.InputSection>
-              <Controller
-                name="password"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => {
-                  return (
-                    <CustomInput
-                      value={value}
-                      onChangeText={onChange}
-                      labelText="Senha"
-                      secureTextEntry
-                      errorMessage={error?.message}
-                    />
-                  )
-                }}
-              />
-            </S.InputSection>
+            <Controller
+              name="email"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => {
+                return (
+                  <CustomInput
+                    inputMode="email"
+                    value={value}
+                    onChangeText={onChange}
+                    labelText="Email"
+                    errorMessage={error?.message}
+                  />
+                )
+              }}
+            />
+            <Controller
+              name="password"
+              control={control}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => {
+                return (
+                  <CustomInput
+                    value={value}
+                    onChangeText={onChange}
+                    labelText="Senha"
+                    secureTextEntry
+                    errorMessage={error?.message}
+                  />
+                )
+              }}
+            />
           </S.Form>
           <S.Register>
             <S.Text>Não possui uma conta?</S.Text>
