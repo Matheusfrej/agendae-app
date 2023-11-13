@@ -52,6 +52,10 @@ export const Date = styled.Text`
   font-size: 20px;
 `
 
+export const ParticipantsText = styled.Text`
+  font-size: 20px;
+`
+
 export const Place = styled.Text`
   font-size: 20px;
   color: ${(props) => props.theme.COLORS.GRAY_700};

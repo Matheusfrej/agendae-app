@@ -31,21 +31,25 @@ export function Spin({ navigation }: SpinProps) {
   const { spins, spinsUpdate } = useSpins()
 
   const [areParticipantsOpen, setAreParticipantsOpen] = useState(false)
-  const [spin, setSpin] = useState<SpinDTO | undefined>(() => {
-    if (route.params.spin) {
-      return route.params.spin
-    }
-  })
-  const [spinStatus, setSpinStatus] = useState<SpinStatus>(() => {
+  const [spin] = useState<SpinDTO | undefined>(route.params.spin)
+  const [spinStatus] = useState<SpinStatus>(() => {
     if (user?.id !== route.params.spin.organizer.id) {
       return 'friend_spin'
     }
     return 'mine'
   })
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+  const [isLeaveSpinModalVisible, setIsLeaveSpinModalVisible] =
+    useState<boolean>(false)
 
-  const toggleModal = () => {
-    setIsModalVisible(true)
+  const [isDeleteSpinModalVisible, setIsDeleteSpinModalVisible] =
+    useState<boolean>(false)
+
+  const toggleLeaveSpinModal = () => {
+    setIsLeaveSpinModalVisible(true)
+  }
+
+  const toggleDeleteSpinModal = () => {
+    setIsDeleteSpinModalVisible(true)
   }
 
   const leaveSpin = async () => {
@@ -68,14 +72,44 @@ export function Spin({ navigation }: SpinProps) {
     }
   }
 
-  const onModalPress = async (confirm: boolean) => {
+  const deleteSpin = async () => {
+    try {
+      await api.delete(`/spins/${spin?.id}`)
+
+      const newSpins = spins?.filter((s) => s.id !== spin?.id)
+
+      if (newSpins !== undefined) spinsUpdate(newSpins)
+      setSnackbarStatus('rolê excluído com sucesso', true)
+      return true
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível deletar esse rolê. Tente novamente mais tarde.'
+      setSnackbarStatus(title, false)
+      return false
+    }
+  }
+
+  const onLeaveSpinModalPress = async (confirm: boolean) => {
     if (confirm) {
       const success = await leaveSpin()
       if (success) {
         navigation.navigate('HomeList')
       }
     }
-    setIsModalVisible(false)
+    setIsLeaveSpinModalVisible(false)
+  }
+
+  const onDeleteSpinModalPress = async (confirm: boolean) => {
+    if (confirm) {
+      const success = await deleteSpin()
+      if (success) {
+        navigation.navigate('HomeList')
+      }
+    }
+    setIsDeleteSpinModalVisible(false)
   }
 
   const theme = useTheme()
@@ -87,7 +121,7 @@ export function Spin({ navigation }: SpinProps) {
     },
     {
       name: 'Excluir',
-      action: () => navigation.navigate('HomeList'),
+      action: () => toggleDeleteSpinModal(),
       color: theme.COLORS.RED,
     },
   ]
@@ -132,7 +166,7 @@ export function Spin({ navigation }: SpinProps) {
               )}
 
               <S.Content>
-                <S.Date>Participantes</S.Date>
+                <S.ParticipantsText>Participantes</S.ParticipantsText>
               </S.Content>
             </S.Section>
             {areParticipantsOpen && (
@@ -160,7 +194,7 @@ export function Spin({ navigation }: SpinProps) {
         </S.Container>
         <S.Footer>
           {spinStatus === 'friend_spin' && (
-            <S.LeaveContainer onPress={() => toggleModal()}>
+            <S.LeaveContainer onPress={() => toggleLeaveSpinModal()}>
               <S.Leave>Sair do rolê</S.Leave>
             </S.LeaveContainer>
           )}
@@ -184,9 +218,15 @@ export function Spin({ navigation }: SpinProps) {
         </S.Footer>
         <CustomModal
           text="Tem certeza que deseja sair desse rolê?"
-          isVisible={isModalVisible}
+          isVisible={isLeaveSpinModalVisible}
           buttonConfirmText="Sair"
-          onButtonPress={onModalPress}
+          onButtonPress={onLeaveSpinModalPress}
+        />
+        <CustomModal
+          text="Tem certeza que deseja excluir esse rolê?"
+          isVisible={isDeleteSpinModalVisible}
+          buttonConfirmText="Excluir"
+          onButtonPress={onDeleteSpinModalPress}
         />
       </ScrollContainer>
     </>
