@@ -201,17 +201,12 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
       setSnackbarStatus('Rolê editado com sucesso', true)
       const edittedSpin: SpinDTO = response.data.spin
       if (spins) {
-        console.log(spins)
-
         const edittedSpins = spins?.map((spin) => {
-          console.log(spin.id, edittedSpin)
-
           if (spin.id === edittedSpin.id) {
             return edittedSpin
           }
           return spin
         })
-        console.log(edittedSpins)
 
         spinsUpdate(edittedSpins)
       }
@@ -268,7 +263,6 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
       if (user) {
         spin.organizer = user
       }
-      console.log(spin)
 
       navigation.navigate('Spin', { spin })
       reset()

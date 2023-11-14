@@ -2,17 +2,23 @@ import { CustomButton } from '@components/CustomButton'
 import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { NavigationType } from 'src/@types/navigation'
 import { FriendCard } from '@components/FriendCard'
 import { NoContentText } from '@components/NoContentText'
 import { useSwipe } from '../../hooks/useSwipe'
+import { UserDTO } from '../../dtos/userDTO'
+import { useAuth } from '../../contexts/AuthContext'
+import { AppError } from '@utils/AppError'
+import api from '../../libs/api'
 
 interface FriendsProps {
   navigation: NavigationType
 }
 
 export function Friends({ navigation }: FriendsProps) {
+  const { setSnackbarStatus } = useAuth()
+
   const { onTouchStart, onTouchEnd } = useSwipe({
     onSwipeRight,
     rangeOffset: 6,
@@ -22,7 +28,28 @@ export function Friends({ navigation }: FriendsProps) {
     navigation.navigate('Profile')
   }
 
-  const [areThereFriends, setAreThereFriends] = useState()
+  const [friends, setFriends] = useState<UserDTO[]>([])
+
+  const areThereFriends = friends.length > 0
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const response = await api.get('/friends')
+
+        setFriends(response.data.friends)
+      } catch (error) {
+        const isAppError = error instanceof AppError
+
+        const title = isAppError
+          ? error.message
+          : 'Não foi possível deletar esse rolê. Tente novamente mais tarde.'
+        setSnackbarStatus(title, false)
+      }
+    }
+
+    if (friends.length === 0) fetchFriends()
+  }, [])
 
   return (
     <>
@@ -52,9 +79,9 @@ export function Friends({ navigation }: FriendsProps) {
           </S.NavigationContainer>
           {areThereFriends ? (
             <S.FriendsContainer>
-              <FriendCard name="Bruna" />
-              <FriendCard name="Matheus" />
-              <FriendCard name="Zé" />
+              {friends.map((friend) => {
+                return <FriendCard key={friend.id} user={friend} />
+              })}
             </S.FriendsContainer>
           ) : (
             <NoContentText text="Você ainda não tem nenhum amigo adicionado." />

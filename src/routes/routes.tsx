@@ -79,8 +79,7 @@ function HomeListStack() {
         component={Register}
         options={{ animation: 'fade_from_bottom' }}
       />
-
-      <Screen name="Profile" component={Profile} />
+      <Screen name="OtherProfile" component={Profile} />
     </Navigator>
   )
 }
@@ -114,8 +113,7 @@ function HomeCalendarStack() {
         component={Spin}
         options={{ animation: 'fade_from_bottom' }}
       />
-
-      <Screen name="Profile" component={Profile} />
+      <Screen name="OtherProfile" component={Profile} />
     </Navigator>
   )
 }
@@ -128,6 +126,7 @@ function ProfileStack() {
       }}
     >
       <Screen name="Profile" component={Profile} />
+      <Screen name="OtherProfile" component={Profile} />
 
       <Screen
         name="Report"

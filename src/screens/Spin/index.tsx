@@ -216,7 +216,7 @@ export function Spin({ navigation }: SpinProps) {
                 Criado por{' '}
                 <S.CreatedTouchableText
                   onPress={() =>
-                    navigation.navigate('Profile', {
+                    navigation.navigate('OtherProfile', {
                       user: spin.organizer,
                     })
                   }

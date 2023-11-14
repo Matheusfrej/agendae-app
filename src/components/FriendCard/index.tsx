@@ -4,12 +4,14 @@ import { useTheme } from 'styled-components'
 import { NavigationType } from 'src/@types/navigation'
 import { Line } from '@components/Line'
 import { ProfileImage } from '@components/ProfileImage'
+import { UserDTO } from '../../dtos/userDTO'
+import { getUserSocialName } from '@utils/format'
 
 interface FriendCardProps {
-  name: string
+  user: UserDTO
 }
 
-export function FriendCard({ name }: FriendCardProps) {
+export function FriendCard({ user }: FriendCardProps) {
   const theme = useTheme()
 
   const navigation = useNavigation<NavigationType>()
@@ -17,7 +19,7 @@ export function FriendCard({ name }: FriendCardProps) {
   return (
     <S.FriendCardContainer
       activeOpacity={0.7}
-      onPress={() => navigation.navigate('Profile')}
+      onPress={() => navigation.navigate('OtherProfile', { user })}
       underlayColor={theme.COLORS.GRAY_300}
     >
       <>
@@ -26,7 +28,7 @@ export function FriendCard({ name }: FriendCardProps) {
             <ProfileImage size={60} />
             <S.Section>
               <S.Texts>
-                <S.Name>{name}</S.Name>
+                <S.Name>{getUserSocialName(user)}</S.Name>
               </S.Texts>
             </S.Section>
           </S.Content>

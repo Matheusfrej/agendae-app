@@ -23,6 +23,19 @@ type StackParamList = {
     month: string
     year: number
   }
+  ProfileStack: {
+    screen: 'Profile'
+    params?: {
+      user: UserDTO
+      isFriendRequest?: boolean
+    }
+  }
+  OtherProfile:
+    | undefined
+    | {
+        user: UserDTO
+        isFriendRequest?: boolean
+      }
   Profile:
     | undefined
     | {
