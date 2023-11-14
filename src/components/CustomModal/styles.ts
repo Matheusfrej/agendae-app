@@ -1,13 +1,19 @@
 import styled from 'styled-components/native'
 
-export const Content = styled.View`
+interface ContentProps {
+  isPositive?: boolean
+}
+
+export const Content = styled.View<ContentProps>`
   background: ${(props) => props.theme.COLORS.WHITE};
   justify-content: center;
   width: 90%;
   margin: auto;
   padding: 20px;
   border-radius: 8px;
-  border: 1px solid ${(props) => props.theme.COLORS.RED};
+  border: 1px solid
+    ${(props) =>
+      props.isPositive ? props.theme.COLORS.BLUE : props.theme.COLORS.RED};
 `
 
 export const Text = styled.Text`
