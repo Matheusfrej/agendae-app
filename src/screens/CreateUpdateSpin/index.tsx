@@ -60,20 +60,26 @@ type SpinFormInputs = z.infer<typeof spinFormSchema>
 export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
   const route = useRoute<CreateUpdateSpinScreenRouteProp>()
 
-  const spin = route.params?.spin
-
-  const isEdit = spin !== undefined
-
   const { user, setSnackbarStatus } = useAuth()
   const { spins, spinsUpdate } = useSpins()
 
-  const { control, handleSubmit, reset, setValue, resetField } =
-    useForm<SpinFormInputs>({
-      resolver: zodResolver(spinFormSchema),
-    })
+  const { control, handleSubmit, reset, setValue } = useForm<SpinFormInputs>({
+    resolver: zodResolver(spinFormSchema),
+  })
 
-  const [colorSelected, setColorSelected] =
-    useState<SpinCardContainerVariant>('purple')
+  const [colorSelected, setColorSelected] = useState<SpinCardContainerVariant>(
+    () => {
+      if (route.params?.spin) {
+        return route.params?.spin.theme_color
+      }
+      return 'purple'
+    },
+  )
+  const [initialColor, setInitialColor] = useState<SelectColorType>({
+    key: 'purple',
+    value: 'Roxo',
+  })
+  const [colorsLoaded, setColorsLoaded] = useState(false)
   const [participantsSelected, setParticipantsSelected] = useState([
     '1',
     '2',
@@ -169,21 +175,56 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     }
   }
 
-  const participantsData: { id: string; name: string }[] = [
-    { id: '1', name: 'Matheus' },
-    { id: '2', name: 'Bruna' },
-    { id: '3', name: 'Zé' },
-    { id: '4', name: 'Carmen' },
-    { id: '5', name: 'Nina' },
-    { id: '6', name: 'Floffytinha' },
-    { id: '7', name: 'Doiss' },
-  ]
+  // const participantsData: { id: string; name: string }[] = [
+  //   { id: '1', name: 'Matheus' },
+  //   { id: '2', name: 'Bruna' },
+  //   { id: '3', name: 'Zé' },
+  //   { id: '4', name: 'Carmen' },
+  //   { id: '5', name: 'Nina' },
+  //   { id: '6', name: 'Floffytinha' },
+  //   { id: '7', name: 'Doiss' },
+  // ]
 
   const theme = useTheme()
 
   const handleColorSelected = (val: SpinCardContainerVariant) => {
     setColorSelected(val)
     setValue('theme_color', val)
+  }
+
+  const editSpin = async (
+    data: SpinFormInputs,
+  ): Promise<SpinDTO | undefined> => {
+    try {
+      const response = await api.put(`/spins/${spin?.id}`, data)
+
+      setSnackbarStatus('Rolê editado com sucesso', true)
+      const edittedSpin: SpinDTO = response.data.spin
+      if (spins) {
+        console.log(spins)
+
+        const edittedSpins = spins?.map((spin) => {
+          console.log(spin.id, edittedSpin)
+
+          if (spin.id === edittedSpin.id) {
+            return edittedSpin
+          }
+          return spin
+        })
+        console.log(edittedSpins)
+
+        spinsUpdate(edittedSpins)
+      }
+
+      return edittedSpin
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Erro na edição do rolê. Tente novamente mais tarde'
+      setSnackbarStatus(title, false)
+    }
   }
 
   const createSpin = async (
@@ -201,25 +242,74 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     } catch (error) {
       const isAppError = error instanceof AppError
 
-      const title = isAppError ? error.message : 'Erro ao carregar as cores.'
+      const title = isAppError
+        ? error.message
+        : 'Erro na criação do rolê. tente novamente mais tarde'
       setSnackbarStatus(title, false)
     }
   }
 
+  // const handleParticipantsSelected = (val: string[]) => {
+  //   setParticipantsSelected(val)
+  // }
+
+  const spin = route.params?.spin
+
+  const isEdit = spin !== undefined
+
   const handleCreateUpdateSpin = async (data: SpinFormInputs) => {
-    const spin = await createSpin(data)
+    let spin
+    if (isEdit) {
+      spin = await editSpin(data)
+    } else {
+      spin = await createSpin(data)
+    }
     if (spin) {
       if (user) {
         spin.organizer = user
       }
+      console.log(spin)
+
       navigation.navigate('Spin', { spin })
       reset()
     }
   }
 
-  const handleParticipantsSelected = (val: string[]) => {
-    setParticipantsSelected(val)
-  }
+  useEffect(() => {
+    console.log(isEdit, spin)
+
+    if (isEdit && spin) {
+      setValue('title', spin.title)
+      if (spin.description) setValue('description', spin.description)
+      if (spin.place) setValue('place', spin.place)
+      if (spin.start_date) {
+        setValue('start_date', new Date(spin.start_date))
+        setStartDate(new Date(spin.start_date))
+      } else {
+        setHasStartTime(false)
+        setHasStartDate(false)
+      }
+      if (spin.end_date) {
+        setValue('end_date', new Date(spin.end_date))
+        setEndDate(new Date(spin.end_date))
+      } else {
+        setHasEndTime(false)
+        setHasEndDate(false)
+      }
+      setValue('theme_color', spin.theme_color)
+      setColorSelected(spin.theme_color)
+      if (spin.has_start_time) {
+        setValue('has_start_time', true)
+      } else {
+        setHasStartTime(false)
+      }
+      if (spin.has_end_time) {
+        setValue('has_end_time', true)
+      } else {
+        setHasEndTime(false)
+      }
+    }
+  }, [spin])
 
   useEffect(() => {
     if (hasStartDate === false) {
@@ -238,12 +328,6 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
   }, [hasStartDate, hasEndDate])
 
   useEffect(() => {
-    if (hasStartTime === true) {
-      setHasStartDate(true)
-    }
-    if (hasEndTime === true) {
-      setHasEndDate(true)
-    }
     setValue('has_start_time', hasStartTime)
     setValue('has_end_time', hasEndTime)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -255,6 +339,13 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
         const { data } = await api.get('/spins/colors')
 
         setColorsData(data.colors)
+        setInitialColor({
+          key: colorSelected,
+          value:
+            data.colors.find((color: any) => colorSelected === color.key)
+              ?.value || 'Roxo',
+        })
+        setColorsLoaded(true)
       } catch (error) {
         const isAppError = error instanceof AppError
 
@@ -302,6 +393,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                     <CustomInput
                       value={value}
                       isRequired
+                      multiline
                       autoCapitalize="sentences"
                       onChangeText={onChange}
                       labelText="Título"
@@ -323,6 +415,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                       autoCapitalize="sentences"
                       onChangeText={onChange}
                       labelText="Local"
+                      multiline
                       errorMessage={error?.message}
                     />
                   )
@@ -357,7 +450,11 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                 >
                   <S.TextInputDate
                     value={
-                      hasStartDate ? startDate.toLocaleDateString('pt-BR') : ''
+                      hasStartDate
+                        ? startDate.toLocaleDateString('pt-BR', {
+                            timeZone: 'America/Sao_Paulo',
+                          })
+                        : ''
                     }
                     cursorColor={theme.COLORS.BLACK}
                     editable={false}
@@ -413,7 +510,12 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                         ? theme.COLORS.PURPLE_300
                         : theme.COLORS.GRAY_300
                     }
-                    onValueChange={() => setHasStartDate((state) => !state)}
+                    onValueChange={() => {
+                      if (hasStartDate === false && hasStartTime === false) {
+                        setHasStartTime(true)
+                      }
+                      setHasStartDate((state) => !state)
+                    }}
                   />
                   <S.Text>Data de Início</S.Text>
                 </S.SwitchContainer>
@@ -428,7 +530,12 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                         ? theme.COLORS.PURPLE_300
                         : theme.COLORS.GRAY_300
                     }
-                    onValueChange={() => setHasStartTime((state) => !state)}
+                    onValueChange={() => {
+                      if (hasStartDate === false && hasStartTime === false) {
+                        setHasStartDate(true)
+                      }
+                      setHasStartTime((state) => !state)
+                    }}
                   />
                   <S.Text>Hora</S.Text>
                 </S.SwitchContainer>
@@ -439,7 +546,11 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                 <S.Touchable variant="big" onPress={() => handleShowEndDate()}>
                   <S.TextInputDate
                     value={
-                      hasEndDate ? endDate.toLocaleDateString('pt-BR') : ''
+                      hasEndDate
+                        ? endDate.toLocaleDateString('pt-BR', {
+                            timeZone: 'America/Sao_Paulo',
+                          })
+                        : ''
                     }
                     cursorColor={theme.COLORS.BLACK}
                     editable={false}
@@ -495,7 +606,12 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                         ? theme.COLORS.PURPLE_300
                         : theme.COLORS.GRAY_300
                     }
-                    onValueChange={() => setHasEndDate((state) => !state)}
+                    onValueChange={() => {
+                      if (hasEndDate === false && hasEndTime === false) {
+                        setHasEndTime(true)
+                      }
+                      setHasEndDate((state) => !state)
+                    }}
                   />
                   <S.Text>Data de fim</S.Text>
                 </S.SwitchContainer>
@@ -510,7 +626,12 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                         ? theme.COLORS.PURPLE_300
                         : theme.COLORS.GRAY_300
                     }
-                    onValueChange={() => setHasEndTime((state) => !state)}
+                    onValueChange={() => {
+                      if (hasEndDate === false && hasEndTime === false) {
+                        setHasEndDate(true)
+                      }
+                      setHasEndTime((state) => !state)
+                    }}
                   />
                   <S.Text>Hora</S.Text>
                 </S.SwitchContainer>
@@ -523,21 +644,26 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                 </S.ColorAndLabel>
 
                 <S.SelectListContainer>
-                  <SelectList
-                    setSelected={(val: SpinCardContainerVariant) =>
-                      handleColorSelected(val)
-                    }
-                    data={colorsData}
-                    save="key"
-                    defaultOption={{ key: 'purple', value: 'Roxo' }}
-                    searchPlaceholder="Escolher cor"
-                    notFoundText="Cor não encontrada"
-                    dropdownShown={false}
-                    boxStyles={{}}
-                  />
+                  {colorsLoaded && (
+                    <SelectList
+                      setSelected={(val: SpinCardContainerVariant) =>
+                        handleColorSelected(val)
+                      }
+                      data={colorsData}
+                      save="key"
+                      defaultOption={{
+                        key: initialColor.key,
+                        value: initialColor.value,
+                      }}
+                      searchPlaceholder="Escolher cor"
+                      notFoundText="Cor não encontrada"
+                      dropdownShown={false}
+                      boxStyles={{}}
+                    />
+                  )}
                 </S.SelectListContainer>
               </S.InputSection>
-              <S.InputSection isFlexDirecitionColumn>
+              {/* <S.InputSection isFlexDirecitionColumn>
                 <Label text="Participantes" isInline />
 
                 <S.MultipleSelectListContainer>
@@ -569,7 +695,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                     submitButtonText="Fechar"
                   />
                 </S.MultipleSelectListContainer>
-              </S.InputSection>
+              </S.InputSection> */}
             </S.Form>
           </S.Content>
         </S.Container>

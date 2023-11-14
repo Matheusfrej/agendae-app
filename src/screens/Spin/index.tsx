@@ -10,7 +10,7 @@ import { useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Participant } from '@components/Participant'
 import { InviteBanner } from '@components/InviteBanner'
-import { useRoute } from '@react-navigation/native'
+import { useFocusEffect, useRoute } from '@react-navigation/native'
 import { SpinDTO } from '../../dtos/spinDTO'
 import { getUserSocialName, convertToLocaleDate } from '@utils/format'
 import { useAuth } from '../../contexts/AuthContext'
@@ -31,7 +31,7 @@ export function Spin({ navigation }: SpinProps) {
   const { spins, spinsUpdate } = useSpins()
 
   const [areParticipantsOpen, setAreParticipantsOpen] = useState(false)
-  const [spin] = useState<SpinDTO | undefined>(route.params.spin)
+  const [spin, setSpin] = useState<SpinDTO | undefined>(route.params.spin)
 
   const [spinStatus] = useState<SpinStatus>(() => {
     if (user?.id !== route.params.spin.organizer.id) {
@@ -118,7 +118,11 @@ export function Spin({ navigation }: SpinProps) {
   const spinActions = [
     {
       name: 'Editar',
-      action: () => navigation.navigate('CreateUpdateSpin'),
+      action: () => {
+        if (spin) {
+          navigation.navigate('CreateUpdateSpin', { spin })
+        }
+      },
     },
     {
       name: 'Excluir',
@@ -126,6 +130,10 @@ export function Spin({ navigation }: SpinProps) {
       color: theme.COLORS.RED,
     },
   ]
+
+  useFocusEffect(() => {
+    setSpin(route.params.spin)
+  })
 
   return (
     <>
@@ -170,7 +178,7 @@ export function Spin({ navigation }: SpinProps) {
                 <S.ParticipantsText>Participantes</S.ParticipantsText>
               </S.Content>
             </S.Section>
-            {areParticipantsOpen && (
+            {/* {areParticipantsOpen && (
               <S.ParticipantsContainer>
                 <Participant
                   id="1"
@@ -188,7 +196,7 @@ export function Spin({ navigation }: SpinProps) {
                   invite_status="pending"
                 ></Participant>
               </S.ParticipantsContainer>
-            )}
+            )} */}
             <Line />
             <S.Description>{spin?.description}</S.Description>
           </S.Content>
