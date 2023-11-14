@@ -3,7 +3,7 @@ import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
 import { NavigationType, ProfileScreenRouteProp } from 'src/@types/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { PopupMenu } from '@components/PopupMenu'
 import { useTheme } from 'styled-components'
 import { ProfileImage } from '@components/ProfileImage'
@@ -13,10 +13,9 @@ import { useSwipe } from '../../hooks/useSwipe'
 import { Logo } from '@components/Logo'
 import api from '../../libs/api'
 import { useAuth } from '../../contexts/AuthContext'
-import { useRoute } from '@react-navigation/native'
+import { useFocusEffect, useRoute } from '@react-navigation/native'
 import { AppError } from '@utils/AppError'
 import { UserDTO } from 'src/dtos/userDTO'
-import { storageUserGet } from '@storage/storageUser'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -68,22 +67,6 @@ export function Profile({ navigation }: ProfileProps) {
     },
   ]
 
-  useEffect(() => {
-    return navigation.addListener('focus', async () => {
-      if (route.params?.user) {
-        console.log('asdfds')
-
-        setProfileStatus('friend')
-        setCurrUser(route.params.user)
-        getProfile(route.params.user.id)
-      } else {
-        console.log(user)
-        setProfileStatus('mine')
-        setCurrUser(await storageUserGet())
-      }
-    })
-  }, [navigation])
-
   function onSwipeLeft() {
     if (profileStatus === 'mine') {
       navigation.navigate('Friends')
@@ -118,12 +101,21 @@ export function Profile({ navigation }: ProfileProps) {
     }
   }
 
+  useFocusEffect(
+    useCallback(() => {
+      if (route.params?.user) {
+        setProfileStatus('friend')
+        getProfile(route.params.user.id)
+        setCurrUser(route.params?.user)
+      } else if (user) {
+        setProfileStatus('mine')
+        setCurrUser(user)
+      }
+    }, [route.params?.user, user]),
+  )
+
   useEffect(() => {
-    if (route.params?.user) {
-      getProfile(route.params?.user.id)
-    } else if (isLogged && currUser) {
-      getProfile(currUser.id)
-    }
+    if (isLogged && user && !route.params?.user) getProfile(user.id)
   }, [isLogged])
 
   return (

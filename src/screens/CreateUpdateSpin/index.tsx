@@ -276,8 +276,6 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
   }
 
   useEffect(() => {
-    console.log(isEdit, spin)
-
     if (isEdit && spin) {
       setValue('title', spin.title)
       if (spin.description) setValue('description', spin.description)

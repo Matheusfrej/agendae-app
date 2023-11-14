@@ -6,7 +6,7 @@ import { Line } from '@components/Line'
 import { PopupMenu } from '@components/PopupMenu'
 import { NavigationType, SpinScreenRouteProp } from 'src/@types/navigation'
 import { useTheme } from 'styled-components'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Participant } from '@components/Participant'
 import { InviteBanner } from '@components/InviteBanner'
@@ -131,9 +131,11 @@ export function Spin({ navigation }: SpinProps) {
     },
   ]
 
-  useFocusEffect(() => {
-    setSpin(route.params.spin)
-  })
+  useFocusEffect(
+    useCallback(() => {
+      setSpin(route.params.spin)
+    }, [route.params.spin]),
+  )
 
   return (
     <>
