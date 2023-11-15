@@ -17,6 +17,7 @@ import { useFocusEffect, useRoute } from '@react-navigation/native'
 import { AppError } from '@utils/AppError'
 import { UserDTO } from 'src/dtos/userDTO'
 import { Unfriend } from './Unfriend'
+import { StatisticsDTO } from '../../dtos/statisticsDTO'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -34,7 +35,9 @@ export function Profile({ navigation }: ProfileProps) {
     }
     return 'mine'
   })
-  const [currUserStatistics, setCurrUserStatistics] = useState<any>()
+  const [currUserStatistics, setCurrUserStatistics] = useState<
+    undefined | StatisticsDTO
+  >()
   const [currUser, setCurrUser] = useState<UserDTO | undefined>(() => {
     if (user) {
       return user
