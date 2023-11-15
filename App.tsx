@@ -13,6 +13,7 @@ import theme from './src/theme'
 import { Routes } from '@routes/index'
 import { AuthContextProvider } from './src/contexts/AuthContext'
 import { SpinsContextProvider } from './src/contexts/SpinsContext'
+import { FriendsContextProvider } from './src/contexts/FriendsContext'
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Overpass_400Regular, Overpass_700Bold })
@@ -21,7 +22,9 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <AuthContextProvider>
         <SpinsContextProvider>
-          {fontsLoaded ? <Routes /> : <ActivityIndicator />}
+          <FriendsContextProvider>
+            {fontsLoaded ? <Routes /> : <ActivityIndicator />}
+          </FriendsContextProvider>
         </SpinsContextProvider>
       </AuthContextProvider>
     </ThemeProvider>

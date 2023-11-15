@@ -16,6 +16,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useFocusEffect, useRoute } from '@react-navigation/native'
 import { AppError } from '@utils/AppError'
 import { UserDTO } from 'src/dtos/userDTO'
+import { Unfriend } from './Unfriend'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -41,6 +42,9 @@ export function Profile({ navigation }: ProfileProps) {
       return route.params.user
     }
   })
+  const [triggerUnfriendModal, setTriggerUnfriendModal] = useState<
+    undefined | boolean
+  >()
   const { onTouchStart, onTouchEnd } = useSwipe({
     onSwipeLeft,
     rangeOffset: 6,
@@ -210,7 +214,15 @@ export function Profile({ navigation }: ProfileProps) {
           {profileStatus !== 'mine' && (
             <S.FooterTextContainer>
               {profileStatus === 'friend' && (
-                <S.FooterTextTouchable>
+                <S.FooterTextTouchable
+                  onPress={() => {
+                    if (triggerUnfriendModal === undefined) {
+                      setTriggerUnfriendModal(true)
+                    } else {
+                      setTriggerUnfriendModal((state) => !state)
+                    }
+                  }}
+                >
                   <S.FooterText>Desfazer amizade</S.FooterText>
                 </S.FooterTextTouchable>
               )}
@@ -219,6 +231,7 @@ export function Profile({ navigation }: ProfileProps) {
               </S.FooterTextTouchable>
             </S.FooterTextContainer>
           )}
+          <Unfriend modalCalled={triggerUnfriendModal} friend={currUser} />
         </ScrollContainer>
       )}
     </>

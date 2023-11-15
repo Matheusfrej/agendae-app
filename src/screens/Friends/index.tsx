@@ -2,15 +2,15 @@ import { CustomButton } from '@components/CustomButton'
 import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { NavigationType } from 'src/@types/navigation'
 import { FriendCard } from '@components/FriendCard'
 import { NoContentText } from '@components/NoContentText'
 import { useSwipe } from '../../hooks/useSwipe'
-import { UserDTO } from '../../dtos/userDTO'
 import { useAuth } from '../../contexts/AuthContext'
 import { AppError } from '@utils/AppError'
 import api from '../../libs/api'
+import { useFriends } from '../../contexts/FriendsContext'
 
 interface FriendsProps {
   navigation: NavigationType
@@ -18,6 +18,7 @@ interface FriendsProps {
 
 export function Friends({ navigation }: FriendsProps) {
   const { setSnackbarStatus } = useAuth()
+  const { friends, onSetFriends } = useFriends()
 
   const { onTouchStart, onTouchEnd } = useSwipe({
     onSwipeRight,
@@ -28,8 +29,6 @@ export function Friends({ navigation }: FriendsProps) {
     navigation.navigate('Profile')
   }
 
-  const [friends, setFriends] = useState<UserDTO[]>([])
-
   const areThereFriends = friends.length > 0
 
   useEffect(() => {
@@ -37,7 +36,7 @@ export function Friends({ navigation }: FriendsProps) {
       try {
         const response = await api.get('/friends')
 
-        setFriends(response.data.friends)
+        onSetFriends(response.data.friends)
       } catch (error) {
         const isAppError = error instanceof AppError
 
