@@ -14,10 +14,8 @@ import { useFocusEffect, useRoute } from '@react-navigation/native'
 import { SpinDTO } from '../../dtos/spinDTO'
 import { getUserSocialName, convertToLocaleDate } from '@utils/format'
 import { useAuth } from '../../contexts/AuthContext'
-import { CustomModal } from '@components/CustomModal'
-import api from '../../libs/api'
-import { AppError } from '@utils/AppError'
-import { useSpins } from '../../contexts/SpinsContext'
+import { LeaveSpin } from './LeaveSpin'
+import { DeleteSpin } from './DeleteSpin'
 
 interface SpinProps {
   navigation: NavigationType
@@ -27,8 +25,7 @@ type SpinStatus = 'mine' | 'invited' | 'friend_spin'
 
 export function Spin({ navigation }: SpinProps) {
   const route = useRoute<SpinScreenRouteProp>()
-  const { user, setSnackbarStatus } = useAuth()
-  const { spins, spinsUpdate } = useSpins()
+  const { user } = useAuth()
 
   const [areParticipantsOpen, setAreParticipantsOpen] = useState(false)
   const [spin, setSpin] = useState<SpinDTO | undefined>(route.params.spin)
@@ -39,78 +36,27 @@ export function Spin({ navigation }: SpinProps) {
     }
     return 'mine'
   })
-  const [isLeaveSpinModalVisible, setIsLeaveSpinModalVisible] =
-    useState<boolean>(false)
+  const [isLeaveSpinModalVisible, setIsLeaveSpinModalVisible] = useState<
+    undefined | boolean
+  >()
 
   const [isDeleteSpinModalVisible, setIsDeleteSpinModalVisible] =
-    useState<boolean>(false)
+    useState<boolean>()
 
   const toggleLeaveSpinModal = () => {
-    setIsLeaveSpinModalVisible(true)
+    if (isLeaveSpinModalVisible === undefined) {
+      setIsLeaveSpinModalVisible(true)
+    } else {
+      setIsLeaveSpinModalVisible((state) => !state)
+    }
   }
 
   const toggleDeleteSpinModal = () => {
-    setIsDeleteSpinModalVisible(true)
-  }
-
-  const leaveSpin = async () => {
-    try {
-      await api.post(`/spins/leave/${spin?.id}`)
-
-      const newSpins = spins?.filter((s) => s.id !== spin?.id)
-
-      if (newSpins !== undefined) spinsUpdate(newSpins)
-      setSnackbarStatus('Saiu do rolê com sucesso', true)
-      return true
-    } catch (error) {
-      const isAppError = error instanceof AppError
-
-      const title = isAppError
-        ? error.message
-        : 'Não foi possível sair desse rolê. Tente novamente mais tarde.'
-      setSnackbarStatus(title, false)
-      return false
+    if (isDeleteSpinModalVisible === undefined) {
+      setIsDeleteSpinModalVisible(true)
+    } else {
+      setIsDeleteSpinModalVisible((state) => !state)
     }
-  }
-
-  const deleteSpin = async () => {
-    try {
-      await api.delete(`/spins/${spin?.id}`)
-
-      const newSpins = spins?.filter((s) => s.id !== spin?.id)
-
-      if (newSpins !== undefined) spinsUpdate(newSpins)
-      setSnackbarStatus('rolê excluído com sucesso', true)
-      return true
-    } catch (error) {
-      const isAppError = error instanceof AppError
-
-      const title = isAppError
-        ? error.message
-        : 'Não foi possível deletar esse rolê. Tente novamente mais tarde.'
-      setSnackbarStatus(title, false)
-      return false
-    }
-  }
-
-  const onLeaveSpinModalPress = async (confirm: boolean) => {
-    if (confirm) {
-      const success = await leaveSpin()
-      if (success) {
-        navigation.navigate('HomeList')
-      }
-    }
-    setIsLeaveSpinModalVisible(false)
-  }
-
-  const onDeleteSpinModalPress = async (confirm: boolean) => {
-    if (confirm) {
-      const success = await deleteSpin()
-      if (success) {
-        navigation.navigate('HomeList')
-      }
-    }
-    setIsDeleteSpinModalVisible(false)
   }
 
   const theme = useTheme()
@@ -227,18 +173,8 @@ export function Spin({ navigation }: SpinProps) {
             </S.CreatedContainer>
           )}
         </S.Footer>
-        <CustomModal
-          text="Tem certeza que deseja sair desse rolê?"
-          isVisible={isLeaveSpinModalVisible}
-          buttonConfirmText="Sair"
-          onButtonPress={onLeaveSpinModalPress}
-        />
-        <CustomModal
-          text="Tem certeza que deseja excluir esse rolê?"
-          isVisible={isDeleteSpinModalVisible}
-          buttonConfirmText="Excluir"
-          onButtonPress={onDeleteSpinModalPress}
-        />
+        <LeaveSpin modalCalled={isLeaveSpinModalVisible} spin={spin} />
+        <DeleteSpin modalCalled={isDeleteSpinModalVisible} spin={spin} />
       </ScrollContainer>
     </>
   )
