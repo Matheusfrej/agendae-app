@@ -1,18 +1,18 @@
 import { BackButton } from '@components/BackButton'
 import { ScrollContainer } from '../../components/ScrollContainer'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import * as S from './styles'
 import { FriendCard } from '@components/FriendCard'
 import { NoContentText } from '@components/NoContentText'
-import { UserDTO } from '../../dtos/userDTO'
 import { useAuth } from '../../contexts/AuthContext'
 import api from '../../libs/api'
 import { AppError } from '@utils/AppError'
+import { useBlocked } from '../../contexts/BlockedContext'
 
 export function Blocked() {
   const { setSnackbarStatus } = useAuth()
-  const [blocked, setBlocked] = useState<UserDTO[]>([])
+  const { blocked, onSetBlocked } = useBlocked()
 
   const areThereBlocked = blocked.length > 0
 
@@ -21,7 +21,7 @@ export function Blocked() {
       try {
         const response = await api.get('/blocks')
 
-        setBlocked(response.data.blocks)
+        onSetBlocked(response.data.blocks)
       } catch (error) {
         const isAppError = error instanceof AppError
 
@@ -43,8 +43,6 @@ export function Blocked() {
         {areThereBlocked ? (
           <S.BlockedContainer>
             {blocked.map((user) => {
-              console.log(user)
-
               return <FriendCard key={user.id} user={user} />
             })}
           </S.BlockedContainer>

@@ -19,6 +19,7 @@ import { UserDTO } from 'src/dtos/userDTO'
 import { Unfriend } from './Unfriend'
 import { StatisticsDTO } from '../../dtos/statisticsDTO'
 import { getUserSocialName } from '@utils/format'
+import { Unblock } from './Unblock'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -53,6 +54,9 @@ export function Profile({ navigation }: ProfileProps) {
     }
   })
   const [triggerUnfriendModal, setTriggerUnfriendModal] = useState<
+    undefined | boolean
+  >()
+  const [triggerUnblockModal, setTriggerUnblockModal] = useState<
     undefined | boolean
   >()
   const { onTouchStart, onTouchEnd } = useSwipe({
@@ -250,7 +254,15 @@ export function Profile({ navigation }: ProfileProps) {
                 </S.FooterTextTouchable>
               )}
               {profileStatus === 'you_blocked_user' && (
-                <S.FooterTextTouchable>
+                <S.FooterTextTouchable
+                  onPress={() => {
+                    if (triggerUnblockModal === undefined) {
+                      setTriggerUnblockModal(true)
+                    } else {
+                      setTriggerUnblockModal((state) => !state)
+                    }
+                  }}
+                >
                   <S.FooterText>Desbloquear usuário</S.FooterText>
                 </S.FooterTextTouchable>
               )}
@@ -263,6 +275,7 @@ export function Profile({ navigation }: ProfileProps) {
             </S.FooterTextContainer>
           )}
           <Unfriend modalCalled={triggerUnfriendModal} friend={currUser} />
+          <Unblock modalCalled={triggerUnblockModal} user_blocked={currUser} />
         </ScrollContainer>
       )}
     </>
