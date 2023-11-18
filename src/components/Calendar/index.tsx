@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationType } from 'src/@types/navigation'
 import { Line } from '@components/Line'
+import { useAuth } from '../../contexts/AuthContext'
 
 interface DaysType {
   day: number
@@ -12,6 +13,8 @@ interface DaysType {
 }
 
 export function Calendar() {
+  const { isLogged } = useAuth()
+
   const [currYear, setCurrYear] = useState(new Date().getFullYear())
   const [currMonth, setCurrMonth] = useState(new Date().getMonth())
   const [days, setDays] = useState<DaysType[]>([])
@@ -113,26 +116,30 @@ export function Calendar() {
   }
 
   const goToDate = (day: string, variant: string) => {
-    if (variant === 'inactive') {
-      if (+day > 15) {
-        navigation.navigate('SpinsOfDay', {
-          day,
-          month: months[currMonth - 1].toLocaleLowerCase(),
-          year: currYear,
-        })
+    if (!isLogged) {
+      navigation.navigate('AuthStack', { screen: 'Login' })
+    } else {
+      if (variant === 'inactive') {
+        if (+day > 15) {
+          navigation.navigate('SpinsOfDay', {
+            day,
+            month: months[currMonth - 1].toLocaleLowerCase(),
+            year: currYear,
+          })
+        } else {
+          navigation.navigate('SpinsOfDay', {
+            day,
+            month: months[currMonth + 1].toLocaleLowerCase(),
+            year: currYear,
+          })
+        }
       } else {
         navigation.navigate('SpinsOfDay', {
           day,
-          month: months[currMonth + 1].toLocaleLowerCase(),
+          month: months[currMonth].toLocaleLowerCase(),
           year: currYear,
         })
       }
-    } else {
-      navigation.navigate('SpinsOfDay', {
-        day,
-        month: months[currMonth].toLocaleLowerCase(),
-        year: currYear,
-      })
     }
   }
 

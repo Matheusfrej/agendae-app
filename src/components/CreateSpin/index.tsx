@@ -4,14 +4,22 @@ import { useTheme } from 'styled-components'
 import * as S from './styles'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationType } from 'src/@types/navigation'
+import { useAuth } from '../../contexts/AuthContext'
 
 export function CreateSpin() {
   const theme = useTheme()
+  const { isLogged } = useAuth()
 
   const navigation = useNavigation<NavigationType>()
 
   const goToCreateSpin = () => {
-    navigation.navigate('CreateUpdateSpin', { spinId: null })
+    console.log(isLogged)
+
+    if (!isLogged) {
+      navigation.navigate('AuthStack', { screen: 'Login' })
+    } else {
+      navigation.navigate('CreateUpdateSpin')
+    }
   }
 
   return (
