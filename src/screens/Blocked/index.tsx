@@ -43,6 +43,8 @@ export function Blocked() {
         {areThereBlocked ? (
           <S.BlockedContainer>
             {blocked.map((user) => {
+              console.log(user)
+
               return <FriendCard key={user.id} user={user} />
             })}
           </S.BlockedContainer>

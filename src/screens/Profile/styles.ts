@@ -109,6 +109,17 @@ export const FooterTextContainer = styled.View`
   gap: 20px;
 `
 
+export const BlockedContainer = styled.View`
+  margin-top: 30px;
+  gap: 10px;
+`
+
+export const BlockedSubtitle = styled.Text`
+  color: ${(props) => props.theme.COLORS.GRAY_700};
+  text-align: center;
+  font-size: 18px;
+`
+
 export const FooterTextTouchable = styled.TouchableOpacity``
 
 export const AddFriendButtonContainer = styled.View`

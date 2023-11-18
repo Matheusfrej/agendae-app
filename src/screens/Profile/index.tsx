@@ -18,12 +18,19 @@ import { AppError } from '@utils/AppError'
 import { UserDTO } from 'src/dtos/userDTO'
 import { Unfriend } from './Unfriend'
 import { StatisticsDTO } from '../../dtos/statisticsDTO'
+import { getUserSocialName } from '@utils/format'
 
 interface ProfileProps {
   navigation: NavigationType
 }
 
-type ProfileStatus = 'mine' | 'friend' | 'user' | 'friend_request'
+type ProfileStatus =
+  | 'mine'
+  | 'friend'
+  | 'user'
+  | 'friend_request'
+  | 'you_blocked_user'
+  | 'user_blocked_you'
 
 export function Profile({ navigation }: ProfileProps) {
   const { user, isLogged, signOut, setSnackbarStatus } = useAuth()
@@ -93,6 +100,10 @@ export function Profile({ navigation }: ProfileProps) {
           setProfileStatus('friend')
         } else if (route.params?.isFriendRequest) {
           setProfileStatus('friend_request')
+        } else if (profileResponse.data.is_blocked_by_you) {
+          setProfileStatus('you_blocked_user')
+        } else if (profileResponse.data.user_blocked_you) {
+          setProfileStatus('user_blocked_you')
         } else {
           setProfileStatus('user')
         }
@@ -193,26 +204,35 @@ export function Profile({ navigation }: ProfileProps) {
                 {currUser?.nickname && <S.Bold>({currUser?.nickname})</S.Bold>}
               </S.Text>
             </S.ProfileImageAndName>
-            <S.StatisticsContainer>
-              <S.Statistic>
-                <S.Text variant="purple">
-                  {currUserStatistics.previous_spins}
-                </S.Text>
-                <S.Text fontSize={18}>rolês passados</S.Text>
-              </S.Statistic>
-              <S.Statistic>
-                <S.Text variant="purple">
-                  {currUserStatistics.invited_spins}
-                </S.Text>
-                <S.Text fontSize={18}>rolês convidados</S.Text>
-              </S.Statistic>
-              <S.Statistic>
-                <S.Text variant="purple">
-                  {currUserStatistics.total_spins}
-                </S.Text>
-                <S.Text fontSize={18}>rolês organizados</S.Text>
-              </S.Statistic>
-            </S.StatisticsContainer>
+            {profileStatus !== 'user_blocked_you' ? (
+              <S.StatisticsContainer>
+                <S.Statistic>
+                  <S.Text variant="purple">
+                    {currUserStatistics.previous_spins}
+                  </S.Text>
+                  <S.Text fontSize={18}>rolês passados</S.Text>
+                </S.Statistic>
+                <S.Statistic>
+                  <S.Text variant="purple">
+                    {currUserStatistics.invited_spins}
+                  </S.Text>
+                  <S.Text fontSize={18}>rolês convidados</S.Text>
+                </S.Statistic>
+                <S.Statistic>
+                  <S.Text variant="purple">
+                    {currUserStatistics.total_spins}
+                  </S.Text>
+                  <S.Text fontSize={18}>rolês organizados</S.Text>
+                </S.Statistic>
+              </S.StatisticsContainer>
+            ) : (
+              <S.BlockedContainer>
+                <S.Text fontSize={20}>Você está bloqueado</S.Text>
+                <S.BlockedSubtitle>{`Você está impedido de adicionar ou ver o perfil de ${
+                  currUser && getUserSocialName(currUser)
+                }.`}</S.BlockedSubtitle>
+              </S.BlockedContainer>
+            )}
           </S.Container>
           {profileStatus !== 'mine' && (
             <S.FooterTextContainer>
@@ -229,9 +249,17 @@ export function Profile({ navigation }: ProfileProps) {
                   <S.FooterText>Desfazer amizade</S.FooterText>
                 </S.FooterTextTouchable>
               )}
-              <S.FooterTextTouchable>
-                <S.FooterText>Bloquear usuário</S.FooterText>
-              </S.FooterTextTouchable>
+              {profileStatus === 'you_blocked_user' && (
+                <S.FooterTextTouchable>
+                  <S.FooterText>Desbloquear usuário</S.FooterText>
+                </S.FooterTextTouchable>
+              )}
+              {profileStatus !== 'user_blocked_you' &&
+                profileStatus !== 'you_blocked_user' && (
+                  <S.FooterTextTouchable>
+                    <S.FooterText>Bloquear usuário</S.FooterText>
+                  </S.FooterTextTouchable>
+                )}
             </S.FooterTextContainer>
           )}
           <Unfriend modalCalled={triggerUnfriendModal} friend={currUser} />
