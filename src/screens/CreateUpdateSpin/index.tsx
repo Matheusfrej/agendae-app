@@ -85,19 +85,35 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     '2',
     '3',
   ])
-  const [startDate, setStartDate] = useState(new Date())
+  const [startDate, setStartDate] = useState(() => {
+    if (route.params?.spin && route.params.spin.start_date)
+      return new Date(route.params?.spin.start_date)
+    return new Date()
+  })
   const [showStartDate, setShowStartDate] = useState(false)
   const [showStartTime, setShowStartTime] = useState(false)
-  const [endDate, setEndDate] = useState(new Date())
+  const [endDate, setEndDate] = useState(() => {
+    if (route.params?.spin && route.params.spin.end_date)
+      return new Date(route.params?.spin.end_date)
+    return new Date()
+  })
   const [showEndDate, setShowEndDate] = useState(false)
   const [showEndTime, setShowEndTime] = useState(false)
   const [hasStartDate, setHasStartDate] = useState(() => {
-    setValue('start_date', new Date())
-    return true
+    if (!route.params?.spin) {
+      setValue('start_date', new Date())
+    }
+    if (route.params?.spin && route.params.spin.start_date) {
+      return true
+    }
+    return false
   })
   const [hasEndDate, setHasEndDate] = useState(() => {
-    setValue('end_date', new Date())
-    return true
+    if (!route.params?.spin) setValue('end_date', new Date())
+    if (route.params?.spin && route.params.spin.end_date) {
+      return true
+    }
+    return false
   })
   const [hasStartTime, setHasStartTime] = useState(() => {
     setValue('has_start_time', true)
@@ -263,7 +279,6 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
       if (user) {
         spin.organizer = user
       }
-
       navigation.navigate('Spin', { spin })
       reset()
     }
@@ -468,6 +483,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                     mode="time"
                     is24Hour={true}
                     onChange={onChangeStartTime}
+                    timeZoneOffsetInMinutes={-new Date().getTimezoneOffset()}
                   />
                 )}
                 <S.Touchable
@@ -479,6 +495,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                     value={
                       hasStartTime
                         ? startDate.toLocaleTimeString('pt-BR', {
+                            timeZone: 'America/Sao_Paulo',
                             hour: '2-digit',
                             minute: '2-digit',
                           })
@@ -564,6 +581,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                     mode="time"
                     is24Hour={true}
                     onChange={onChangeEndTime}
+                    timeZoneOffsetInMinutes={-new Date().getTimezoneOffset()}
                   />
                 )}
                 <S.Touchable
@@ -575,6 +593,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                     value={
                       hasEndTime
                         ? endDate.toLocaleTimeString('pt-BR', {
+                            timeZone: 'America/Sao_Paulo',
                             hour: '2-digit',
                             minute: '2-digit',
                           })
