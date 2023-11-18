@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 import { NavigationType } from 'src/@types/navigation'
 import { Line } from '@components/Line'
 import { useAuth } from '../../contexts/AuthContext'
+import { useSpins } from '../../contexts/SpinsContext'
+import { SpinDTO } from '../../dtos/spinDTO'
 
 interface DaysType {
   day: number
@@ -14,6 +16,7 @@ interface DaysType {
 
 export function Calendar() {
   const { isLogged } = useAuth()
+  const { getSpinsByDate } = useSpins()
 
   const [currYear, setCurrYear] = useState(new Date().getFullYear())
   const [currMonth, setCurrMonth] = useState(new Date().getMonth())
@@ -125,12 +128,14 @@ export function Calendar() {
             day,
             month: months[currMonth - 1].toLocaleLowerCase(),
             year: currYear,
+            fullDate: new Date(currYear, currMonth - 1, +day).toISOString(),
           })
         } else {
           navigation.navigate('SpinsOfDay', {
             day,
             month: months[currMonth + 1].toLocaleLowerCase(),
             year: currYear,
+            fullDate: new Date(currYear, currMonth + 1, +day).toISOString(),
           })
         }
       } else {
@@ -138,6 +143,7 @@ export function Calendar() {
           day,
           month: months[currMonth].toLocaleLowerCase(),
           year: currYear,
+          fullDate: new Date(currYear, currMonth, +day).toISOString(),
         })
       }
     }
@@ -186,6 +192,23 @@ export function Calendar() {
         <S.Days>
           {isCalendarRendered &&
             days.map((day, idx) => {
+              let spinsByDay: SpinDTO[]
+              if (day.variant === 'inactive') {
+                if (day.day > 15) {
+                  spinsByDay = getSpinsByDate(
+                    new Date(currYear, currMonth - 1, day.day),
+                  )
+                } else {
+                  spinsByDay = getSpinsByDate(
+                    new Date(currYear, currMonth + 1, day.day),
+                  )
+                }
+              } else {
+                spinsByDay = getSpinsByDate(
+                  new Date(currYear, currMonth, day.day),
+                )
+              }
+
               return (
                 <S.Day
                   key={`${day.day}+${idx}`}
@@ -195,7 +218,9 @@ export function Calendar() {
                 >
                   <>
                     <S.Text variant={day.variant}>{day.day}</S.Text>
-                    <S.SpinsQuantity quantity={0}>4+</S.SpinsQuantity>
+                    <S.SpinsQuantity quantity={spinsByDay.length}>
+                      {spinsByDay.length >= 4 ? '4+' : spinsByDay.length}
+                    </S.SpinsQuantity>
                     <Line />
                   </>
                 </S.Day>

@@ -43,7 +43,7 @@ export function DeleteSpin({ modalCalled, spin }: DeleteSpinProps) {
     if (confirm) {
       const success = await deleteSpin()
       if (success) {
-        navigation.navigate('HomeList')
+        navigation.goBack()
       }
     }
     setIsVisible(false)

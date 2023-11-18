@@ -6,60 +6,18 @@ import { BackButton } from '@components/BackButton'
 import { SpinCard, SpinCardContainerVariant } from '@components/SpinCard'
 import { SpinsOfDayScreenRouteProp } from 'src/@types/navigation'
 import { useRoute } from '@react-navigation/native'
+import { convertToLocaleDate, getUserSocialName } from '@utils/format'
+import { useAuth } from '../../contexts/AuthContext'
+import { useSpins } from '../../contexts/SpinsContext'
 
 export function SpinsOfDay() {
   const route = useRoute<SpinsOfDayScreenRouteProp>()
-  const { day, month, year } = route.params
+  const { user } = useAuth()
+  const { getSpinsByDate } = useSpins()
 
-  const spins = [
-    {
-      title: 'Teste 1',
-      start_date: '27/09',
-      end_date: '28/09',
-    },
-    {
-      title: 'Teste 1',
-      start_date: '27/09',
-      end_date: '28/09',
-    },
-    {
-      title: 'Teste 1',
-      start_date: '27/09',
-      end_date: '28/09',
-    },
-    {
-      title: 'Teste 1',
-      start_date: '27/09',
-      end_date: '28/09',
-    },
-    {
-      title: 'Teste 1',
-      start_date: '27/09',
-      end_date: '28/09',
-    },
-    {
-      title: 'Teste 2',
-      start_date: '27/09',
-      creator: 'Bruna',
-      background_color: 'red',
-    },
-    {
-      title: 'Teste 3',
-      creator: 'Zé',
-      background_color: 'yellow',
-    },
-    {
-      title: 'Teste 4',
-      background_color: 'green',
-    },
-    {
-      title: 'Teste 5',
-      start_date: '27/09 18h',
-      end_date: '28/09 18h',
-      creator: 'Bruna',
-      background_color: 'purple',
-    },
-  ]
+  const { day, month, year, fullDate } = route.params
+
+  const filteredSpins = getSpinsByDate(new Date(fullDate))
 
   return (
     <>
@@ -75,17 +33,29 @@ export function SpinsOfDay() {
             </S.Day>
           </S.Header>
           <S.SpinsContainer>
-            {spins.length > 0 ? (
-              spins.map((spin, idx) => {
+            {filteredSpins.length > 0 ? (
+              filteredSpins.map((spin, idx) => {
+                const organizer_name =
+                  spin.organizer.id !== user?.id
+                    ? getUserSocialName(spin.organizer)
+                    : ''
+
                 return (
                   <SpinCard
                     key={idx}
+                    spin={spin}
                     title={spin.title}
-                    creator={spin.creator}
-                    start_date={spin.start_date}
-                    end_date={spin.end_date}
+                    creator={organizer_name}
+                    start_date={convertToLocaleDate(
+                      spin.start_date!,
+                      spin.has_start_time,
+                    )}
+                    end_date={convertToLocaleDate(
+                      spin.end_date!,
+                      spin.has_end_time,
+                    )}
                     background_color={
-                      spin.background_color as SpinCardContainerVariant
+                      spin.theme_color as SpinCardContainerVariant
                     }
                   />
                 )

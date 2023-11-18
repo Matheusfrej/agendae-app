@@ -22,6 +22,7 @@ type StackParamList = {
     day: string
     month: string
     year: number
+    fullDate: string
   }
   ProfileStack: {
     screen: 'Profile'

@@ -17,12 +17,13 @@ interface SpinsContextProviderProps {
 interface SpinsContextType {
   spins: SpinDTO[] | undefined
   spinsUpdate: (spins: SpinDTO[]) => Promise<void>
+  getSpinsByDate: (currDate: Date) => SpinDTO[]
 }
 
 export const SpinsContext = createContext({} as SpinsContextType)
 
 export function SpinsContextProvider({ children }: SpinsContextProviderProps) {
-  const { setSnackbarStatus, isLogged, signOut } = useAuth()
+  const { setSnackbarStatus, isLogged } = useAuth()
 
   const [spins, setSpins] = useState<SpinDTO[] | undefined>()
 
@@ -45,6 +46,40 @@ export function SpinsContextProvider({ children }: SpinsContextProviderProps) {
     }
   }
 
+  function getSpinsByDate(currDate: Date) {
+    if (spins) {
+      const spinsFiltered = spins.filter((spin) => {
+        if (spin.start_date !== null && spin.end_date !== null) {
+          const date = new Date(spin.start_date)
+          return (
+            currDate.getDate() === date.getDate() &&
+            currDate.getMonth() === date.getMonth() &&
+            currDate.getFullYear() === date.getFullYear()
+          )
+        } else if (spin.start_date !== null) {
+          const date = new Date(spin.start_date)
+          return (
+            currDate.getDate() === date.getDate() &&
+            currDate.getMonth() === date.getMonth() &&
+            currDate.getFullYear() === date.getFullYear()
+          )
+        } else if (spin.end_date !== null) {
+          const date = new Date(spin.end_date)
+          return (
+            currDate.getDate() === date.getDate() &&
+            currDate.getMonth() === date.getMonth() &&
+            currDate.getFullYear() === date.getFullYear()
+          )
+        }
+        return false
+      })
+
+      return spinsFiltered
+    }
+
+    return []
+  }
+
   useEffect(() => {
     if (!spins && isLogged) getSpins()
     if (!isLogged) {
@@ -58,6 +93,7 @@ export function SpinsContextProvider({ children }: SpinsContextProviderProps) {
       value={{
         spins,
         spinsUpdate,
+        getSpinsByDate,
       }}
     >
       {children}

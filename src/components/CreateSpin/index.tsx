@@ -13,8 +13,6 @@ export function CreateSpin() {
   const navigation = useNavigation<NavigationType>()
 
   const goToCreateSpin = () => {
-    console.log(isLogged)
-
     if (!isLogged) {
       navigation.navigate('AuthStack', { screen: 'Login' })
     } else {
