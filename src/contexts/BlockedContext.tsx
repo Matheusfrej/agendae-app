@@ -1,5 +1,12 @@
-import { ReactNode, createContext, useContext, useState } from 'react'
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { UserDTO } from '../dtos/userDTO'
+import { useAuth } from './AuthContext'
 
 interface BlockedContextProviderProps {
   children: ReactNode
@@ -15,11 +22,19 @@ export const BlockedContext = createContext({} as BlockedContextType)
 export function BlockedContextProvider({
   children,
 }: BlockedContextProviderProps) {
+  const { isLogged } = useAuth()
+
   const [blocked, setBlocked] = useState<UserDTO[]>([])
 
   const onSetBlocked = (newBlocked: UserDTO[]) => {
     setBlocked(newBlocked)
   }
+
+  useEffect(() => {
+    if (!isLogged) {
+      setBlocked([])
+    }
+  }, [isLogged])
 
   return (
     <BlockedContext.Provider
