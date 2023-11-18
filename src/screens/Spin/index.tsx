@@ -104,8 +104,8 @@ export function Spin({ navigation }: SpinProps) {
                 Fim: {convertToLocaleDate(spin.end_date, spin.has_end_time)}
               </S.Date>
             )}
-            <S.Place>{spin?.place}</S.Place>
-            <S.Section
+            {spin?.place && <S.Place>{spin?.place}</S.Place>}
+            {/* <S.Section
               onPress={() => setAreParticipantsOpen(!areParticipantsOpen)}
             >
               {!areParticipantsOpen ? (
@@ -125,7 +125,7 @@ export function Spin({ navigation }: SpinProps) {
               <S.Content>
                 <S.ParticipantsText>Participantes</S.ParticipantsText>
               </S.Content>
-            </S.Section>
+            </S.Section> */}
             {/* {areParticipantsOpen && (
               <S.ParticipantsContainer>
                 <Participant
