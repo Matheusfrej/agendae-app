@@ -127,6 +127,14 @@ export function Profile({ navigation }: ProfileProps) {
     }
   }
 
+  const userAcceptedInvite = () => {
+    setProfileStatus('friend')
+  }
+
+  const userDeniedInvite = () => {
+    setProfileStatus('user')
+  }
+
   useFocusEffect(
     useCallback(() => {
       if (route.params?.user) {
@@ -188,7 +196,12 @@ export function Profile({ navigation }: ProfileProps) {
 
           <S.Container onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
             {profileStatus === 'friend_request' && (
-              <InviteBanner type="friend" />
+              <InviteBanner
+                type="friend"
+                user={currUser}
+                accepted={() => userAcceptedInvite()}
+                denied={() => userDeniedInvite()}
+              />
             )}
 
             {profileStatus === 'mine' && (

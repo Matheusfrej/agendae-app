@@ -27,7 +27,7 @@ export function Invite({ user, type }: InviteProps) {
         isFriendRequest: true,
       })
     } else if (type === 'spin') {
-      navigation.navigate('Spin')
+      // navigation.navigate('Spin')
     }
   }
 

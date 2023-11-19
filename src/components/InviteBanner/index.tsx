@@ -1,24 +1,40 @@
 import * as S from './styles'
-import { useNavigation } from '@react-navigation/native'
-import { useTheme } from 'styled-components'
 import { CustomButton } from '@components/CustomButton'
-import { NavigationType } from 'src/@types/navigation'
 import { Line } from '@components/Line'
+import { useNotifications } from '../../contexts/NotificationsContext'
+import { UserDTO } from '../../dtos/userDTO'
 
 interface InviteBannerProps {
   type: 'friend' | 'spin'
+  user?: UserDTO
+  accepted: () => void
+  denied: () => void
 }
 
-export function InviteBanner({ type }: InviteBannerProps) {
-  const theme = useTheme()
+export function InviteBanner({
+  type,
+  user,
+  accepted,
+  denied,
+}: InviteBannerProps) {
+  const { acceptFriendInvite, denyFriendInvite } = useNotifications()
 
-  const navigation = useNavigation<NavigationType>()
+  const acceptInvite = async () => {
+    if (user) {
+      const success = await acceptFriendInvite(user)
 
-  const navigateToInvite = () => {
-    if (type === 'friend') {
-      navigation.navigate('Profile')
-    } else if (type === 'spin') {
-      navigation.navigate('Spin')
+      if (success) {
+        accepted()
+      }
+    }
+  }
+
+  const denyInvite = async () => {
+    if (user) {
+      const success = await denyFriendInvite(user)
+      if (success) {
+        denied()
+      }
     }
   }
 
@@ -39,11 +55,13 @@ export function InviteBanner({ type }: InviteBannerProps) {
               variant="accept"
               text="Aceitar"
               style={{ paddingLeft: 30, paddingRight: 30 }}
+              onPress={() => acceptInvite()}
             />
             <CustomButton
               variant="deny"
               text="Recusar"
               style={{ paddingLeft: 30, paddingRight: 30 }}
+              onPress={() => denyInvite()}
             />
           </S.Actions>
         </S.Container>
