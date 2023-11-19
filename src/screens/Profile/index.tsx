@@ -187,7 +187,9 @@ export function Profile({ navigation }: ProfileProps) {
           )}
 
           <S.Container onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-            {profileStatus === 'friend_request' && <InviteBanner type="spin" />}
+            {profileStatus === 'friend_request' && (
+              <InviteBanner type="friend" />
+            )}
 
             {profileStatus === 'mine' && (
               <S.NavigationContainer>

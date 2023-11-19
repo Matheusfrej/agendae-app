@@ -65,7 +65,7 @@ export function SpinsOfDay() {
                 <S.NoContentText>
                   Não há nenhum rolê agendado para o dia{' '}
                   <S.Day fontSize={20}>
-                    {day} de {month} de {year}.
+                    {day} de {month} de {year}.{' '}
                   </S.Day>
                   Aperte no “+” para adicionar um.
                 </S.NoContentText>

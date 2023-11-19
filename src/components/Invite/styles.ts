@@ -20,7 +20,6 @@ export const Content = styled.View`
   align-items: center;
   padding-left: 20px;
   gap: 25px;
-  flex: 1;
 `
 
 export const Texts = styled.View``
