@@ -16,19 +16,33 @@ import { getUserSocialName, convertToLocaleDate } from '@utils/format'
 import { useAuth } from '../../contexts/AuthContext'
 import { LeaveSpin } from './LeaveSpin'
 import { DeleteSpin } from './DeleteSpin'
+import { UserDTO } from '../../dtos/userDTO'
+import api from '../../libs/api'
+import { AppError } from '@utils/AppError'
 
 interface SpinProps {
   navigation: NavigationType
+}
+
+type ParticipantType = {
+  spinId: string
+  status: 0 | 1 | 2
+  received: UserDTO
 }
 
 type SpinStatus = 'mine' | 'invited' | 'friend_spin'
 
 export function Spin({ navigation }: SpinProps) {
   const route = useRoute<SpinScreenRouteProp>()
-  const { user } = useAuth()
+  const { user, setSnackbarStatus } = useAuth()
 
   const [areParticipantsOpen, setAreParticipantsOpen] = useState(false)
   const [spin, setSpin] = useState<SpinDTO | undefined>(route.params.spin)
+  const [participants, setParticipants] = useState<ParticipantType[]>([])
+
+  const participantsPendingOrAccepted = participants
+    .filter((p) => p.status !== 2)
+    .map((p) => p.received)
 
   const [spinStatus] = useState<SpinStatus>(() => {
     if (user?.id !== route.params.spin.organizer.id) {
@@ -66,7 +80,10 @@ export function Spin({ navigation }: SpinProps) {
       name: 'Editar',
       action: () => {
         if (spin) {
-          navigation.navigate('CreateUpdateSpin', { spin })
+          navigation.navigate('CreateUpdateSpin', {
+            spin,
+            participants: participantsPendingOrAccepted,
+          })
         }
       },
     },
@@ -77,9 +94,28 @@ export function Spin({ navigation }: SpinProps) {
     },
   ]
 
+  const fetchParticipants = async () => {
+    try {
+      const response = await api.get(
+        `/spins/participants/${route.params.spin.id}`,
+      )
+
+      setParticipants(response.data.participants)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível carregar os participantes. Tente novamente mais tarde.'
+      setSnackbarStatus(title, false)
+    }
+  }
+
   useFocusEffect(
     useCallback(() => {
       setSpin(route.params.spin)
+      fetchParticipants()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [route.params.spin]),
   )
 
@@ -105,7 +141,7 @@ export function Spin({ navigation }: SpinProps) {
               </S.Date>
             )}
             {spin?.place && <S.Place>{spin?.place}</S.Place>}
-            {/* <S.Section
+            <S.Section
               onPress={() => setAreParticipantsOpen(!areParticipantsOpen)}
             >
               {!areParticipantsOpen ? (
@@ -125,26 +161,34 @@ export function Spin({ navigation }: SpinProps) {
               <S.Content>
                 <S.ParticipantsText>Participantes</S.ParticipantsText>
               </S.Content>
-            </S.Section> */}
-            {/* {areParticipantsOpen && (
+            </S.Section>
+            {areParticipantsOpen && (
               <S.ParticipantsContainer>
-                <Participant
-                  id="1"
-                  name="Bruna"
-                  invite_status="accepted"
-                ></Participant>
-                <Participant
-                  id="2"
-                  name="Matheus"
-                  invite_status="denied"
-                ></Participant>
-                <Participant
-                  id="3"
-                  name="Zé"
-                  invite_status="pending"
-                ></Participant>
+                {participants.length > 0 ? (
+                  participants.map((participant) => {
+                    return (
+                      <Participant
+                        key={participant.spinId + participant.received.id}
+                        user={participant.received}
+                        invite_status={
+                          participant.status === 0
+                            ? 'pending'
+                            : participant.status === 1
+                            ? 'accepted'
+                            : 'denied'
+                        }
+                      />
+                    )
+                  })
+                ) : (
+                  <S.Content>
+                    <S.NoParticipantsText>
+                      Ainda não há nenhum participante convidado
+                    </S.NoParticipantsText>
+                  </S.Content>
+                )}
               </S.ParticipantsContainer>
-            )} */}
+            )}
             <Line />
             <S.Description>{spin?.description}</S.Description>
           </S.Content>

@@ -9,6 +9,7 @@ type StackParamList = {
     | undefined
     | {
         spin: SpinDTO
+        participants: UserDTO[]
       }
   Notifications: undefined
   Spin: {

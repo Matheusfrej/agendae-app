@@ -70,8 +70,21 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     resolver: zodResolver(spinFormSchema),
   })
 
-  const [availableUsers, setAvailableUsers] = useState<UserDTO[]>(friends)
-  const [selectedUsers, setSelectedUsers] = useState<UserDTO[]>([])
+  const [availableUsers, setAvailableUsers] = useState<UserDTO[]>(() => {
+    if (route.params?.participants) {
+      return friends.filter(
+        (friend) =>
+          !route.params?.participants.map((p) => p.id).includes(friend.id),
+      )
+    }
+    return friends
+  })
+  const [selectedUsers, setSelectedUsers] = useState<UserDTO[]>(() => {
+    if (route.params?.participants) {
+      return route.params.participants
+    }
+    return []
+  })
 
   const [colorSelected, setColorSelected] = useState<SpinCardContainerVariant>(
     () => {

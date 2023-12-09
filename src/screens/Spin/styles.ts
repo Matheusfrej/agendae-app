@@ -106,3 +106,10 @@ export const Footer = styled.View`
   margin-top: 100px;
   width: 100%;
 `
+
+export const NoParticipantsText = styled.Text`
+  padding: 20px 10px;
+  text-align: center;
+  color: ${(props) => props.theme.COLORS.GRAY_700};
+  font-size: 16px;
+`
