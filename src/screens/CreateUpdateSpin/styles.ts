@@ -84,6 +84,16 @@ export const TextInputHour = styled(TextInput)`
   color: black;
 `
 
+export const Section = styled.TouchableOpacity`
+  width: 90%;
+  border-radius: 8px;
+  flex-direction: row;
+  height: fit-content;
+  align-items: baseline;
+  gap: 10px;
+  align-items: center;
+`
+
 export const Login = styled.View`
   flex-direction: row;
   align-items: center;

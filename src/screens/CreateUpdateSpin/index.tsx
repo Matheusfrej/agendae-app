@@ -28,6 +28,7 @@ import { SpinDTO } from '../../dtos/spinDTO'
 import { Picklist } from '@components/Picklist'
 import { useFriends } from '../../contexts/FriendsContext'
 import { UserDTO } from '../../dtos/userDTO'
+import { MaterialIcons } from '@expo/vector-icons'
 
 interface CreateUpdateSpinProps {
   navigation: NavigationType
@@ -85,6 +86,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     }
     return []
   })
+  const [areParticipantsOpen, setAreParticipantsOpen] = useState(false)
 
   const [colorSelected, setColorSelected] = useState<SpinCardContainerVariant>(
     () => {
@@ -699,13 +701,36 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                   )}
                 </S.SelectListContainer>
               </S.InputSection>
-              <Picklist
-                name="Usuários"
-                availableItems={availableUsers}
-                selectedItems={selectedUsers}
-                moveToSelected={moveUserToSelected}
-                moveToAvailable={moveUserToAvailable}
-              />
+              <S.Section
+                onPress={() => setAreParticipantsOpen(!areParticipantsOpen)}
+              >
+                {!areParticipantsOpen ? (
+                  <MaterialIcons
+                    name="arrow-right"
+                    size={32}
+                    color={theme.COLORS.PURPLE_500}
+                  />
+                ) : (
+                  <MaterialIcons
+                    name="arrow-drop-down"
+                    size={32}
+                    color={theme.COLORS.PURPLE_500}
+                  />
+                )}
+
+                <S.Content>
+                  <Label text="Participantes" />
+                </S.Content>
+              </S.Section>
+              {areParticipantsOpen && (
+                <Picklist
+                  name="Usuários"
+                  availableItems={availableUsers}
+                  selectedItems={selectedUsers}
+                  moveToSelected={moveUserToSelected}
+                  moveToAvailable={moveUserToAvailable}
+                />
+              )}
             </S.Form>
           </S.Content>
         </S.Container>
