@@ -14,6 +14,7 @@ type StackParamList = {
   Notifications: undefined
   Spin: {
     spin: SpinDTO
+    isSpinRequest?: boolean
   }
   AuthStack: {
     screen: 'Login' | 'Register'

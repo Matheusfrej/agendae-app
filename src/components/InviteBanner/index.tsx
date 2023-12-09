@@ -16,14 +16,26 @@ interface InviteBannerProps {
 export function InviteBanner({
   type,
   user,
+  spin,
   accepted,
   denied,
 }: InviteBannerProps) {
-  const { acceptFriendInvite, denyFriendInvite } = useNotifications()
+  const {
+    acceptFriendInvite,
+    denyFriendInvite,
+    acceptSpinInvite,
+    denySpinInvite,
+  } = useNotifications()
 
   const acceptInvite = async () => {
-    if (user) {
+    if (user && type === 'friend') {
       const success = await acceptFriendInvite(user)
+
+      if (success) {
+        accepted()
+      }
+    } else if (spin && type === 'spin') {
+      const success = await acceptSpinInvite(spin)
 
       if (success) {
         accepted()
@@ -32,8 +44,14 @@ export function InviteBanner({
   }
 
   const denyInvite = async () => {
-    if (user) {
+    if (user && type === 'friend') {
       const success = await denyFriendInvite(user)
+      if (success) {
+        denied()
+      }
+    } else if (spin && type === 'spin') {
+      const success = await denySpinInvite(spin)
+
       if (success) {
         denied()
       }

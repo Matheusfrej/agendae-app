@@ -30,7 +30,7 @@ type ParticipantType = {
   received: UserDTO
 }
 
-type SpinStatus = 'mine' | 'invited' | 'friend_spin'
+type SpinStatus = 'mine' | 'invited' | 'friend_spin' | 'user_spin'
 
 export function Spin({ navigation }: SpinProps) {
   const route = useRoute<SpinScreenRouteProp>()
@@ -44,7 +44,10 @@ export function Spin({ navigation }: SpinProps) {
     .filter((p) => p.status !== 2)
     .map((p) => p.received)
 
-  const [spinStatus] = useState<SpinStatus>(() => {
+  const [spinStatus, setSpinStatus] = useState<SpinStatus>(() => {
+    if (route.params.isSpinRequest) {
+      return 'invited'
+    }
     if (user?.id !== route.params.spin.organizer.id) {
       return 'friend_spin'
     }
@@ -71,6 +74,14 @@ export function Spin({ navigation }: SpinProps) {
     } else {
       setIsDeleteSpinModalVisible((state) => !state)
     }
+  }
+
+  const userAcceptedInvite = () => {
+    setSpinStatus('friend_spin')
+  }
+
+  const userDeniedInvite = () => {
+    setSpinStatus('user_spin')
   }
 
   const theme = useTheme()
@@ -125,7 +136,14 @@ export function Spin({ navigation }: SpinProps) {
         <BackButton />
         {spinStatus === 'mine' && <PopupMenu actions={spinActions} />}
         <S.Container>
-          {spinStatus === 'invited' && <InviteBanner type="spin" />}
+          {spinStatus === 'invited' && (
+            <InviteBanner
+              type="spin"
+              spin={spin}
+              accepted={() => userAcceptedInvite()}
+              denied={() => userDeniedInvite()}
+            />
+          )}
           <S.HeaderTitle invited={spinStatus === 'invited'}>rolê</S.HeaderTitle>
           <S.Content>
             <S.Title>{spin?.title}</S.Title>
