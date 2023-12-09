@@ -1,3 +1,4 @@
+import { SpinDTO } from './spinDTO'
 import { UserDTO } from './userDTO'
 
 export type NotificationsDTO =
@@ -7,7 +8,5 @@ export type NotificationsDTO =
     }
   | {
       type: 'spin'
-      organizer: UserDTO
-      id: string
-      title: string
+      spin: SpinDTO
     }

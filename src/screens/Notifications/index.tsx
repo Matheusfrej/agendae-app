@@ -9,12 +9,12 @@ import { useFocusEffect } from '@react-navigation/native'
 import { useCallback } from 'react'
 
 export function Notifications() {
-  const { fetchNotifications, notifications, onSetNotifications } =
-    useNotifications()
+  const { fetchNotifications, notifications } = useNotifications()
 
   useFocusEffect(
     useCallback(() => {
       fetchNotifications()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   )
 
@@ -39,11 +39,12 @@ export function Notifications() {
                   return (
                     <Invite
                       key={
-                        notification.organizer.id +
+                        notification.spin.organizer.id +
                         notification.type +
-                        notification.id
+                        notification.spin.id
                       }
-                      user={notification.organizer}
+                      user={notification.spin.organizer}
+                      spin={notification.spin}
                       type={notification.type}
                     />
                   )

@@ -8,15 +8,22 @@ import { ProfileImage } from '@components/ProfileImage'
 import { UserDTO } from '../../dtos/userDTO'
 import { getUserSocialName } from '@utils/format'
 import { useNotifications } from '../../contexts/NotificationsContext'
+import { SpinDTO } from 'src/dtos/spinDTO'
 
 interface InviteProps {
   user?: UserDTO
+  spin?: SpinDTO
   type: 'friend' | 'spin'
 }
 
-export function Invite({ user, type }: InviteProps) {
+export function Invite({ user, spin, type }: InviteProps) {
   const theme = useTheme()
-  const { acceptFriendInvite, denyFriendInvite } = useNotifications()
+  const {
+    acceptFriendInvite,
+    denyFriendInvite,
+    acceptSpinInvite,
+    denySpinInvite,
+  } = useNotifications()
 
   const navigation = useNavigation<NavigationType>()
 
@@ -54,12 +61,24 @@ export function Invite({ user, type }: InviteProps) {
                 <CustomButton
                   variant="accept"
                   text="Aceitar"
-                  onPress={() => user && acceptFriendInvite(user)}
+                  onPress={() => {
+                    if (user && type === 'friend') {
+                      acceptFriendInvite(user)
+                    } else if (spin && type === 'spin') {
+                      acceptSpinInvite(spin)
+                    }
+                  }}
                 />
                 <CustomButton
                   variant="deny"
                   text="Recusar"
-                  onPress={() => user && denyFriendInvite(user)}
+                  onPress={() => {
+                    if (user && type === 'friend') {
+                      denyFriendInvite(user)
+                    } else if (spin && type === 'spin') {
+                      denySpinInvite(spin)
+                    }
+                  }}
                 />
               </S.Actions>
             </S.Section>

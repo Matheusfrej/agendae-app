@@ -3,10 +3,12 @@ import { CustomButton } from '@components/CustomButton'
 import { Line } from '@components/Line'
 import { useNotifications } from '../../contexts/NotificationsContext'
 import { UserDTO } from '../../dtos/userDTO'
+import { SpinDTO } from '../../dtos/spinDTO'
 
 interface InviteBannerProps {
   type: 'friend' | 'spin'
   user?: UserDTO
+  spin?: SpinDTO
   accepted: () => void
   denied: () => void
 }
