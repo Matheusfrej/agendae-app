@@ -63,7 +63,6 @@ export function AddFriend({ navigation }: AddFriendProps) {
       return true
     } catch (error) {
       const isAppError = error instanceof AppError
-      console.log(error)
 
       const title = isAppError
         ? error.message

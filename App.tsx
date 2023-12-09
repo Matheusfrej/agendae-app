@@ -19,6 +19,8 @@ import { FriendsContextProvider } from './src/contexts/FriendsContext'
 import { BlockedContextProvider } from './src/contexts/BlockedContext'
 import { NotificationsContextProvider } from './src/contexts/NotificationsContext'
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
 export default function App() {
   const [fontsLoaded] = useFonts({ Overpass_400Regular, Overpass_700Bold })
 
@@ -29,7 +31,9 @@ export default function App() {
           <FriendsContextProvider>
             <BlockedContextProvider>
               <NotificationsContextProvider>
-                {fontsLoaded ? <Routes /> : <ActivityIndicator />}
+                <GestureHandlerRootView style={{ flex: 1 }}>
+                  {fontsLoaded ? <Routes /> : <ActivityIndicator />}
+                </GestureHandlerRootView>
               </NotificationsContextProvider>
             </BlockedContextProvider>
           </FriendsContextProvider>

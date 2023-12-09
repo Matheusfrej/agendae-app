@@ -7,6 +7,8 @@ import {
 } from 'react'
 import { UserDTO } from '../dtos/userDTO'
 import { useAuth } from './AuthContext'
+import { AppError } from '@utils/AppError'
+import api from '../libs/api'
 
 interface FriendsContextProviderProps {
   children: ReactNode
@@ -22,7 +24,7 @@ export const FriendsContext = createContext({} as FriendsContextType)
 export function FriendsContextProvider({
   children,
 }: FriendsContextProviderProps) {
-  const { isLogged } = useAuth()
+  const { isLogged, setSnackbarStatus } = useAuth()
 
   const [friends, setFriends] = useState<UserDTO[]>([])
 
@@ -30,10 +32,28 @@ export function FriendsContextProvider({
     setFriends(newFriends)
   }
 
+  const fetchFriends = async () => {
+    try {
+      const response = await api.get('/friends')
+
+      onSetFriends(response.data.friends)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível carregar os seus amigos. Tente novamente mais tarde.'
+      setSnackbarStatus(title, false)
+    }
+  }
+
   useEffect(() => {
     if (!isLogged) {
       setFriends([])
+    } else {
+      if (friends.length === 0) fetchFriends()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogged])
 
   return (

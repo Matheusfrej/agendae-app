@@ -16,7 +16,6 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
 import { Label } from '@components/Label'
-import MultiSelect from 'react-native-multiple-select'
 import { useAuth } from '../../contexts/AuthContext'
 import { useSpins } from '../../contexts/SpinsContext'
 import { AppError } from '@utils/AppError'
@@ -26,6 +25,9 @@ import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CustomInput } from '@components/CustomInput'
 import { SpinDTO } from '../../dtos/spinDTO'
+import { Picklist } from '@components/Picklist'
+import { useFriends } from '../../contexts/FriendsContext'
+import { UserDTO } from '../../dtos/userDTO'
 
 interface CreateUpdateSpinProps {
   navigation: NavigationType
@@ -62,10 +64,14 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
 
   const { user, setSnackbarStatus } = useAuth()
   const { spins, spinsUpdate } = useSpins()
+  const { friends } = useFriends()
 
   const { control, handleSubmit, reset, setValue } = useForm<SpinFormInputs>({
     resolver: zodResolver(spinFormSchema),
   })
+
+  const [availableUsers, setAvailableUsers] = useState<UserDTO[]>(friends)
+  const [selectedUsers, setSelectedUsers] = useState<UserDTO[]>([])
 
   const [colorSelected, setColorSelected] = useState<SpinCardContainerVariant>(
     () => {
@@ -80,11 +86,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     value: 'Roxo',
   })
   const [colorsLoaded, setColorsLoaded] = useState(false)
-  const [participantsSelected, setParticipantsSelected] = useState([
-    '1',
-    '2',
-    '3',
-  ])
+
   const [startDate, setStartDate] = useState(() => {
     if (route.params?.spin && route.params.spin.start_date)
       return new Date(route.params?.spin.start_date)
@@ -191,16 +193,6 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     }
   }
 
-  // const participantsData: { id: string; name: string }[] = [
-  //   { id: '1', name: 'Matheus' },
-  //   { id: '2', name: 'Bruna' },
-  //   { id: '3', name: 'Zé' },
-  //   { id: '4', name: 'Carmen' },
-  //   { id: '5', name: 'Nina' },
-  //   { id: '6', name: 'Floffytinha' },
-  //   { id: '7', name: 'Doiss' },
-  // ]
-
   const theme = useTheme()
 
   const handleColorSelected = (val: SpinCardContainerVariant) => {
@@ -208,11 +200,26 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     setValue('theme_color', val)
   }
 
+  const moveUserToSelected = (item: UserDTO) => {
+    setAvailableUsers((state) => state.filter((i) => i.id !== item.id))
+    setSelectedUsers((state) => [item, ...state])
+  }
+
+  const moveUserToAvailable = (item: UserDTO) => {
+    setSelectedUsers((state) => state.filter((i) => i.id !== item.id))
+    setAvailableUsers((state) => [item, ...state])
+  }
+
+  const selectedUsersIds = selectedUsers.map((s) => s.id)
+
   const editSpin = async (
     data: SpinFormInputs,
   ): Promise<SpinDTO | undefined> => {
     try {
-      const response = await api.put(`/spins/${spin?.id}`, data)
+      const response = await api.put(`/spins/${spin?.id}`, {
+        ...data,
+        participants: selectedUsersIds,
+      })
 
       setSnackbarStatus('Rolê editado com sucesso', true)
       const edittedSpin: SpinDTO = response.data.spin
@@ -242,7 +249,10 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
     data: SpinFormInputs,
   ): Promise<SpinDTO | undefined> => {
     try {
-      const response = await api.post('/spins', data)
+      const response = await api.post('/spins', {
+        ...data,
+        participants: selectedUsersIds,
+      })
 
       setSnackbarStatus('Rolê criado com sucesso', true)
       const newSpin: SpinDTO = response.data.spin
@@ -316,6 +326,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
         setHasEndTime(false)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spin])
 
   useEffect(() => {
@@ -349,6 +360,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
         setInitialColor({
           key: colorSelected,
           value:
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             data.colors.find((color: any) => colorSelected === color.key)
               ?.value || 'Roxo',
         })
@@ -674,39 +686,13 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                   )}
                 </S.SelectListContainer>
               </S.InputSection>
-              {/* <S.InputSection isFlexDirecitionColumn>
-                <Label text="Participantes" isInline />
-
-                <S.MultipleSelectListContainer>
-                  <MultiSelect
-                    items={participantsData}
-                    uniqueKey="id"
-                    onSelectedItemsChange={handleParticipantsSelected}
-                    selectedItems={participantsSelected}
-                    selectText="Escolher participantes"
-                    selectedText="escolhidos"
-                    searchInputPlaceholderText="Buscar participantes"
-                    tagRemoveIconColor="#CCC"
-                    tagBorderColor="#CCC"
-                    tagTextColor={theme.COLORS.BLACK}
-                    styleListContainer={{ padding: 10 }}
-                    styleInputGroup={{
-                      padding: 10,
-                      borderColor: theme.COLORS.GRAY_700,
-                      borderWidth: 1,
-                      borderRadius: 8,
-                    }}
-                    noItemsText="Usuário não encontrado"
-                    selectedItemTextColor={theme.COLORS.PURPLE_500}
-                    selectedItemIconColor={theme.COLORS.PURPLE_500}
-                    itemTextColor="#000"
-                    displayKey="name"
-                    searchInputStyle={{ color: '#CCC' }}
-                    submitButtonColor="#CCC"
-                    submitButtonText="Fechar"
-                  />
-                </S.MultipleSelectListContainer>
-              </S.InputSection> */}
+              <Picklist
+                name="Usuários"
+                availableItems={availableUsers}
+                selectedItems={selectedUsers}
+                moveToSelected={moveUserToSelected}
+                moveToAvailable={moveUserToAvailable}
+              />
             </S.Form>
           </S.Content>
         </S.Container>

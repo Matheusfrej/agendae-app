@@ -2,14 +2,11 @@ import { CustomButton } from '@components/CustomButton'
 import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
-import { useEffect } from 'react'
 import { NavigationType } from 'src/@types/navigation'
 import { FriendCard } from '@components/FriendCard'
 import { NoContentText } from '@components/NoContentText'
 import { useSwipe } from '../../hooks/useSwipe'
 import { useAuth } from '../../contexts/AuthContext'
-import { AppError } from '@utils/AppError'
-import api from '../../libs/api'
 import { useFriends } from '../../contexts/FriendsContext'
 
 interface FriendsProps {
@@ -30,25 +27,6 @@ export function Friends({ navigation }: FriendsProps) {
   }
 
   const areThereFriends = friends.length > 0
-
-  useEffect(() => {
-    const fetchFriends = async () => {
-      try {
-        const response = await api.get('/friends')
-
-        onSetFriends(response.data.friends)
-      } catch (error) {
-        const isAppError = error instanceof AppError
-
-        const title = isAppError
-          ? error.message
-          : 'Não foi possível deletar esse rolê. Tente novamente mais tarde.'
-        setSnackbarStatus(title, false)
-      }
-    }
-
-    if (friends.length === 0) fetchFriends()
-  }, [])
 
   return (
     <>

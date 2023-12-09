@@ -1,30 +1,21 @@
 import styled from 'styled-components/native'
 
-export const FriendCardContainer = styled.TouchableHighlight`
-  width: 100%;
-  gap: 15px;
-`
-
-export const Container = styled.View`
-  padding: 10px 0;
-`
+export const Container = styled.TouchableOpacity``
 
 export const Content = styled.View`
+  padding: 10px;
   flex-direction: row;
   align-items: center;
   padding-left: 20px;
   gap: 25px;
-  flex: 1;
+  border: 1px solid ${(props) => props.theme.COLORS.GRAY_300};
 `
 
 export const Texts = styled.View``
 
 export const Name = styled.Text`
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
 `
 
-export const Section = styled.View`
-  flex: 1;
-  gap: 10px;
-`
+export const Section = styled.View``
