@@ -3,10 +3,12 @@ import styled from 'styled-components/native'
 
 interface ButtonProps {
   variant: 'default' | 'accept' | 'deny' | 'warning' | 'abort'
+  isDisabled?: boolean
 }
 
 export const Button = styled.TouchableOpacity<ButtonProps>`
   border-radius: 8px;
+  opacity: ${(props) => (props.isDisabled ? 0.7 : 1)};
   ${(props) =>
     props.variant === 'default'
       ? css`
