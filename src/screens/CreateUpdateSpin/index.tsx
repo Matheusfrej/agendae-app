@@ -651,7 +651,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                       setHasEndDate((state) => !state)
                     }}
                   />
-                  <S.Text>Data de fim</S.Text>
+                  <S.Text style={{ paddingRight: 16 }}>Data de fim</S.Text>
                 </S.SwitchContainer>
                 <S.SwitchContainer>
                   <Switch
