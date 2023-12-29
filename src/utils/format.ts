@@ -1,7 +1,10 @@
 import { UserDTO } from '../dtos/userDTO'
 
-export function convertToLocaleDate(isoDateString: string, hasTime: boolean) {
-  if (isoDateString) {
+export function convertToLocaleDate(
+  isoDateString: string | null,
+  hasTime: boolean,
+) {
+  if (isoDateString !== null) {
     if (!hasTime) {
       return new Date(isoDateString).toLocaleString('pt-BR', {
         timeZone: 'America/Sao_Paulo',

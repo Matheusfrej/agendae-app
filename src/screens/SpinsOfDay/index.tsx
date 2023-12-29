@@ -48,11 +48,11 @@ export function SpinsOfDay() {
                     title={spin.title}
                     creator={organizer_name}
                     start_date={convertToLocaleDate(
-                      spin.start_date!,
+                      spin.start_date,
                       spin.has_start_time,
                     )}
                     end_date={convertToLocaleDate(
-                      spin.end_date!,
+                      spin.end_date,
                       spin.has_end_time,
                     )}
                     background_color={spin.theme_color as ColorOptionsType}
