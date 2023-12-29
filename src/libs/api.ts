@@ -4,6 +4,7 @@ import {
 } from '@storage/storageAuthToken'
 import { AppError } from '@utils/AppError'
 import axios, { AxiosInstance, AxiosError } from 'axios'
+import { API_URL } from '@env'
 
 type SignOut = () => void
 
@@ -16,12 +17,8 @@ type APIInstanceProps = AxiosInstance & {
   registerInterceptTokenManager: (signOut: SignOut) => () => void
 }
 
-// const api = axios.create({
-//   baseURL: 'http://18.221.61.128:3000/',
-// }) as APIInstanceProps
-
 const api = axios.create({
-  baseURL: 'http://192.168.0.13:3000/',
+  baseURL: API_URL,
 }) as APIInstanceProps
 
 let failedQueue: PromiseType[] = []

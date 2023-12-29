@@ -43,25 +43,33 @@ export function Calendar() {
   ]
 
   const renderCalendar = (currYearOffset = 0, currMonthOffset = 0) => {
+    const yearPlusOffset = currYear + currYearOffset
+    let monthPlusOffset = currMonth + currMonthOffset
+    if (monthPlusOffset === -1) {
+      monthPlusOffset = 11
+    } else if (monthPlusOffset === 12) {
+      monthPlusOffset = 0
+    }
+
     const newDays: DaysType[] = []
     const firstDayofMonth = new Date(
-      currYear + currYearOffset,
-      currMonth + currMonthOffset,
+      yearPlusOffset,
+      monthPlusOffset,
       1,
     ).getDay() // getting first day of month
     const lastDateofMonth = new Date(
-      currYear + currYearOffset,
+      yearPlusOffset,
       currMonth + 1 + currMonthOffset,
       0,
     ).getDate() // getting last date of month
     const lastDayofMonth = new Date(
-      currYear + currYearOffset,
-      currMonth + currMonthOffset,
+      yearPlusOffset,
+      monthPlusOffset,
       lastDateofMonth,
     ).getDay() // getting last day of month
     const lastDateofLastMonth = new Date(
-      currYear + currYearOffset,
-      currMonth + currMonthOffset,
+      yearPlusOffset,
+      monthPlusOffset,
       0,
     ).getDate() // getting last date of previous month
 
@@ -69,11 +77,12 @@ export function Calendar() {
       newDays.push({ day: lastDateofLastMonth - i + 1, variant: 'inactive' })
     }
     const currentDate = new Date()
+
     for (let i = 1; i <= lastDateofMonth; i++) {
       if (
         i === currentDate.getDate() &&
-        currentDate.getMonth() === currMonth + currMonthOffset &&
-        currentDate.getFullYear() === currYear + currYearOffset
+        currentDate.getMonth() === monthPlusOffset &&
+        currentDate.getFullYear() === yearPlusOffset
       ) {
         newDays.push({ day: i, variant: 'current' })
       } else {
@@ -100,11 +109,23 @@ export function Calendar() {
     if (newCurrMonth < 0 || newCurrMonth > 11) {
       // if current month is less than 0 or greater than 11
       if (newCurrMonth < 0) {
-        yearOffset = 1
-      } else {
         yearOffset = -1
+      } else {
+        yearOffset = 1
       }
       // creating a new date of current year & month and pass it as date value
+      console.log({
+        year: new Date(
+          currYear - yearOffset,
+          newCurrMonth,
+          new Date().getDate(),
+        ).getFullYear(),
+        month: new Date(
+          currYear,
+          newCurrMonth,
+          new Date().getDate(),
+        ).getMonth(),
+      })
 
       setCurrYear(
         new Date(currYear, newCurrMonth, new Date().getDate()).getFullYear(),
