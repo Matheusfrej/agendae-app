@@ -70,6 +70,7 @@ export function Profile({ navigation }: ProfileProps) {
     onSwipeLeft,
     rangeOffset: 6,
   })
+  const [isAddButtonDisabled, setIsAddButtonDisabled] = useState(false)
 
   const theme = useTheme()
 
@@ -138,6 +139,28 @@ export function Profile({ navigation }: ProfileProps) {
     setProfileStatus('user')
   }
 
+  const addFriend = async () => {
+    try {
+      await api.post(`/users/add/${currUser?.id}`)
+
+      setSnackbarStatus('Pedido de amizade enviado com sucesso!', true)
+      return true
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível adicionar o usuário. Tente novamente mais tarde.'
+      setSnackbarStatus(title, false)
+      return false
+    }
+  }
+
+  const handleAddFriend = async () => {
+    await addFriend()
+    setIsAddButtonDisabled(true)
+  }
+
   useFocusEffect(
     useCallback(() => {
       if (route.params?.user) {
@@ -195,8 +218,9 @@ export function Profile({ navigation }: ProfileProps) {
               <CustomButton
                 text="Adicionar"
                 variant="accept"
+                isDisabled={isAddButtonDisabled}
                 fontSize={20}
-                onPress={() => navigation.navigate('AddFriend')}
+                onPress={() => handleAddFriend()}
               />
             </S.AddFriendButtonContainer>
           )}

@@ -3,6 +3,7 @@ import { ViewStyle } from 'react-native'
 
 interface CustomButtonProps {
   variant: 'default' | 'accept' | 'deny' | 'warning' | 'abort'
+  isDisabled?: boolean
   text: string
   fontSize?: number
   onPress?: () => void
@@ -15,9 +16,15 @@ export function CustomButton({
   fontSize,
   onPress,
   style,
+  isDisabled,
 }: CustomButtonProps) {
   return (
-    <S.Button variant={variant} onPress={onPress} style={style}>
+    <S.Button
+      variant={variant}
+      onPress={onPress}
+      style={style}
+      isDisabled={isDisabled}
+    >
       <S.Text variant={variant} fontSize={fontSize}>
         {text}
       </S.Text>
