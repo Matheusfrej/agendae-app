@@ -1,12 +1,12 @@
 import styled from 'styled-components/native'
-import { SpinCardContainerVariant } from '../../@types/types'
+import { ColorOptionsType } from '../../@types/types'
 
 export const TouchableOpacity = styled.TouchableOpacity`
   width: 100%;
 `
 
 interface SpinCardContainerProps {
-  variant: SpinCardContainerVariant
+  variant: ColorOptionsType
 }
 
 export const SpinCardContainer = styled.View<SpinCardContainerProps>`

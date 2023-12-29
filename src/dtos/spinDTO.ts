@@ -1,4 +1,4 @@
-import { SpinCardContainerVariant } from '../../src/@types/types'
+import { ColorOptionsType } from '../../src/@types/types'
 import { UserDTO } from './userDTO'
 
 export type SpinDTO = {
@@ -6,7 +6,7 @@ export type SpinDTO = {
   title: string
   description: string | null
   place: string | null
-  theme_color: SpinCardContainerVariant
+  theme_color: ColorOptionsType
   start_date: string | null
   has_start_time: boolean
   end_date: string | null

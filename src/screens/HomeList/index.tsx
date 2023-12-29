@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components'
 import { NotificationsComponent } from '@components/NotificationsComponent'
 import { SpinCard } from '@components/SpinCard'
-import { SpinCardContainerVariant } from '../../@types/types'
+import { ColorOptionsType } from '../../@types/types'
 import { CreateSpin } from '@components/CreateSpin'
 import { ScrollContainer } from '../../components/ScrollContainer'
 import { useSpins } from '../../contexts/SpinsContext'
@@ -116,9 +116,7 @@ export function HomeList() {
                         spin.end_date!,
                         spin.has_end_time,
                       )}
-                      background_color={
-                        spin.theme_color as SpinCardContainerVariant
-                      }
+                      background_color={spin.theme_color as ColorOptionsType}
                     />
                   )
                 })}
@@ -169,9 +167,7 @@ export function HomeList() {
                         spin.end_date!,
                         spin.has_end_time,
                       )}
-                      background_color={
-                        spin.theme_color as SpinCardContainerVariant
-                      }
+                      background_color={spin.theme_color as ColorOptionsType}
                     />
                   )
                 })}

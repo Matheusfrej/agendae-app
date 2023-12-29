@@ -1,4 +1,4 @@
-import { SpinCardContainerVariant } from '../../@types/types'
+import { ColorOptionsType } from '../../@types/types'
 import { css } from 'styled-components'
 import styled from 'styled-components/native'
 
@@ -115,7 +115,7 @@ export const Span = styled.Text`
 `
 
 interface ColorBoxProps {
-  variant: SpinCardContainerVariant
+  variant: ColorOptionsType
 }
 
 export const ColorBox = styled.View<ColorBoxProps>`

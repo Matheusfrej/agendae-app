@@ -11,7 +11,7 @@ import { CustomButton } from '@components/CustomButton'
 import { SelectList } from 'react-native-dropdown-select-list'
 import { useState, useEffect } from 'react'
 import { Switch } from 'react-native'
-import { SpinCardContainerVariant } from 'src/@types/types'
+import { ColorOptionsType } from 'src/@types/types'
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
@@ -35,7 +35,7 @@ interface CreateUpdateSpinProps {
 }
 
 interface SelectColorType {
-  key: SpinCardContainerVariant
+  key: ColorOptionsType
   value: string
 }
 
@@ -88,14 +88,12 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
   })
   const [areParticipantsOpen, setAreParticipantsOpen] = useState(false)
 
-  const [colorSelected, setColorSelected] = useState<SpinCardContainerVariant>(
-    () => {
-      if (route.params?.spin) {
-        return route.params?.spin.theme_color
-      }
-      return 'purple'
-    },
-  )
+  const [colorSelected, setColorSelected] = useState<ColorOptionsType>(() => {
+    if (route.params?.spin) {
+      return route.params?.spin.theme_color
+    }
+    return 'purple'
+  })
   const [initialColor, setInitialColor] = useState<SelectColorType>({
     key: 'purple',
     value: 'Roxo',
@@ -210,7 +208,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
 
   const theme = useTheme()
 
-  const handleColorSelected = (val: SpinCardContainerVariant) => {
+  const handleColorSelected = (val: ColorOptionsType) => {
     setColorSelected(val)
     setValue('theme_color', val)
   }
@@ -684,7 +682,7 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
                 <S.SelectListContainer>
                   {colorsLoaded && (
                     <SelectList
-                      setSelected={(val: SpinCardContainerVariant) =>
+                      setSelected={(val: ColorOptionsType) =>
                         handleColorSelected(val)
                       }
                       data={colorsData}

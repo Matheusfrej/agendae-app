@@ -1,4 +1,4 @@
-export type SpinCardContainerVariant =
+export type ColorOptionsType =
   | 'purple'
   | 'green'
   | 'red'

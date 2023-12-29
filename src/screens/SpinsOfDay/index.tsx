@@ -4,7 +4,7 @@ import * as S from './styles'
 import { ScrollContainer } from '../../components/ScrollContainer'
 import { BackButton } from '@components/BackButton'
 import { SpinCard } from '@components/SpinCard'
-import { SpinCardContainerVariant } from '../../@types/types'
+import { ColorOptionsType } from '../../@types/types'
 import { SpinsOfDayScreenRouteProp } from 'src/@types/navigation'
 import { useRoute } from '@react-navigation/native'
 import { convertToLocaleDate, getUserSocialName } from '@utils/format'
@@ -55,9 +55,7 @@ export function SpinsOfDay() {
                       spin.end_date!,
                       spin.has_end_time,
                     )}
-                    background_color={
-                      spin.theme_color as SpinCardContainerVariant
-                    }
+                    background_color={spin.theme_color as ColorOptionsType}
                   />
                 )
               })
