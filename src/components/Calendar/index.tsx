@@ -114,19 +114,6 @@ export function Calendar() {
         yearOffset = 1
       }
       // creating a new date of current year & month and pass it as date value
-      console.log({
-        year: new Date(
-          currYear - yearOffset,
-          newCurrMonth,
-          new Date().getDate(),
-        ).getFullYear(),
-        month: new Date(
-          currYear,
-          newCurrMonth,
-          new Date().getDate(),
-        ).getMonth(),
-      })
-
       setCurrYear(
         new Date(currYear, newCurrMonth, new Date().getDate()).getFullYear(),
       ) // updating current year with new date year
