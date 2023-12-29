@@ -5,8 +5,7 @@ import { useTheme } from 'styled-components'
 
 interface Action {
   name: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  action: any
+  action: () => void
   color?: string
 }
 

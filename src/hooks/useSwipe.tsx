@@ -2,8 +2,8 @@ import { Dimensions } from 'react-native'
 const windowWidth = Dimensions.get('window').width
 
 interface UseSwipeProps {
-  onSwipeLeft?: any
-  onSwipeRight?: any
+  onSwipeLeft?: () => void
+  onSwipeRight?: () => void
   rangeOffset: number
 }
 
@@ -15,12 +15,12 @@ export function useSwipe({
   let firstTouch = 0
 
   // set user touch start position
-  function onTouchStart(e: any) {
+  function onTouchStart(e: { nativeEvent: { pageX: number } }) {
     firstTouch = e.nativeEvent.pageX
   }
 
   // when touch ends check for swipe directions
-  function onTouchEnd(e: any) {
+  function onTouchEnd(e: { nativeEvent: { pageX: number } }) {
     // get touch position and screen size
     const positionX = e.nativeEvent.pageX
     const range = windowWidth / rangeOffset

@@ -119,24 +119,44 @@ export function Calendar() {
   }
 
   const goToDate = (day: string, variant: string) => {
+    console.log(currMonth)
+
     if (!isLogged) {
       navigation.navigate('AuthStack', { screen: 'Login' })
     } else {
       if (variant === 'inactive') {
         if (+day > 15) {
-          navigation.navigate('SpinsOfDay', {
-            day,
-            month: months[currMonth - 1].toLocaleLowerCase(),
-            year: currYear,
-            fullDate: new Date(currYear, currMonth - 1, +day).toISOString(),
-          })
+          if (currMonth === 0) {
+            navigation.navigate('SpinsOfDay', {
+              day,
+              month: months[11].toLocaleLowerCase(),
+              year: currYear - 1,
+              fullDate: new Date(currYear, currMonth - 1, +day).toISOString(),
+            })
+          } else {
+            navigation.navigate('SpinsOfDay', {
+              day,
+              month: months[currMonth - 1].toLocaleLowerCase(),
+              year: currYear,
+              fullDate: new Date(currYear, currMonth - 1, +day).toISOString(),
+            })
+          }
         } else {
-          navigation.navigate('SpinsOfDay', {
-            day,
-            month: months[currMonth + 1].toLocaleLowerCase(),
-            year: currYear,
-            fullDate: new Date(currYear, currMonth + 1, +day).toISOString(),
-          })
+          if (currMonth === 11) {
+            navigation.navigate('SpinsOfDay', {
+              day,
+              month: months[0].toLocaleLowerCase(),
+              year: currYear + 1,
+              fullDate: new Date(currYear, 0, +day).toISOString(),
+            })
+          } else {
+            navigation.navigate('SpinsOfDay', {
+              day,
+              month: months[currMonth + 1].toLocaleLowerCase(),
+              year: currYear,
+              fullDate: new Date(currYear, currMonth + 1, +day).toISOString(),
+            })
+          }
         }
       } else {
         navigation.navigate('SpinsOfDay', {

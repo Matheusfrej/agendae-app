@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "agendae-app",
-    "slug": "agendae-app",
+    "name": "Agendae",
+    "slug": "Agendae",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/newIcon.png",
@@ -21,10 +21,27 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/newAdaptiveIcon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.agendae.agendae"
     },
     "web": {
       "favicon": "./assets/newFavicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "13a4fcef-9dc8-4911-8adf-a9af2894300a"
+      }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+      
+    ]
   }
 }

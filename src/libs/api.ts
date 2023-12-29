@@ -16,6 +16,10 @@ type APIInstanceProps = AxiosInstance & {
   registerInterceptTokenManager: (signOut: SignOut) => () => void
 }
 
+// const api = axios.create({
+//   baseURL: 'http://18.221.61.128:3000/',
+// }) as APIInstanceProps
+
 const api = axios.create({
   baseURL: 'http://192.168.0.13:3000/',
 }) as APIInstanceProps
@@ -87,12 +91,15 @@ api.registerInterceptTokenManager = (signOut) => {
 
                 resolve(api(originalRequestConfig))
               }
-            } catch (error: any) {
+            } catch (error: unknown) {
               console.log(error)
 
-              failedQueue.forEach((request) => {
-                request.onFailure(error)
-              })
+              const err = error as AxiosError
+              if (err instanceof AxiosError) {
+                failedQueue.forEach((request) => {
+                  request.onFailure(err)
+                })
+              }
 
               signOut()
               reject(error)

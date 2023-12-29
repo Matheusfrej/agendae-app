@@ -1,4 +1,4 @@
-import { SpinCardContainerVariant } from '@components/SpinCard'
+import { SpinCardContainerVariant } from '../../@types/types'
 import { css } from 'styled-components'
 import styled from 'styled-components/native'
 

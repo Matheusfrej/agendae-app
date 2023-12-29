@@ -5,8 +5,7 @@ interface CustomButtonProps {
   variant: 'default' | 'accept' | 'deny' | 'warning' | 'abort'
   text: string
   fontSize?: number
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onPress?: any
+  onPress?: () => void
   style?: ViewStyle
 }
 

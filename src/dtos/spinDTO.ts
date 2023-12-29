@@ -1,4 +1,4 @@
-import { SpinCardContainerVariant } from '@components/SpinCard'
+import { SpinCardContainerVariant } from '../../src/@types/types'
 import { UserDTO } from './userDTO'
 
 export type SpinDTO = {

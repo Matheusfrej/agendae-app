@@ -3,14 +3,6 @@ import * as S from './styles'
 import { NavigationType } from 'src/@types/navigation'
 import { SpinDTO } from 'src/dtos/spinDTO'
 
-export type SpinCardContainerVariant =
-  | 'purple'
-  | 'green'
-  | 'red'
-  | 'yellow'
-  | 'cyan'
-  | 'blue'
-
 interface SpinCardProps {
   spin: SpinDTO
   title: string

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import { SpinCardContainerVariant } from '.'
+import { SpinCardContainerVariant } from '../../@types/types'
 
 export const TouchableOpacity = styled.TouchableOpacity`
   width: 100%;

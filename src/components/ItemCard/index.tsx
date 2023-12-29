@@ -5,8 +5,7 @@ import { ProfileImage } from '@components/ProfileImage'
 
 interface ItemCardProps {
   user: UserDTO
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onPress: any
+  onPress: () => void
 }
 
 export function ItemCard({ user, onPress }: ItemCardProps) {

@@ -11,7 +11,7 @@ import { CustomButton } from '@components/CustomButton'
 import { SelectList } from 'react-native-dropdown-select-list'
 import { useState, useEffect } from 'react'
 import { Switch } from 'react-native'
-import { SpinCardContainerVariant } from '@components/SpinCard'
+import { SpinCardContainerVariant } from 'src/@types/types'
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
@@ -375,9 +375,9 @@ export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
         setInitialColor({
           key: colorSelected,
           value:
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            data.colors.find((color: any) => colorSelected === color.key)
-              ?.value || 'Roxo',
+            data.colors.find(
+              (color: SelectColorType) => colorSelected === color.key,
+            )?.value || 'Roxo',
         })
         setColorsLoaded(true)
       } catch (error) {
