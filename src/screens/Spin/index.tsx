@@ -187,7 +187,7 @@ export function Spin({ navigation }: SpinProps) {
                     return (
                       <Participant
                         key={participant.spinId + participant.received.id}
-                        user={participant.received}
+                        currUser={participant.received}
                         invite_status={
                           participant.status === 0
                             ? 'pending'

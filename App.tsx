@@ -21,6 +21,8 @@ import { NotificationsContextProvider } from './src/contexts/NotificationsContex
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
+import { StatusBar } from 'expo-status-bar'
+
 export default function App() {
   const [fontsLoaded] = useFonts({ Overpass_400Regular, Overpass_700Bold })
 
@@ -32,7 +34,14 @@ export default function App() {
             <BlockedContextProvider>
               <NotificationsContextProvider>
                 <GestureHandlerRootView style={{ flex: 1 }}>
-                  {fontsLoaded ? <Routes /> : <ActivityIndicator />}
+                  {fontsLoaded ? (
+                    <>
+                      <Routes />
+                      <StatusBar />
+                    </>
+                  ) : (
+                    <ActivityIndicator />
+                  )}
                 </GestureHandlerRootView>
               </NotificationsContextProvider>
             </BlockedContextProvider>

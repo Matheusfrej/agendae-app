@@ -6,27 +6,35 @@ import { useTheme } from 'styled-components'
 import { ProfileImage } from '@components/ProfileImage'
 import { UserDTO } from '../../dtos/userDTO'
 import { getUserSocialName } from '@utils/format'
+import { useAuth } from '../../../src/contexts/AuthContext'
 
 interface ParticipantProps {
-  user: UserDTO
+  currUser: UserDTO
   invite_status: 'accepted' | 'pending' | 'denied'
 }
 
-export function Participant({ user, invite_status }: ParticipantProps) {
+export function Participant({ currUser, invite_status }: ParticipantProps) {
+  const { user } = useAuth()
   const navigation = useNavigation<NavigationType>()
   const theme = useTheme()
 
   return (
     <S.ParticipantContainer
-      onPress={() =>
-        navigation.navigate('OtherProfile', {
-          user,
+      onPress={() => {
+        if (user?.id === currUser.id) {
+          return navigation.navigate('ProfileStack', {
+            screen: 'Profile',
+            params: { user: currUser },
+          })
+        }
+        return navigation.navigate('OtherProfile', {
+          user: currUser,
         })
-      }
+      }}
     >
       <S.Div>
         <ProfileImage size={50} />
-        <S.Name>{getUserSocialName(user)}</S.Name>
+        <S.Name>{getUserSocialName(currUser)}</S.Name>
       </S.Div>
       {invite_status === 'accepted' && (
         <AntDesign name="check" size={24} color={theme.COLORS.BLUE} />

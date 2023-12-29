@@ -119,8 +119,6 @@ export function Calendar() {
   }
 
   const goToDate = (day: string, variant: string) => {
-    console.log(currMonth)
-
     if (!isLogged) {
       navigation.navigate('AuthStack', { screen: 'Login' })
     } else {

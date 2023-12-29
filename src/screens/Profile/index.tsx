@@ -40,6 +40,9 @@ export function Profile({ navigation }: ProfileProps) {
 
   const [profileStatus, setProfileStatus] = useState<ProfileStatus>(() => {
     if (route.params?.user) {
+      if (route.params.user.id === user?.id) {
+        return 'mine'
+      }
       return 'friend'
     }
     return 'mine'
@@ -138,7 +141,11 @@ export function Profile({ navigation }: ProfileProps) {
   useFocusEffect(
     useCallback(() => {
       if (route.params?.user) {
-        setProfileStatus('friend')
+        if (route.params.user.id === user?.id) {
+          setProfileStatus('mine')
+        } else {
+          setProfileStatus('friend')
+        }
         getProfile(route.params.user.id)
         setCurrUser(route.params?.user)
       } else if (user) {
