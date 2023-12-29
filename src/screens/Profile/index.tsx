@@ -21,6 +21,7 @@ import { StatisticsDTO } from '../../dtos/statisticsDTO'
 import { getUserSocialName } from '@utils/format'
 import { Unblock } from './Unblock'
 import { Block } from './Block'
+import { Loading } from '@components/Loading'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -184,7 +185,7 @@ export function Profile({ navigation }: ProfileProps) {
 
   return (
     <>
-      {!isLogged || !currUserStatistics ? (
+      {!isLogged ? (
         <ScrollContainer>
           <S.NotLoggedContainer>
             <Logo style={{ marginBottom: 50 }} />
@@ -208,6 +209,10 @@ export function Profile({ navigation }: ProfileProps) {
               />
             </S.Buttons>
           </S.NotLoggedContainer>
+        </ScrollContainer>
+      ) : !currUserStatistics ? (
+        <ScrollContainer>
+          <Loading />
         </ScrollContainer>
       ) : (
         <ScrollContainer>
