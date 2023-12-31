@@ -2,6 +2,7 @@
   "expo": {
     "name": "Agendae",
     "slug": "Agendae",
+    "scheme": "agendae",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/newIcon.png",
