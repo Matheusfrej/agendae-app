@@ -35,6 +35,7 @@ export function ForgotPassword({ navigation }: ForgotPasswordProps) {
   const getResetPasswordLink = async (email: string) => {
     try {
       const { data } = await api.get(`/users/change-password/${email}`)
+
       setSnackbarStatus(
         'Enviamos um email com instruções para alterar sua senha',
         true,

@@ -188,7 +188,7 @@ export function Profile({ navigation }: ProfileProps) {
 
   return (
     <>
-      {!isLogged ? (
+      {!isLogged || !currUserStatistics ? (
         <ScrollContainer>
           <S.NotLoggedContainer>
             <Logo style={{ marginBottom: 50 }} />
@@ -212,10 +212,6 @@ export function Profile({ navigation }: ProfileProps) {
               />
             </S.Buttons>
           </S.NotLoggedContainer>
-        </ScrollContainer>
-      ) : !currUserStatistics ? (
-        <ScrollContainer>
-          <Loading />
         </ScrollContainer>
       ) : (
         <ScrollContainer>

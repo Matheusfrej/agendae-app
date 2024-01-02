@@ -19,6 +19,7 @@ import {
 import { AppError } from '@utils/AppError'
 import { UserDTO } from '../dtos/userDTO'
 import { useSnackbar } from './SnackbarContext'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface AuthContextProviderProps {
   children: ReactNode
@@ -93,6 +94,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     setUser(undefined)
     await storageUserRemove()
     await storageAuthTokenRemove()
+    AsyncStorage.clear()
   }
 
   async function loadUserData() {
