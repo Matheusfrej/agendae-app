@@ -33,6 +33,10 @@ export function Login({ navigation }: LoginProps) {
     },
   )
 
+  const navigateToForgotPassword = () => {
+    navigation.navigate('AuthStack', { screen: 'ForgotPassword' })
+  }
+
   const navigateToRegister = () => {
     navigation.navigate('AuthStack', { screen: 'Register' })
   }
@@ -92,6 +96,11 @@ export function Login({ navigation }: LoginProps) {
               }}
             />
           </S.Form>
+          <S.ForgotPassword>
+            <S.Touchable onPress={() => navigateToForgotPassword()}>
+              <S.Span>Esqueci minha senha</S.Span>
+            </S.Touchable>
+          </S.ForgotPassword>
           <S.Register>
             <S.Text>Não possui uma conta?</S.Text>
             <S.Touchable onPress={() => navigateToRegister()}>

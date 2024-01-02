@@ -23,6 +23,7 @@ import { Blocked } from '@screens/Blocked'
 import { EditProfile } from '@screens/EditProfile'
 import { Friends } from '@screens/Friends'
 import { Report } from '@screens/Report'
+import { ForgotPassword } from '@screens/ForgotPassword'
 
 const Tab = createBottomTabNavigator()
 const { Screen, Navigator } = createNativeStackNavigator()
@@ -43,6 +44,12 @@ function AuthStack() {
       <Screen
         name="Login"
         component={Login}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+
+      <Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
         options={{ animation: 'fade_from_bottom' }}
       />
     </Navigator>

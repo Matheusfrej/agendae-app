@@ -13,13 +13,6 @@ export const Title = styled.Text`
   margin-bottom: 10%;
 `
 
-export const ErrorMessageText = styled.Text`
-  font-size: 12px;
-  color: ${(props) => props.theme.COLORS.RED};
-  margin-top: 4px;
-  font-weight: bold;
-`
-
 export const Content = styled.View`
   width: 80%;
 `
@@ -39,12 +32,20 @@ export const TextInput = styled.TextInput`
   border-color: ${(props) => props.theme.COLORS.GRAY_300};
 `
 
-export const Register = styled.View`
+const SubtextBase = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+`
+
+export const Register = styled(SubtextBase)`
   gap: 4px;
   padding: 20px 0;
+  padding-top: 15px;
+`
+
+export const ForgotPassword = styled(SubtextBase)`
+  padding-top: 20px;
 `
 
 export const ButtonContainer = styled.View`

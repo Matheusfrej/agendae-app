@@ -17,7 +17,7 @@ type StackParamList = {
     isSpinRequest?: boolean
   }
   AuthStack: {
-    screen: 'Login' | 'Register'
+    screen: 'Login' | 'Register' | 'ForgotPassword'
   }
   HomeCalendar: undefined
   SpinsOfDay: {
