@@ -9,6 +9,7 @@ import { UserDTO } from '../dtos/userDTO'
 import { useAuth } from './AuthContext'
 import { AppError } from '@utils/AppError'
 import api from '../libs/api'
+import { useSnackbar } from './SnackbarContext'
 
 interface FriendsContextProviderProps {
   children: ReactNode
@@ -24,7 +25,8 @@ export const FriendsContext = createContext({} as FriendsContextType)
 export function FriendsContextProvider({
   children,
 }: FriendsContextProviderProps) {
-  const { isLogged, setSnackbarStatus } = useAuth()
+  const { isLogged } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
 
   const [friends, setFriends] = useState<UserDTO[]>([])
 

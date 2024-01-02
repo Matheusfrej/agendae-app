@@ -22,6 +22,7 @@ import { getUserSocialName } from '@utils/format'
 import { Unblock } from './Unblock'
 import { Block } from './Block'
 import { Loading } from '@components/Loading'
+import { useSnackbar } from '../../contexts/SnackbarContext'
 
 interface ProfileProps {
   navigation: NavigationType
@@ -36,7 +37,9 @@ type ProfileStatus =
   | 'user_blocked_you'
 
 export function Profile({ navigation }: ProfileProps) {
-  const { user, isLogged, signOut, setSnackbarStatus } = useAuth()
+  const { user, isLogged, signOut } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
+
   const route = useRoute<ProfileScreenRouteProp>()
 
   const [profileStatus, setProfileStatus] = useState<ProfileStatus>(() => {

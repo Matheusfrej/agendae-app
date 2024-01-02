@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react'
 import { UserDTO } from '../../../dtos/userDTO'
 import { getUserSocialName } from '@utils/format'
 import api from '../../../libs/api'
-import { useAuth } from '../../../contexts/AuthContext'
 import { AppError } from '@utils/AppError'
 import { useFriends } from '../../../contexts/FriendsContext'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationType } from 'src/@types/navigation'
+import { useSnackbar } from '../../../contexts/SnackbarContext'
 
 interface UnfriendProps {
   modalCalled: undefined | boolean
@@ -16,7 +16,7 @@ interface UnfriendProps {
 
 export function Unfriend({ modalCalled, friend }: UnfriendProps) {
   const [isVisible, setIsVisible] = useState(false)
-  const { setSnackbarStatus } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
   const { friends, onSetFriends } = useFriends()
   const navigation = useNavigation<NavigationType>()
 

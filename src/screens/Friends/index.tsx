@@ -6,7 +6,6 @@ import { NavigationType } from 'src/@types/navigation'
 import { FriendCard } from '@components/FriendCard'
 import { NoContentText } from '@components/NoContentText'
 import { useSwipe } from '../../hooks/useSwipe'
-import { useAuth } from '../../contexts/AuthContext'
 import { useFriends } from '../../contexts/FriendsContext'
 
 interface FriendsProps {
@@ -14,8 +13,7 @@ interface FriendsProps {
 }
 
 export function Friends({ navigation }: FriendsProps) {
-  const { setSnackbarStatus } = useAuth()
-  const { friends, onSetFriends } = useFriends()
+  const { friends } = useFriends()
 
   const { onTouchStart, onTouchEnd } = useSwipe({
     onSwipeRight,

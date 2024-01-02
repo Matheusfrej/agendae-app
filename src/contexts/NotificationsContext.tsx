@@ -18,6 +18,7 @@ import { UserDTO } from '../dtos/userDTO'
 import { getUserSocialName } from '@utils/format'
 import { SpinDTO } from 'src/dtos/spinDTO'
 import { useSpins } from './SpinsContext'
+import { useSnackbar } from './SnackbarContext'
 
 interface NotificationsContextProviderProps {
   children: ReactNode
@@ -41,7 +42,9 @@ export const NotificationsContext = createContext(
 export function NotificationsContextProvider({
   children,
 }: NotificationsContextProviderProps) {
-  const { isLogged, setSnackbarStatus } = useAuth()
+  const { isLogged } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
+
   const { friends, onSetFriends } = useFriends()
   const { spins, spinsUpdate } = useSpins()
 

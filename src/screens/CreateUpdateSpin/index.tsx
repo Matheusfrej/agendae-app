@@ -29,6 +29,7 @@ import { Picklist } from '@components/Picklist'
 import { useFriends } from '../../contexts/FriendsContext'
 import { UserDTO } from '../../dtos/userDTO'
 import { MaterialIcons } from '@expo/vector-icons'
+import { useSnackbar } from '../../contexts/SnackbarContext'
 
 interface CreateUpdateSpinProps {
   navigation: NavigationType
@@ -63,7 +64,9 @@ type SpinFormInputs = z.infer<typeof spinFormSchema>
 export function CreateUpdateSpin({ navigation }: CreateUpdateSpinProps) {
   const route = useRoute<CreateUpdateSpinScreenRouteProp>()
 
-  const { user, setSnackbarStatus } = useAuth()
+  const { user } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
+
   const { spins, spinsUpdate } = useSpins()
   const { friends } = useFriends()
 

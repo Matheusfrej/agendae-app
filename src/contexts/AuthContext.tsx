@@ -16,10 +16,9 @@ import {
   storageUserRemove,
   storageUserSave,
 } from '@storage/storageUser'
-import { SnackBar, setSnackBarType } from 'react-native-simple-snackbar'
-import { useTheme } from 'styled-components'
 import { AppError } from '@utils/AppError'
 import { UserDTO } from '../dtos/userDTO'
+import { useSnackbar } from './SnackbarContext'
 
 interface AuthContextProviderProps {
   children: ReactNode
@@ -30,16 +29,14 @@ interface AuthContextType {
   isLogged: boolean
   signIn: (email: string, password: string) => Promise<boolean>
   signOut: () => Promise<void>
-  setSnackbarStatus: (text: string, isSuccess: boolean) => void
   userUpdate: (user: UserDTO) => Promise<void>
 }
 
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-  const [status, setStatus] = useState<setSnackBarType | undefined>()
+  const { setSnackbarStatus } = useSnackbar()
   const [user, setUser] = useState<UserDTO | undefined>()
-  const theme = useTheme()
   const isLogged = user !== undefined
 
   async function userUpdate(user: UserDTO) {
@@ -51,18 +48,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     api.defaults.headers.common.Authorization = token
 
     setUser(user)
-  }
-
-  const setSnackbarStatus = (text: string, isSuccess: boolean) => {
-    setStatus({
-      content: text,
-      backgroundColor: isSuccess ? theme.COLORS.BLUE : theme.COLORS.RED,
-      color: theme.COLORS.WHITE,
-      fontSize: 20,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      position: 'bottom',
-    })
   }
 
   async function storageUserAndTokenSave(
@@ -140,12 +125,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         isLogged,
         signIn,
         signOut,
-        setSnackbarStatus,
         userUpdate,
       }}
     >
       {children}
-      <SnackBar setSnackBar={status} />
     </AuthContext.Provider>
   )
 }

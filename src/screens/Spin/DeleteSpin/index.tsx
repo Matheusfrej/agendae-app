@@ -1,12 +1,12 @@
 import { CustomModal } from '@components/CustomModal'
 import { useEffect, useState } from 'react'
 import api from '../../../libs/api'
-import { useAuth } from '../../../contexts/AuthContext'
 import { AppError } from '@utils/AppError'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationType } from 'src/@types/navigation'
 import { SpinDTO } from '../../../dtos/spinDTO'
 import { useSpins } from '../../../contexts/SpinsContext'
+import { useSnackbar } from '../../../contexts/SnackbarContext'
 
 interface DeleteSpinProps {
   modalCalled: undefined | boolean
@@ -15,7 +15,7 @@ interface DeleteSpinProps {
 
 export function DeleteSpin({ modalCalled, spin }: DeleteSpinProps) {
   const [isVisible, setIsVisible] = useState(false)
-  const { setSnackbarStatus } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
   const { spins, spinsUpdate } = useSpins()
   const navigation = useNavigation<NavigationType>()
 

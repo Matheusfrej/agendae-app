@@ -10,9 +10,9 @@ import * as z from 'zod'
 import { CustomInput } from '@components/CustomInput'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAuth } from '../../contexts/AuthContext'
 import { AppError } from '@utils/AppError'
 import api from '../../libs/api'
+import { useSnackbar } from '../../contexts/SnackbarContext'
 
 const registerFormSchema = z
   .object({
@@ -49,7 +49,7 @@ type RegisterRequestData = {
 }
 
 export function Register() {
-  const { setSnackbarStatus } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
 
   const navigation = useNavigation<NavigationType>()
 

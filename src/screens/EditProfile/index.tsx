@@ -16,6 +16,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import api from '../../libs/api'
 import { AppError } from '@utils/AppError'
 import { CustomModal } from '@components/CustomModal'
+import { useSnackbar } from '../../contexts/SnackbarContext'
 
 interface EditProfileProps {
   navigation: NavigationType
@@ -32,7 +33,8 @@ const editProfileFormSchema = z.object({
 type editProfileFormInputs = z.infer<typeof editProfileFormSchema>
 
 export function EditProfile({ navigation }: EditProfileProps) {
-  const { setSnackbarStatus, signOut, user, userUpdate } = useAuth()
+  const { signOut, user, userUpdate } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
 
   const { control, handleSubmit, reset, setValue } =
     useForm<editProfileFormInputs>({

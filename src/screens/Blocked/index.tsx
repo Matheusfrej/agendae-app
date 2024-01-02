@@ -5,13 +5,14 @@ import { useEffect } from 'react'
 import * as S from './styles'
 import { FriendCard } from '@components/FriendCard'
 import { NoContentText } from '@components/NoContentText'
-import { useAuth } from '../../contexts/AuthContext'
 import api from '../../libs/api'
 import { AppError } from '@utils/AppError'
 import { useBlocked } from '../../contexts/BlockedContext'
+import { useSnackbar } from '../../contexts/SnackbarContext'
 
 export function Blocked() {
-  const { setSnackbarStatus } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
+
   const { blocked, onSetBlocked } = useBlocked()
 
   const areThereBlocked = blocked.length > 0

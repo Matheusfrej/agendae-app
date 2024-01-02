@@ -4,7 +4,6 @@ import { useState } from 'react'
 
 import * as S from './styles'
 import { CustomButton } from '@components/CustomButton'
-import { NavigationType } from 'src/@types/navigation'
 
 import { Controller, useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -16,10 +15,7 @@ import { AppError } from '@utils/AppError'
 import api from '../../libs/api'
 import { UserDTO } from '../../dtos/userDTO'
 import { getUserSocialName } from '@utils/format'
-
-interface AddFriendProps {
-  navigation: NavigationType
-}
+import { useSnackbar } from '../../contexts/SnackbarContext'
 
 const addFriendFormSchema = z.object({
   friend_id: z.string({ required_error: 'Insira um código de amigo' }),
@@ -27,8 +23,9 @@ const addFriendFormSchema = z.object({
 
 type AddFriendFormInputs = z.infer<typeof addFriendFormSchema>
 
-export function AddFriend({ navigation }: AddFriendProps) {
-  const { user, setSnackbarStatus } = useAuth()
+export function AddFriend() {
+  const { user } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
 
   const { control, handleSubmit, reset } = useForm<AddFriendFormInputs>({
     resolver: zodResolver(addFriendFormSchema),

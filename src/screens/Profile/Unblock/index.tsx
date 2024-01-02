@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react'
 import { UserDTO } from '../../../dtos/userDTO'
 import { getUserSocialName } from '@utils/format'
 import api from '../../../libs/api'
-import { useAuth } from '../../../contexts/AuthContext'
 import { AppError } from '@utils/AppError'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationType } from 'src/@types/navigation'
 import { useBlocked } from '../../../contexts/BlockedContext'
+import { useSnackbar } from '../../../contexts/SnackbarContext'
 
 interface UnblockProps {
   modalCalled: undefined | boolean
@@ -16,7 +16,7 @@ interface UnblockProps {
 
 export function Unblock({ modalCalled, user_blocked }: UnblockProps) {
   const [isVisible, setIsVisible] = useState(false)
-  const { setSnackbarStatus } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
   const { blocked, onSetBlocked } = useBlocked()
   const navigation = useNavigation<NavigationType>()
 

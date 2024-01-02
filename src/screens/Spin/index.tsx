@@ -19,6 +19,7 @@ import { DeleteSpin } from './DeleteSpin'
 import { UserDTO } from '../../dtos/userDTO'
 import api from '../../libs/api'
 import { AppError } from '@utils/AppError'
+import { useSnackbar } from '../../contexts/SnackbarContext'
 
 interface SpinProps {
   navigation: NavigationType
@@ -34,7 +35,8 @@ type SpinStatus = 'mine' | 'invited' | 'friend_spin' | 'user_spin'
 
 export function Spin({ navigation }: SpinProps) {
   const route = useRoute<SpinScreenRouteProp>()
-  const { user, setSnackbarStatus } = useAuth()
+  const { user } = useAuth()
+  const { setSnackbarStatus } = useSnackbar()
 
   const [areParticipantsOpen, setAreParticipantsOpen] = useState(false)
   const [spin, setSpin] = useState<SpinDTO | undefined>(route.params.spin)

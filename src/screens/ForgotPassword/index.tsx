@@ -2,7 +2,6 @@ import { CustomButton } from '@components/CustomButton'
 import { ScrollContainer } from '../../components/ScrollContainer'
 
 import * as S from './styles'
-import { NavigationType } from 'src/@types/navigation'
 import { Logo } from '@components/Logo'
 import { BackButton } from '@components/BackButton'
 import { Controller, useForm } from 'react-hook-form'
@@ -10,12 +9,8 @@ import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CustomInput } from '@components/CustomInput'
 import { AppError } from '@utils/AppError'
-import { useAuth } from '../../contexts/AuthContext'
 import api from '../../libs/api'
-
-interface ForgotPasswordProps {
-  navigation: NavigationType
-}
+import { useSnackbar } from '../../contexts/SnackbarContext'
 
 const forgotPasswordFormSchema = z.object({
   email: z
@@ -25,8 +20,8 @@ const forgotPasswordFormSchema = z.object({
 
 type ForgotPasswordFormInputs = z.infer<typeof forgotPasswordFormSchema>
 
-export function ForgotPassword({ navigation }: ForgotPasswordProps) {
-  const { setSnackbarStatus } = useAuth()
+export function ForgotPassword() {
+  const { setSnackbarStatus } = useSnackbar()
 
   const { control, handleSubmit, reset } = useForm<ForgotPasswordFormInputs>({
     resolver: zodResolver(forgotPasswordFormSchema),
