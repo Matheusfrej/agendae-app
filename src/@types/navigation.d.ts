@@ -17,7 +17,13 @@ type StackParamList = {
     isSpinRequest?: boolean
   }
   AuthStack: {
-    screen: 'Login' | 'Register' | 'ForgotPassword'
+    screen: 'Login' | 'Register' | 'ForgotPassword' | 'ResetPassword'
+    params?: {
+      jwtEmail: string
+    }
+  }
+  ResetPassword: {
+    jwtEmail: string
   }
   HomeCalendar: undefined
   SpinsOfDay: {
@@ -64,3 +70,8 @@ export type CreateUpdateSpinScreenRouteProp = RouteProp<
 export type SpinScreenRouteProp = RouteProp<StackParamList, 'Spin'>
 
 export type ProfileScreenRouteProp = RouteProp<StackParamList, 'Profile'>
+
+export type ResetPasswordScreenRouteProp = RouteProp<
+  StackParamList,
+  'ResetPassword'
+>

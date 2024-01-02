@@ -11,6 +11,11 @@ import { CustomInput } from '@components/CustomInput'
 import { AppError } from '@utils/AppError'
 import api from '../../libs/api'
 import { useSnackbar } from '../../contexts/SnackbarContext'
+import { NavigationType } from '../../@types/navigation'
+
+type ForgotPasswordProps = {
+  navigation: NavigationType
+}
 
 const forgotPasswordFormSchema = z.object({
   email: z
@@ -20,7 +25,7 @@ const forgotPasswordFormSchema = z.object({
 
 type ForgotPasswordFormInputs = z.infer<typeof forgotPasswordFormSchema>
 
-export function ForgotPassword() {
+export function ForgotPassword({ navigation }: ForgotPasswordProps) {
   const { setSnackbarStatus } = useSnackbar()
 
   const { control, handleSubmit, reset } = useForm<ForgotPasswordFormInputs>({
@@ -29,13 +34,13 @@ export function ForgotPassword() {
 
   const getResetPasswordLink = async (email: string) => {
     try {
-      await api.get(`/users/change-password/${email}`)
+      const { data } = await api.get(`/users/change-password/${email}`)
       setSnackbarStatus(
         'Enviamos um email com instruções para alterar sua senha',
         true,
       )
 
-      return true
+      return data
     } catch (error) {
       const isAppError = error instanceof AppError
 
@@ -43,14 +48,18 @@ export function ForgotPassword() {
         ? error.message
         : 'Não foi possível enviar o email. Tente novamente mais tarde.'
       setSnackbarStatus(title, false)
-      return false
     }
   }
 
   const handleForgotPassword = async (data: ForgotPasswordFormInputs) => {
-    const success = await getResetPasswordLink(data.email)
-    if (!success) {
+    const response = await getResetPasswordLink(data.email)
+    if (!response) {
       reset()
+    } else {
+      navigation.navigate('AuthStack', {
+        screen: 'ResetPassword',
+        params: { jwtEmail: response.token },
+      })
     }
   }
 

@@ -24,6 +24,7 @@ import { EditProfile } from '@screens/EditProfile'
 import { Friends } from '@screens/Friends'
 import { Report } from '@screens/Report'
 import { ForgotPassword } from '@screens/ForgotPassword'
+import { ResetPassword } from '../screens/ResetPassword'
 
 const Tab = createBottomTabNavigator()
 const { Screen, Navigator } = createNativeStackNavigator()
@@ -50,6 +51,12 @@ function AuthStack() {
       <Screen
         name="ForgotPassword"
         component={ForgotPassword}
+        options={{ animation: 'fade_from_bottom' }}
+      />
+
+      <Screen
+        name="ResetPassword"
+        component={ResetPassword}
         options={{ animation: 'fade_from_bottom' }}
       />
     </Navigator>
